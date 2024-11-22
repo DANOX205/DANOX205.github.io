@@ -28,10 +28,14 @@ function deplacement_perso(event){
 		}
 	}
 	if (command === 115){ //s press
-		row_val = (row_val * 1) + 1;
+		if (row_val < 100){ //vérification que le personnage ne quitte pas la zone de jeux
+			row_val = (row_val * 1) + 1;
+		}
 	}
 	if (command === 100){ //d press
-		col_val = (col_val * 1) + 1;
+		if (col_val < 100){ //vérification que le personnage ne quitte pas la zone de jeux
+			col_val = (col_val * 1) + 1;
+		}
 	}
 	
 	//attribution des valeur après déplacement

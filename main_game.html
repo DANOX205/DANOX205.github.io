@@ -5,14 +5,18 @@
     <link type="text/css" rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
 
-    <title> LE TITRE 2</title>
+    <title>Game</title>
   </head>
   <body onkeypress="deplacement_perso(event)">
-	<span id="timer_heures" style="margin: 100px; font-size: 4em;">0</span>
-	<span> :</span>	
-	<span id="timer_minutes" style="margin: 100px; font-size: 4em;">0</span>
-	<span> :</span>	
-	<span id="timer_secondes" style="margin: 100px; font-size: 4em;">0</span>
+  
+	<div class="timer">
+		<span id="timer_heures" style="margin: 100px; font-size: 4em;">0</span>
+		<span> :</span>	
+		<span id="timer_minutes" style="margin: 100px; font-size: 4em;">0</span>
+		<span> :</span>	
+		<span id="timer_secondes" style="margin: 100px; font-size: 4em;">0</span>
+	</div>
+	
 	<div class="game_box">
 		<img  id="perso" src="img_perso.jpg" alt="image du personnage" style="grid-column: 1; grid-row: 1;"/>
 	</div>
