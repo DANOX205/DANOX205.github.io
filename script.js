@@ -1,7 +1,4 @@
 console.log('start')
-let x = 0;
-let y = 0;
-let tab_coord = [x, y];
 
 
 function deplacement_perso(event){
