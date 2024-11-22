@@ -7,28 +7,36 @@ function deplacement_perso(event){
 	let col_val = perso_p.style.gridColumn;
 	let row_val = perso_p.style.gridRow;
 	
+//vérification des valeur des coordonnée et attribution si celle-ci n'existe pas
 	if (col_val === null || row_val === null){
 		col_val = 0;
 		row_val = 0;
 	}
 	
+	//commende de déplacement en fonction du code clavier des touches
+	//on ajoute/retranche 1 à la ligne/colonne de l'objet pour le déplacer
+	
+	
 	if (command === 122){ //z press
-		if (row_val > 0){
+		if (row_val > 0){ //vérification que les coordonnée ne soit pas négative
 			row_val = (row_val * 1) - 1;
 		}
-	} else if (command === 113){ //q press
-		if (col_val > 0){
+	}
+	if (command === 113){ //q press
+		if (col_val > 0){ //vérification que les coordonnée ne soit pas négative
 			col_val = (col_val * 1) - 1;
 		}
-	} else if (command === 115){ //s press
+	}
+	if (command === 115){ //s press
 		row_val = (row_val * 1) + 1;
-	} else if (command === 100){ //d press
+	}
+	if (command === 100){ //d press
 		col_val = (col_val * 1) + 1;
 	}
+	
+	//attribution des valeur après déplacement
 	perso_p.style.gridRow = row_val;
 	perso_p.style.gridColumn = col_val;
-	console.log("col " + col_val);
-	console.log("row " + row_val);
 }
 
 
