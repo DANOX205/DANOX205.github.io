@@ -3,3 +3,9 @@
 	grid-template-columns: minmax(200px, auto);
 	grid-template-rows: minmax(200px, auto);
 }
+
+#perso{
+	height: 200px;
+	grid-column: 1;
+	grid-row: 1;
+}
