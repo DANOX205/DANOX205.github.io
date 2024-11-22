@@ -1,9 +1,10 @@
 .game_box{
 	display: grid;
-	grid-template-columns: minmax(200px, auto);
-	grid-template-rows: minmax(200px, auto);
+	grid-template-columns: repeat(100, 10px);
+	grid-template-rows: repeat(100, 10px);
+	gap: 10px;
 }
 
 #perso{
-	height: 200px;
+	height: 50px;
 }
