@@ -1,5 +1,5 @@
-h1{
-  text-decoration: underline;
-  color: red;
-  font-weight: bold;
+.game_box{
+	display: grid;
+	grid-template-columns: minmax(200px, auto);
+	grid-template-rows: minmax(200px, auto);
 }
