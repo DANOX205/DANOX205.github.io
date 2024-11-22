@@ -1,7 +1,5 @@
 console.log('start')
 
-function bonjour(){
+function demo(){
 	alert("bonjour");
 }
-
-bonjour()
