@@ -7,7 +7,7 @@ let heures = 0;
 let s_para = document.getElementById("timer_secondes");
 let m_para = document.getElementById("timer_minutes");
 let h_para = document.getElementById("timer_heures");
-let chrono = window.setInterval(TIMER,1000);
+let chrono = window.setInterval(Timer,1000);
 
 function Timer(){
     secondes = secondes +1;
