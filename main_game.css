@@ -1,7 +1,7 @@
 .game_box{
 	display: grid;
 	grid-template-columns: repeat(100, 10px);
-	grid-template-rows: repeat(100, 10px);
+	grid-template-rows: repeat(35, 10px);
 	gap: 5px;
 }
 

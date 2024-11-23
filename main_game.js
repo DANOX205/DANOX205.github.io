@@ -1,9 +1,10 @@
 //page javascript pour la page du jeux
-console.log('start')
+console.log('start game')
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 
 //key code des lettre de l'alphabet
 const z = 122;
@@ -11,7 +12,23 @@ const q = 113;
 const s = 115;
 const d = 100;
 const e = 101;
+const space = 32; //barre d'espace
 
+
+//récupération du pseudo de la page principal
+const Jpseudo = localStorage.getItem('pseudo_perso');
+const labelP = document.getElementById("pseudo");
+localStorage.removeItem('pseudo_perso'); //libération du stockage
+labelP.textContent = Jpseudo; //écritude du pseudo au dessus du personnage
+
+function GameOver(){
+	//sauvegarde du temps pour le mettre dans le tableau (à codé)
+	//retour à la page de départ
+	window.location.href = 'Projet_Web.html';
+}
+
+
+//fonction de déplacement et d'attaque du personnage
 function deplacement(command, perso, attq){
 	let col_val = perso.style.gridColumn;
 	let row_val = perso.style.gridRow;
@@ -53,20 +70,20 @@ function deplacement(command, perso, attq){
 	
 	//déplacement de l'attaque du personnage
 	if (command === z){
-		attq.style.gridRow = (perso.style.gridRow * 1) - 1;
+		attq.style.gridRow = (perso.style.gridRow * 1) - 2;
 		attq.style.gridColumn = (perso.style.gridColumn * 1);
 	}
 	if (command === q){
 		attq.style.gridRow = (perso.style.gridRow * 1);
-		attq.style.gridColumn = (perso.style.gridColumn * 1) - 1;
+		attq.style.gridColumn = (perso.style.gridColumn * 1) - 2;
 	}
 	if (command === s){
-		attq.style.gridRow = (perso.style.gridRow * 1) + 1;
+		attq.style.gridRow = (perso.style.gridRow * 1) + 2;
 		attq.style.gridColumn = (perso.style.gridColumn * 1);
 	}
 	if (command === d){
 		attq.style.gridRow = (perso.style.gridRow * 1);
-		attq.style.gridColumn = (perso.style.gridColumn * 1) + 1;
+		attq.style.gridColumn = (perso.style.gridColumn * 1) + 2;
 	}
 	
 	
@@ -82,16 +99,26 @@ function attaqueP(command, attq){
 
 function PersoPrinc(event){
 	const command = event.keyCode;
+	console.log(command);
 	const perso_p = document.getElementById("perso");
 	const attq_p = document.getElementById("att_perso");
 	if (command === z || command === q || command === s || command === d){
 		let tab_coord = deplacement(command, perso_p, attq_p);
+		//initialisation de la position du personnage
 		perso_p.style.gridRow = tab_coord[0];
 		perso_p.style.gridColumn = tab_coord[1];
+		
+		//initialisation de la position du pseudo
+		labelP.style.gridRow = (tab_coord[0] * 1) - 1
+		labelP.style.gridColumn = tab_coord[1];
 	} else if (command === e){
 		attaqueP(command, attq_p);
+	} else if (command === space){ //ou dituation d'echec
+		alert("Game Over");
+		GameOver();
 	}
 }
+
 
 /* Gestion du Chrono */
 let secondes = 0;
