@@ -21,12 +21,13 @@ const labelP = document.getElementById("pseudo");
 localStorage.removeItem('pseudo_perso'); //libération du stockage
 labelP.textContent = Jpseudo; //écritude du pseudo au dessus du personnage
 
+
+//fonction de fin de jeux, sauvegarde du temps et retour à la page principal
 function GameOver(){
 	//sauvegarde du temps pour le mettre dans le tableau (à codé)
 	//retour à la page de départ
 	window.location.href = 'Projet_Web.html';
 }
-
 
 //fonction de déplacement et d'attaque du personnage
 function deplacement(command, perso, attq){
