@@ -1,6 +1,17 @@
 console.log('start')
 
-function deplacerP(command, perso){
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+//key code des lettre de l'alphabet
+const z = 122;
+const q = 113;
+const s = 115;
+const d = 100;
+const e = 101;
+
+function deplacement(command, perso, attq){
 	let col_val = perso.style.gridColumn;
 	let row_val = perso.style.gridRow;
 	
@@ -14,22 +25,22 @@ function deplacerP(command, perso){
 	//on ajoute/retranche 1 à la ligne/colonne de l'objet pour le déplacer
 	
 	
-	if (command === 122){ //z press
+	if (command === z){
 		if (row_val > 0){ //vérification que les coordonnée ne soit pas négative
 			row_val = (row_val * 1) - 1;
 		}
 	}
-	if (command === 113){ //q press
+	if (command === q){
 		if (col_val > 0){ //vérification que les coordonnée ne soit pas négative
 			col_val = (col_val * 1) - 1;
 		}
 	}
-	if (command === 115){ //s press
+	if (command === s){ //s press
 		if (row_val < 100){ //vérification que le personnage ne quitte pas la zone de jeux
 			row_val = (row_val * 1) + 1;
 		}
 	}
-	if (command === 100){ //d press
+	if (command === d){ //d press
 		if (col_val < 100){ //vérification que le personnage ne quitte pas la zone de jeux
 			col_val = (col_val * 1) + 1;
 		}
@@ -38,22 +49,46 @@ function deplacerP(command, perso){
 	//attribution des valeur après déplacement
 	perso.style.gridRow = row_val;
 	perso.style.gridColumn = col_val;
+	
+	//déplacement de l'attaque du personnage
+	if (command === z){
+		attq.style.gridRow = (perso.style.gridRow * 1) - 1;
+		attq.style.gridColumn = (perso.style.gridColumn * 1);
+	}
+	if (command === q){
+		attq.style.gridRow = (perso.style.gridRow * 1);
+		attq.style.gridColumn = (perso.style.gridColumn * 1) - 1;
+	}
+	if (command === s){
+		attq.style.gridRow = (perso.style.gridRow * 1) + 1;
+		attq.style.gridColumn = (perso.style.gridColumn * 1);
+	}
+	if (command === d){
+		attq.style.gridRow = (perso.style.gridRow * 1);
+		attq.style.gridColumn = (perso.style.gridColumn * 1) + 1;
+	}
+	
+	
 	return [row_val * 1, col_val * 1];
 }
 
-function attaqueP(command, perso){
-	alert("raiponse ATTAQUE");//à compléter
+function attaqueP(command, attq){
+	attq.style.display = "block";
+	sleep(2000).then( () => {
+		attq.style.display = "none";
+	});
 }
 
 function PersoPrinc(event){
 	const command = event.keyCode;
 	const perso_p = document.getElementById("perso");
-	if (command === 122 || command === 113 || command === 115 || command === 100){
-		let tab_coord = deplacerP(command, perso_p);
+	const attq_p = document.getElementById("att_perso");
+	if (command === z || command === q || command === s || command === d){
+		let tab_coord = deplacement(command, perso_p, attq_p);
 		perso_p.style.gridRow = tab_coord[0];
 		perso_p.style.gridColumn = tab_coord[1];
-	} else if (command === 101){ //e press
-		attaqueP(command, perso_p);
+	} else if (command === e){
+		attaqueP(command, attq_p);
 	}
 }
 
