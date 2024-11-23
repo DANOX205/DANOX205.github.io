@@ -1,3 +1,4 @@
+//page javascript pour la page du jeux
 console.log('start')
 
 function sleep(ms) {
