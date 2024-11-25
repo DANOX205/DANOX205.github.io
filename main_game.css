@@ -1,10 +1,107 @@
+body {
+	margin: 0;
+	overflow: hidden;
+	transform: scale(1.7);
+	transform-origin: top center;
+	background-color: black;
+  } /* Empêche à l'utilisateur de scroller.(overflow) et permet de régler le zoom .(transform)*/
+
 .game_box{
 	display: grid;
 	grid-template-columns: repeat(100, 10px);
-	grid-template-rows: repeat(35, 10px);
-	gap: 5px;
+	grid-template-rows: repeat(100, 10px);
+	gap: 10px;
+	position: relative;
+    	width: 800px;
+    	height: 600px;
+	background-color: white;
+	border: 2px solid black;
+	margin: auto;
 }
+
 
 #perso, #att_perso{
 	height: 50px;
+}
+
+/* Gestion du Chrono */
+#clock{
+	position: relative;
+	width: 200px;
+	height: 55px;
+	background-color: white;
+	border: 2px solid black;
+	margin: auto;
+	align-items: center;
+	justify-content : center;
+	text-align : center;
+	font-size : 42px;
+}	
+
+/* Créer les rectangles rouges*/ /* On utilise les propriétés de transition. */
+
+.attack_loading{
+	position: relative;
+	width: 200px;
+	height: 10px;
+	background-color: red;
+	border: 2px solid black;
+
+} 
+.filler {
+	position: absolute;
+	width: 200px;
+	height: 10px;
+	width: 0%; 
+	height: 100%;
+	background-color: green; 
+	transition: width 5s ease-in-out;
+}
+
+.attack_loaded{
+	position: relative;
+	width: 200px;
+	height: 10px;
+	background-color: green;
+	border: 2px solid black;
+}
+
+
+/* Gestion de la carte, du Joueur et du Boss */
+#gameWorld {
+	position: relative;
+	width: 600px;
+	height: 250px;
+	border: 2px solid black;
+	margin: auto;
+	background-color: white;
+}
+
+.player {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	background-color: blue;
+}
+
+#boss {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	background-color: red;
+}
+
+/* Gestion des hitbox(hurt et slow) */
+.warninghitbox {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	background-color: orangered;
+}
+
+.hurthitbox {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	background-color: red;
 }
