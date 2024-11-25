@@ -1,5 +1,7 @@
 //page javascript pour la page du jeux
 console.log('start game')
+const gameBox= document.querySelector(".game_box");
+const Clock = document.querySelector("#clock");
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -125,10 +127,11 @@ function PersoPrinc(event){
 let secondes = 0;
 let minutes = 0;
 let heures = 0;
-let s_para = document.getElementById("timer_secondes");
-let m_para = document.getElementById("timer_minutes");
-let h_para = document.getElementById("timer_heures");
+let s_para = 0;
+let m_para = 0;
+let h_para = 0;
 let chrono = window.setInterval(Timer,1000);
+let Clock_box = document.getElementById("clock");
 
 function Timer(){
     secondes = secondes +1;
@@ -147,4 +150,83 @@ function Timer(){
 			alert("TRICHEUR ! C'est impossible.")
 			//retourner dans la page de base.
 		}
+		Clock.innerHTML= heures + " : " + minutes + " : " + secondes; 
 	}
+
+/* Gestion des attaques du BOSS */
+let can_attack1 = false;
+let can_attack2 = false;
+let can_attack3 = false;
+let can_attack4 = false;
+reload1();
+
+document.addEventListener("keydown", (event) => {
+    switch (event.keyCode) {
+        case 97:
+            console.log("ATTAQUE 1");
+			if (can_attack1) {
+				attack1();
+			}
+            break;
+        case 98:
+            console.log("ATTAQUE 2");
+            break;
+        case 99:
+            console.log("ATTAQUE 3");
+            break;
+        case 100:
+            console.log("ATTAQUE 4");
+            break;
+    }
+});
+
+/* Première Attaque */ 
+
+function reload1(){
+	let filler1 = document.getElementById('fillerBar1');
+	let attack1_loading = document.getElementById("AL1");
+	filler1.style.transition = "width 5s ease-in-out";
+	filler1.style.width = '100%';
+	setTimeout(() => {
+		attack1_loading.className = "attack_loaded";
+		filler1.style.transition = "none";
+		filler1.style.width = "0";
+		can_attack1 = true;
+	}, 5000);
+}
+
+
+function RandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+function spawn_box(){
+	console.log("spawn a box 2");
+	const c= RandomNumber(6,35);
+	const r= RandomNumber(17,28);
+	const hhitbox = document.createElement('div'); // On crée l'élément div hurthitbox
+	hhitbox.classList.add("warninghitbox");
+	hhitbox.style.gridRow = `${r}`;
+    hhitbox.style.gridColumn = `${c}`;
+	console.log(r);
+	console.log(c);
+	gameBox.appendChild(hhitbox); // On ajoute l'élément sur la boîte de jeu
+	setTimeout(() => {
+		hhitbox.className = "hurthitbox";
+	}, 1200);
+	setTimeout(() => {
+		hhitbox.remove();
+	}, 1500);
+}
+
+
+function attack1(){
+	let attack1_loading = document.getElementById("AL1");
+	attack1_loading.className = "attack_loading";
+	can_attack1 = false;
+	for (i=0;i<20; i++){
+		spawn_box();
+	}
+	reload1();
+}
