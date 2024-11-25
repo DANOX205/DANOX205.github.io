@@ -106,12 +106,12 @@ function Player(event){
 	if (command === z || command === q || command === s || command === d){
 		let tab_coord = deplacement(command, perso, attq_p);
 		//initialisation de la position du personnage
-		perso_p.style.gridRow = tab_coord[0];
-		perso_p.style.gridColumn = tab_coord[1];
+		perso.style.gridRow = tab_coord[0];
+		perso.style.gridColumn = tab_coord[1];
 		
 		//initialisation de la position du pseudo
-		labelP.style.gridRow = (tab_coord[0] * 1) - 1
-		labelP.style.gridColumn = tab_coord[1];
+		labelP.style.gridRow = (tab_coord[0] * 1) - 2
+		labelP.style.gridColumn = (tab_coord[1] * 1) - 1;
 	} else if (command === e){
 		attaqueP(command, attq_p);
 	} else if (command === space){ //ou dituation d'echec
