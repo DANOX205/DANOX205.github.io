@@ -42,10 +42,9 @@ function deplacement(command, perso, attq){
 		row_val = 0;
 	}
 	
+	
 	//commende de déplacement en fonction du code clavier des touches
 	//on ajoute/retranche 1 à la ligne/colonne de l'objet pour le déplacer
-	
-	
 	if (command === z){
 		if (row_val > 0){ //vérification que les coordonnée ne soit pas négative
 			row_val = (row_val * 1) - 1;
@@ -56,13 +55,13 @@ function deplacement(command, perso, attq){
 			col_val = (col_val * 1) - 1;
 		}
 	}
-	if (command === s){ //s press
-		if (row_val < 100){ //vérification que le personnage ne quitte pas la zone de jeux
+	if (command === s){
+		if (row_val < 22){ //vérification que le personnage ne quitte pas la zone de jeux
 			row_val = (row_val * 1) + 1;
 		}
 	}
-	if (command === d){ //d press
-		if (col_val < 100){ //vérification que le personnage ne quitte pas la zone de jeux
+	if (command === d){
+		if (col_val < 55){ //vérification que le personnage ne quitte pas la zone de jeux
 			col_val = (col_val * 1) + 1;
 		}
 	}
@@ -73,12 +72,12 @@ function deplacement(command, perso, attq){
 	
 	//déplacement de l'attaque du personnage
 	if (command === z){
-		attq.style.gridRow = (perso.style.gridRow * 1) - 2;
+		attq.style.gridRow = (perso.style.gridRow * 1) - 1;
 		attq.style.gridColumn = (perso.style.gridColumn * 1);
 	}
 	if (command === q){
 		attq.style.gridRow = (perso.style.gridRow * 1);
-		attq.style.gridColumn = (perso.style.gridColumn * 1) - 2;
+		attq.style.gridColumn = (perso.style.gridColumn * 1) - 1;
 	}
 	if (command === s){
 		attq.style.gridRow = (perso.style.gridRow * 1) + 2;
@@ -88,7 +87,6 @@ function deplacement(command, perso, attq){
 		attq.style.gridRow = (perso.style.gridRow * 1);
 		attq.style.gridColumn = (perso.style.gridColumn * 1) + 2;
 	}
-	
 	
 	return [row_val * 1, col_val * 1];
 }
@@ -100,13 +98,13 @@ function attaqueP(command, attq){
 	});
 }
 
-function PersoPrinc(event){
+function Player(event){
 	const command = event.keyCode;
 	console.log(command);
-	const perso_p = document.getElementById("perso");
-	const attq_p = document.getElementById("att_perso");
+	const perso = document.getElementById("player");
+	const attq_p = document.getElementById("att_player");
 	if (command === z || command === q || command === s || command === d){
-		let tab_coord = deplacement(command, perso_p, attq_p);
+		let tab_coord = deplacement(command, perso, attq_p);
 		//initialisation de la position du personnage
 		perso_p.style.gridRow = tab_coord[0];
 		perso_p.style.gridColumn = tab_coord[1];
@@ -203,7 +201,7 @@ function RandomNumber(min, max) {
 
 function spawn_box(){
 	console.log("spawn a box 2");
-	const c= RandomNumber(6,35);
+	const c= RandomNumber(5,34);
 	const r= RandomNumber(17,28);
 	const hhitbox = document.createElement('div'); // On crée l'élément div hurthitbox
 	hhitbox.classList.add("warninghitbox");

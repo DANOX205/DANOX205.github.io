@@ -1,28 +1,10 @@
 body {
 	margin: 0;
 	overflow: hidden;
-	transform: scale(1.7);
+	transform: scale(1.2);
 	transform-origin: top center;
 	background-color: black;
   } /* Empêche à l'utilisateur de scroller.(overflow) et permet de régler le zoom .(transform)*/
-
-.game_box{
-	display: grid;
-	grid-template-columns: repeat(100, 10px);
-	grid-template-rows: repeat(100, 10px);
-	gap: 10px;
-	position: relative;
-    	width: 800px;
-    	height: 600px;
-	background-color: white;
-	border: 2px solid black;
-	margin: auto;
-}
-
-
-#perso, #att_perso{
-	height: 50px;
-}
 
 /* Gestion du Chrono */
 #clock{
@@ -68,20 +50,44 @@ body {
 
 
 /* Gestion de la carte, du Joueur et du Boss */
+.game_box{
+	position: relative;
+    	width: 800px;
+    	height: 600px;
+	background-color: white;
+	border: 2px solid black;
+	margin: auto;
+	gap: 10px;
+}
+
+.game_box, #gameWorld{
+	display: grid;
+	grid-template-columns: repeat(100, 10px);
+	grid-template-rows: repeat(100, 10px);
+}
+
 #gameWorld {
 	position: relative;
-	width: 600px;
-	height: 250px;
+	width: 614px;
+	height: 251px;
 	border: 2px solid black;
 	margin: auto;
 	background-color: white;
+	gap: 1px;
 }
 
-.player {
+#player {
 	position: absolute;
 	width: 20px;
 	height: 20px;
 	background-color: blue;
+}
+
+#att_player{
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	background-color: green;
 }
 
 #boss {
