@@ -157,6 +157,9 @@ document.addEventListener("keydown", (event) => {
             break;
         case 99:
             console.log("ATTAQUE 3");
+		    if (can_attack3) {
+				attack3();
+			}
             break;
         case 100:
             console.log("ATTAQUE 4");
