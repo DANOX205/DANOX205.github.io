@@ -11,6 +11,16 @@ const playerState = { //Move the player
 	y: 100, // Starting Y position
 	speed: 4, // Movement speed
 };
+const J1pseudo = localStorage.getItem('pseudo_perso1');
+const labelP1 = document.getElementById("pseudoJ1");
+const J2pseudo = localStorage.getItem('pseudo_perso2');
+const labelP2 = document.getElementById('pseudoJ2');
+
+
+localStorage.removeItem('pseudo_perso1');
+localStorage.removeItem('pseudo_perso2');
+labelP1.textContent = J1pseudo;
+labelP2.textContent = J2pseudo;
 
 
 function sleep(ms) {
@@ -33,9 +43,6 @@ function attaqueP(attq){
 
 //--------------------------------------------------
 
-// Player's position
-
-
 document.addEventListener("keydown", (e) => {
   keys[e.key] = true; // Mark key as pressed
 });
@@ -43,22 +50,6 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {
   keys[e.key] = false; // Mark key as released
 });
-
-
-
-//récupération du pseudo de la page principal
-const J1pseudo = localStorage.getItem('pseudo_perso1');
-const labelP1 = document.getElementById("pseudoJ1");
-const J2pseudo = localStorage.getItem('pseudo_perso2');
-const labelP2 = document.getElementById('pseudoJ2');
-
-//libération du stockage
-localStorage.removeItem('pseudo_perso1');
-localStorage.removeItem('pseudo_perso2');
-
-//écritude du pseudo au dessus du personnage
-labelP1.textContent = J1pseudo;
-labelP2.textContent = J2pseudo;
 
 
 function updatePlayer() {
