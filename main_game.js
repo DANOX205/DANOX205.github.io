@@ -34,7 +34,7 @@ function GameOver(){
 	window.location.href = 'Projet_Web.html';
 }
 
-function attaqueP(attq){
+function attaqueP(attq){ //faire une fonction pour permettre de stoper le temps pendant l'attaque du perso
 	attq.style.display = "block";
 	sleep(2000).then( () => {
 		attq.style.display = "none";
