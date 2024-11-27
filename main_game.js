@@ -36,7 +36,7 @@ function GameOver(){
 
 function attaqueP(attq){
 	attq.style.display = "block";
-	sleep(5000).then( () => {
+	sleep(2000).then( () => {
 		attq.style.display = "none";
 	});
 }
@@ -51,46 +51,59 @@ document.addEventListener("keyup", (e) => {
   keys[e.key] = false; // Mark key as released
 });
 
-
+let command = "z";
 function updatePlayer() {
-  // Move up
-  if (keys["z"]) {
-    playerState.y = Math.max(0, playerState.y - playerState.speed);
-  }
-  // Move down
-  if (keys["s"]) {
-    playerState.y = Math.min(gameWorld.offsetHeight - player.offsetHeight, playerState.y + playerState.speed);
-  }
-  // Move left
-  if (keys["q"]) {
-    playerState.x = Math.max(0, playerState.x - playerState.speed);
-  }
-  // Move right
-  if (keys["d"]) {
-    playerState.x = Math.min(gameWorld.offsetWidth - player.offsetWidth, playerState.x + playerState.speed);
-  }
+	// Move up
+	if (keys["z"]) {
+		playerState.y = Math.max(0, playerState.y - playerState.speed);
+		command = "z";
+	}
+	// Move down
+	if (keys["s"]) {
+		playerState.y = Math.min(gameWorld.offsetHeight - player.offsetHeight, playerState.y + playerState.speed);
+		command = "s"
+	}
+	// Move left
+	if (keys["q"]) {
+		playerState.x = Math.max(0, playerState.x - playerState.speed);
+		command = "q"
+	}
+	// Move right
+	if (keys["d"]) {
+		playerState.x = Math.min(gameWorld.offsetWidth - player.offsetWidth, playerState.x + playerState.speed);
+		command = "d"
+	}
 
-  // Apply new position
-  player.style.top = `${playerState.y}px`;
-  player.style.left = `${playerState.x}px`;
-  
-  //player's attack position
-  	let att_T = (playerState.y * 1) + 20;
-	let att_L = (playerState.x * 1);
+	// Apply new position
+	player.style.top = `${playerState.y}px`;
+	player.style.left = `${playerState.x}px`;
+	
+  	//player's attack position
+	let att_T = 0;
+	let att_L = 0;
+	if (command === "z") {
+		att_T = (playerState.y * 1) - 20;
+		att_L = (playerState.x * 1);
+	} else if (command === "q") {
+		att_T = (playerState.y * 1);
+		att_L = (playerState.x * 1) - 20;
+	} else if (command === "s") {
+		att_T = (playerState.y * 1) + 20;
+		att_L = (playerState.x * 1);
+	} else if (command === "d") {
+		att_T = (playerState.y * 1);
+		att_L = (playerState.x * 1) + 20;
+	}
 	attq_p.style.top = `${att_T}px`;
 	attq_p.style.left = `${att_L}px`;
 
 	console.log(attq_p.style.top);
 	console.log(attq_p.style.left);
 
-  //player's attack
-  if (keys["e"]) {
-	attaqueP(attq_p);
-  }
-  /*
-  labelP.style.top = `${playerState.y}px`;
-  labelP.style.left = `${playerState.x}px`;
-  */
+	//player's attack
+	if (keys["e"]) {
+		attaqueP(attq_p);
+	}
 }
 
 function gameLoop() {
