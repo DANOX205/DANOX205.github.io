@@ -5,11 +5,17 @@ const gameWorld = document.querySelector("#gameWorld");
 const gameBox= document.querySelector(".game_box");
 const Clock = document.querySelector("#clock");
 const attq_p = document.querySelector("#att_player");
+const keys = {}; // Keys being pressed
+const playerState = { //Move the player
+	x: 260, // Starting X position
+	y: 100, // Starting Y position
+	speed: 4, // Movement speed
+};
+
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
 
 //fonction de fin de jeux, sauvegarde du temps et retour à la page principal
 function GameOver(){
@@ -17,7 +23,6 @@ function GameOver(){
 	//retour à la page de départ
 	window.location.href = 'Projet_Web.html';
 }
-
 
 function attaqueP(attq){
 	attq.style.display = "block";
@@ -29,14 +34,7 @@ function attaqueP(attq){
 //--------------------------------------------------
 
 // Player's position
-const playerState = {
-  x: 260, // Starting X position
-  y: 100, // Starting Y position
-  speed: 4, // Movement speed
-};
 
-// Keys being pressed
-const keys = {};
 
 document.addEventListener("keydown", (e) => {
   keys[e.key] = true; // Mark key as pressed
@@ -47,8 +45,6 @@ document.addEventListener("keyup", (e) => {
 });
 
 
-//Move the player
-
 
 //récupération du pseudo de la page principal
 const J1pseudo = localStorage.getItem('pseudo_perso1');
@@ -57,8 +53,8 @@ const J2pseudo = localStorage.getItem('pseudo_perso2');
 const labelP2 = document.getElementById('pseudoJ2');
 
 //libération du stockage
-//localStorage.removeItem('pseudo_perso1');
-//localStorage.removeItem('pseudo_perso2');
+localStorage.removeItem('pseudo_perso1');
+localStorage.removeItem('pseudo_perso2');
 
 //écritude du pseudo au dessus du personnage
 labelP1.textContent = J1pseudo;
@@ -108,7 +104,6 @@ gameLoop();
 
 //end game
 document.addEventListener ("keypress", (event) => {
-	console.log(event);
 	let command = event.code;
 	if (command === 'Space'){
 		alert("Game Over");
