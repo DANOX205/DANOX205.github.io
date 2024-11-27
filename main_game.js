@@ -36,7 +36,7 @@ function GameOver(){
 
 function attaqueP(attq){
 	attq.style.display = "block";
-	sleep(2000).then( () => {
+	sleep(5000).then( () => {
 		attq.style.display = "none";
 	});
 }
@@ -73,10 +73,18 @@ function updatePlayer() {
   // Apply new position
   player.style.top = `${playerState.y}px`;
   player.style.left = `${playerState.x}px`;
+  
+  //player's attack position
+  	let att_T = (playerState.y * 1) + 5;
+	let att_L = (playerState.x * 1);
+	attq_p.style.top = `${att_T}px`;
+	attq_p.style.left = `${att_L}px`;
+
+	console.log(attq_p.style.top);
+	console.log(attq_p.style.left);
+
   //player's attack
   if (keys["e"]) {
-	attq_p.style.top = player.style.top;
-	attq_p.style.top = player.style.left;
 	attaqueP(attq_p);
   }
   /*
