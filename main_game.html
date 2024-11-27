@@ -7,7 +7,7 @@
 
     <title>Game</title>
   </head>
-  <body onkeypress="Player(event)">
+  <body>
 	
 	<div class="game_box">
 		<!-- Gestion de l'horloge -->
@@ -30,9 +30,10 @@
 	    <!-- Gestion du Monde et du Joueur -->
 	    <div id="boss" style="grid-column: 18; grid-row: 11"> </div>
 	    <div id="gameWorld" style="grid-column: 5; grid-row: 17">
-			<div id="att_player" style="grid-column: 2; grid-row: 1; display: none;"></div>
-			<label id="pseudo" for="player" style="grid-column: 1; grid-row: 1;"></label>
-			<div id="player" style="grid-column: 1; grid-row: 1"></div>
+			<div id="att_player" style="grid-area: 1 / 1; display: none;"></div>
+			<div id="player" style="grid-area: 1 / 1;">
+				<label id="pseudo" for="player" style="grid-area: 1 / 1;" alt=""></label>
+			</div>
 	    </div>
 	</div>
   </body>
