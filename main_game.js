@@ -51,10 +51,18 @@ document.addEventListener("keyup", (e) => {
 
 
 //récupération du pseudo de la page principal
-const Jpseudo = localStorage.getItem('pseudo_perso');
-const labelP = document.getElementById("pseudoJ1");
-//localStorage.removeItem('pseudo_perso'); //libération du stockage
-labelP.textContent = Jpseudo; //écritude du pseudo au dessus du personnage
+const J1pseudo = localStorage.getItem('pseudo_perso1');
+const labelP1 = document.getElementById("pseudoJ1");
+const J2pseudo = localStorage.getItem('pseudo_perso2');
+const labelP2 = document.getElementById('pseudoJ2');
+
+//libération du stockage
+//localStorage.removeItem('pseudo_perso1');
+//localStorage.removeItem('pseudo_perso2');
+
+//écritude du pseudo au dessus du personnage
+labelP1.textContent = J1pseudo;
+labelP2.textContent = J2pseudo;
 
 
 function updatePlayer() {
@@ -73,11 +81,6 @@ function updatePlayer() {
   // Move right
   if (keys["d"]) {
     playerState.x = Math.min(gameWorld.offsetWidth - player.offsetWidth, playerState.x + playerState.speed);
-  }
-  //Game over
-  if (keys["space"]) {
-	alert("game over");
-	GameOver();
   }
 
   // Apply new position
@@ -101,6 +104,17 @@ function gameLoop() {
 }
 
 gameLoop();
+
+
+//end game
+document.addEventListener ("keypress", (event) => {
+	console.log(event);
+	let command = event.code;
+	if (command === 'Space'){
+		alert("Game Over");
+		GameOver();
+	}
+});
 //--------------------------------------------------
 
 
