@@ -75,7 +75,7 @@ function updatePlayer() {
   player.style.left = `${playerState.x}px`;
   
   //player's attack position
-  	let att_T = (playerState.y * 1) + 5;
+  	let att_T = (playerState.y * 1) + 20;
 	let att_L = (playerState.x * 1);
 	attq_p.style.top = `${att_T}px`;
 	attq_p.style.left = `${att_L}px`;
