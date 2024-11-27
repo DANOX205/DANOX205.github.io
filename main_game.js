@@ -269,6 +269,7 @@ function spawn_box3(){
 
 function attack3(){
 	let attack3_loading = document.getElementById("AL3");
+	console.log("oui je marche");
 	attack3_loading.className = "attack_loading";
 	can_attack3 = false;
 	for (i=0;i<5; i++){
