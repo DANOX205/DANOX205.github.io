@@ -52,7 +52,7 @@ document.addEventListener("keyup", (e) => {
 
 //récupération du pseudo de la page principal
 const Jpseudo = localStorage.getItem('pseudo_perso');
-const labelP = document.getElementById("pseudo");
+const labelP = document.getElementById("pseudoJ1");
 //localStorage.removeItem('pseudo_perso'); //libération du stockage
 labelP.textContent = Jpseudo; //écritude du pseudo au dessus du personnage
 
@@ -89,10 +89,10 @@ function updatePlayer() {
 	attq_p.style.top = player.style.left;
 	attaqueP(attq_p);
   }
-
-  //new position for the label
+  /*
   labelP.style.top = `${playerState.y}px`;
   labelP.style.left = `${playerState.x}px`;
+  */
 }
 
 function gameLoop() {

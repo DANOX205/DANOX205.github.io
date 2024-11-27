@@ -60,7 +60,7 @@ body {
 	gap: 10px;
 }
 
-.game_box, #gameWorld{
+.game_box, #gameWorld, .players{
 	display: grid;
 	grid-template-columns: repeat(100, 10px);
 	grid-template-rows: repeat(100, 10px);
@@ -81,6 +81,10 @@ body {
 	width: 20px;
 	height: 20px;
 	background-color: blue;
+}
+
+#pseudo {
+	align-items: center;
 }
 
 #att_player{
