@@ -148,6 +148,9 @@ let can_attack2 = false;
 let can_attack3 = false;
 let can_attack4 = false;
 reload1();
+reload2();
+reload3();
+reload4();
 
 document.addEventListener("keydown", (event) => {
     switch (event.keyCode) {
@@ -162,6 +165,9 @@ document.addEventListener("keydown", (event) => {
             break;
         case 99:
             console.log("ATTAQUE 3");
+		    if (can_attack3) {
+				attack3();
+			}
             break;
         case 100:
             console.log("ATTAQUE 4");
@@ -218,4 +224,79 @@ function attack1(){
 		spawn_box();
 	}
 	reload1();
+}
+
+/* Deuxième Attaque */ 
+function reload2(){
+	let filler2 = document.getElementById('fillerBar2');
+	let attack2_loading = document.getElementById("AL2");
+	filler2.style.transition = "width 5s ease-in-out";
+	filler2.style.width = '100%';
+	setTimeout(() => {
+		attack2_loading.className = "attack_loaded";
+		filler2.style.transition = "none";
+		filler2.style.width = "0";
+		can_attack2 = true;
+	}, 5000);
+}
+
+
+/* Troisième Attaque */ 
+
+function reload3(){
+	let filler3 = document.getElementById('fillerBar3');
+	let attack3_loading = document.getElementById("AL3");
+	filler3.style.transition = "width 8s ease-in-out";
+	filler3.style.width = '100%';
+	setTimeout(() => {
+		attack3_loading.className = "attack_loaded";
+		filler3.style.transition = "none";
+		filler3.style.width = "0";
+		can_attack3 = true;
+	}, 8000);
+}
+
+function spawn_box3(){
+	console.log("spawn a box 3");
+	const c= RandomNumber(5,34);
+	const r= RandomNumber(17,28);
+	const slowhitbox = document.createElement('div'); // On crée l'élément div slowhitbox
+	slowhitbox.classList.add("warningslowhitbox");
+	slowhitbox.style.gridRow = `${r}`;
+    slowhitbox.style.gridColumn = `${c}`;
+	console.log(r);
+	console.log(c);
+	gameBox.appendChild(slowhitbox); // On ajoute l'élément sur la boîte de jeu
+	setTimeout(() => {
+		slowhitbox.className = "slowhitbox";
+	}, 1200);
+	setTimeout(() => {
+		slowhitbox.remove();
+	}, 1500);
+}
+
+function attack3(){
+	let attack3_loading = document.getElementById("AL3");
+	console.log("oui je marche");
+	attack3_loading.className = "attack_loading";
+	can_attack3 = false;
+	for (i=0;i<5; i++){
+		spawn_box3();
+	}
+	reload3();
+}
+
+/* Quatrième Attaque */ 
+
+function reload4(){
+	let filler4 = document.getElementById('fillerBar4');
+	let attack4_loading = document.getElementById("AL4");
+	filler4.style.transition = "width 10s ease-in-out";
+	filler4.style.width = '100%';
+	setTimeout(() => {
+		attack4_loading.className = "attack_loaded";
+		filler4.style.transition = "none";
+		filler4.style.width = "0";
+		can_attack4 = true;
+	}, 10000);
 }
