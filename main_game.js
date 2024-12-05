@@ -105,8 +105,8 @@ function updatePlayer() {
 	attq_p.style.top = `${att_T}px`;
 	attq_p.style.left = `${att_L}px`;
 
-	console.log(attq_p.style.top);
-	console.log(attq_p.style.left);
+	//console.log(attq_p.style.top);
+	//console.log(attq_p.style.left);
 
 	//player's attack
 	if (keys["e"]) {
