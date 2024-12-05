@@ -16,6 +16,14 @@ const labelP1 = document.getElementById("pseudoJ1");
 const J2pseudo = localStorage.getItem('pseudo_perso2');
 const labelP2 = document.getElementById('pseudoJ2');
 
+// Pour l'attaque 2
+const moving_cloud = document.getElementById('hidden_cloud');
+const moving_cloudState = {
+	x: 260, // Starting X position
+	y: 100, // Starting Y position
+	speed: 3, // Movement speed
+  };
+let CanCloud_move = false;
 
 localStorage.removeItem('pseudo_perso1');
 localStorage.removeItem('pseudo_perso2');
@@ -54,22 +62,22 @@ document.addEventListener("keyup", (e) => {
 let command = "z";
 function updatePlayer() {
 	// Move up
-	if (keys["z"]) {
+	if (keys["z"] || keys["Z"]) {
 		playerState.y = Math.max(0, playerState.y - playerState.speed);
 		command = "z";
 	}
 	// Move down
-	if (keys["s"]) {
+	if (keys["s"] || keys["S"]) {
 		playerState.y = Math.min(gameWorld.offsetHeight - player.offsetHeight, playerState.y + playerState.speed);
 		command = "s"
 	}
 	// Move left
-	if (keys["q"]) {
+	if (keys["q"] || keys["Q"]) {
 		playerState.x = Math.max(0, playerState.x - playerState.speed);
 		command = "q"
 	}
 	// Move right
-	if (keys["d"]) {
+	if (keys["d"] || keys["D"]) {
 		playerState.x = Math.min(gameWorld.offsetWidth - player.offsetWidth, playerState.x + playerState.speed);
 		command = "d"
 	}
@@ -103,6 +111,29 @@ function updatePlayer() {
 	//player's attack
 	if (keys["e"]) {
 		attaqueP(attq_p);
+	}
+
+	// Pour le second joueur et la seconde attaque
+	if (CanCloud_move){
+		// Move up
+		if (keys["ArrowUp"]) {
+			moving_cloudState.y = Math.max(0, moving_cloudState.y - moving_cloudState.speed);
+		}
+		// Move down
+		if (keys["ArrowDown"]) {
+			moving_cloudState.y = Math.min(gameWorld.offsetHeight - moving_cloud.offsetHeight, moving_cloudState.y + moving_cloudState.speed);
+		}
+		// Move left
+		if (keys["ArrowLeft"]) {
+			moving_cloudState.x = Math.max(0, moving_cloudState.x - moving_cloudState.speed);
+		}
+		// Move right
+		if (keys["ArrowRight"]) {
+			moving_cloudState.x = Math.min(gameWorld.offsetWidth - moving_cloud.offsetWidth, moving_cloudState.x + moving_cloudState.speed);
+		}
+		// Apply new position
+		moving_cloud.style.top = `${moving_cloudState.y}px`;
+		moving_cloud.style.left = `${moving_cloudState.x}px`;
 	}
 }
 
@@ -175,6 +206,9 @@ document.addEventListener("keydown", (event) => {
             break;
         case 98:
             console.log("ATTAQUE 2");
+		    if (can_attack2) {
+				attack2();
+			}
             break;
         case 99:
             console.log("ATTAQUE 3");
@@ -184,6 +218,9 @@ document.addEventListener("keydown", (event) => {
             break;
         case 100:
             console.log("ATTAQUE 4");
+		    if (can_attack4) {
+				alert('Je rajoute la dernière attaque plus tard.');
+			}
             break;
     }
 });
@@ -211,21 +248,50 @@ function RandomNumber(min, max) {
 
 function spawn_box(){
 	console.log("spawn a box 2");
-	const c= RandomNumber(5,34);
-	const r= RandomNumber(17,28);
+	const c= RandomNumber(9,32);
+	const r= RandomNumber(19,29);
 	const hhitbox = document.createElement('div'); // On crée l'élément div hurthitbox
+	const draw_cloud = document.createElement('div'); // On dessine le sprite associé
 	hhitbox.classList.add("warninghitbox");
+	draw_cloud.classList.add("drawingCloud");
 	hhitbox.style.gridRow = `${r}`;
-    hhitbox.style.gridColumn = `${c}`;
+   	 hhitbox.style.gridColumn = `${c}`;
+	draw_cloud.style.gridRow = `${r}`;
+    	draw_cloud.style.gridColumn = `${c}`;
 	console.log(r);
 	console.log(c);
 	gameBox.appendChild(hhitbox); // On ajoute l'élément sur la boîte de jeu
+	gameBox.appendChild(draw_cloud);
+
+	// On dessine l'attaque du Nuage frame par frame (au secours!)
+	const frames = ["Sprites_assets/Boss/Cloud_Idle/1.png", "Sprites_assets/Boss/Cloud_Idle/2.png", "Sprites_assets/Boss/Cloud_Idle/3.png", "Sprites_assets/Boss/Cloud_Idle/4.png"]; 
+	const frameRate = 50; // Vitesse de l'animation ==> 50ms par frame
+	let index = 0;	
+	const Interval_first_animation = setInterval(() => {
+		index = (index + 1) % frames.length;
+		draw_cloud.style.backgroundImage = `url(${frames[index]})`;
+	}, frameRate);
+
+	//On change l'animation pour celle de l'attaque.
+	setTimeout(() => {
+		clearInterval(Interval_first_animation);
+		const frames = ["Sprites_assets/Boss/Attack/1.png", "Sprites_assets/Boss/Attack/2.png", "Sprites_assets/Boss/Attack/3.png", "Sprites_assets/Boss/Attack/4.png", "Sprites_assets/Boss/Attack/5.png", "Sprites_assets/Boss/Attack/6.png", "Sprites_assets/Boss/Attack/7.png", "Sprites_assets/Boss/Attack/8.png","Sprites_assets/Boss/Attack/9.png"]; 
+		const frameRate = 50; // Vitesse de l'animation ==> 50ms par frame
+		let index = 0;	
+		setInterval(() => {
+		        index = (index + 1) % frames.length;
+		        draw_cloud.style.backgroundImage = `url(${frames[index]})`;
+	    	}, frameRate);
+		// L'animation va durer 9 * framerate (dans notre cas framerate=50ms donc elle va durer 450ms et l'attaque apparaît au bout de 300ms)
+	},900);
+	
 	setTimeout(() => {
 		hhitbox.className = "hurthitbox";
 	}, 1200);
 	setTimeout(() => {
 		hhitbox.remove();
-	}, 1500);
+		draw_cloud.remove();
+	}, 1350);
 }
 
 
@@ -253,6 +319,38 @@ function reload2(){
 	}, 5000);
 }
 
+function spawn_moving_cloud(){
+	CanCloud_move = true; // Le nuage peut bouger
+    moving_cloud.style.display = 'block'; //Le nuage est visible
+    moving_cloud.classList.add('warninghitbox');
+
+    // HURTHITBOX
+    setTimeout(() => {
+		CanCloud_move = false; // Stop movement
+		moving_cloud.classList.remove('warninghitbox');
+        moving_cloud.classList.add('hurthitbox'); 
+    }, 2000);
+
+    setTimeout(() => {
+        moving_cloud.style.display = 'none'; // On cache le nuage
+		moving_cloud.classList.remove('hurthitbox');
+        // On change sa position pour qu'elle soit random
+		//const XC= RandomNumber(0,598);
+		//const YC= RandomNumber(0,235);
+        moving_cloudState.x = 260;
+        moving_cloudState.y = 100;
+        moving_cloud.style.left = `${moving_cloudState.x}px`;
+        moving_cloud.style.top = `${moving_cloudState.y}px`;
+    }, 2500);
+}
+
+function attack2(){
+	let attack2_loading = document.getElementById("AL2");
+	attack2_loading.className = "attack_loading";
+	can_attack2 = false;
+	spawn_moving_cloud();
+	reload2();
+}
 
 /* Troisième Attaque */ 
 
