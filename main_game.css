@@ -52,10 +52,12 @@ body {
 /* Gestion de la carte, du Joueur et du Boss */
 .game_box{
 	position: relative;
-    	width: 800px;
-    	height: 600px;
+    		width: 800px;
+    		height: 600px;
 	background-color: white;
 	border: 2px solid black;
+	background-image : url("Sprites_assets/Background/Official_Background.png");
+	background-size:cover;
 	margin: auto;
 	gap: 10px;
 }
@@ -68,11 +70,11 @@ body {
 
 #gameWorld {
 	position: relative;
-	width: 614px;
-	height: 251px;
+	width: 495px;
+	height: 230px;
 	border: 2px solid black;
 	margin: auto;
-	background-color: white;
+	/*background-color: white;*/
 	gap: 1px;
 }
 
@@ -96,9 +98,12 @@ body {
 
 #boss {
 	position: absolute;
-	width: 100px;
-	height: 100px;
-	background-color: red;
+	width: 200px;
+	height: 200px;
+	background-image: url("Sprites_assets/Boss/boss_animated.gif");
+	background-size:cover;
+	background-position:top;
+	/*background-color: red;*/
 }
 
 /* Gestion des hitbox(hurt et slow) */
@@ -107,6 +112,19 @@ body {
 	width: 30px;
 	height: 30px;
 	background-color: orange;
+}
+
+/* Dessine les nuages */
+.drawingCloud {
+	position: relative;
+	width: 312px;
+	height: 312px;
+	background-image: url("Sprites_assets/Boss/Attack/1.png");
+	background-size:cover;
+	background-position:top;
+	left: -144px;
+	top:-248px;
+	opacity: 0.9;
 }
 
 .hurthitbox {
@@ -129,4 +147,18 @@ body {
 	height: 50px;
 	background-color: blue;
 }
+
+#hidden_cloud{
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	display: none; /* caché */
+}
+
+.zombie {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	background-color: greenyellow;
+} /* j'implémente le zombie plus tard */
 
