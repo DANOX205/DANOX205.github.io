@@ -369,8 +369,8 @@ function reload3(){
 
 function spawn_box3(){
 	console.log("spawn a box 3");
-	const c= RandomNumber(5,34);
-	const r= RandomNumber(17,28);
+	const c= RandomNumber(9,31);
+	const r= RandomNumber(19,28);
 	const slowhitbox = document.createElement('div'); // On crée l'élément div slowhitbox
 	slowhitbox.classList.add("warningslowhitbox");
 	slowhitbox.style.gridRow = `${r}`;
