@@ -18,6 +18,10 @@ const labelP2 = document.getElementById('pseudoJ2');
 
 let PV = 3;
 const labelPV = document.getElementById('LifeJ1');
+let degat = 'False';
+let coord = [];
+let collision = [];
+collision.length = 0;
 
 // Pour l'attaque 2
 const moving_cloud = document.getElementById('hidden_cloud');
@@ -159,6 +163,19 @@ function updatePlayer() {
 		moving_cloud.style.top = `${moving_cloudState.y}px`;
 		moving_cloud.style.left = `${moving_cloudState.x}px`;
 	}
+	if (collision.length != 0){
+		for (i=0; i<collision.length; i++){
+			if (((playerState.x >= collision[i][0] - 20 && playerState.x <= collision[i][0] + 30) && (playerState.y >= collision[i][1] - 20 && playerState.y <= collision[i][1] + 30)) && degat === 'True'){
+				PV = PV - 1;
+				degat = 'False';
+				labelPV.textContent = PV;
+				console.log(PV);
+			}
+			setTimeout(() => {
+				degat = 'True';
+			}, 10000);
+		}
+	}
 }
 
 function gameLoop() {
@@ -272,12 +289,15 @@ function RandomNumber(min, max) {
 
 function spawn_box(){
 	console.log("spawn a box 2");
-	let c= RandomNumber(0,213); //top
-	let r= RandomNumber(0,478); //left
+	let c= RandomNumber(0,213); //top (y)
+	let r= RandomNumber(0,478); //left (x)
 	const hhitbox = document.createElement('div'); // On crée l'élément div hurthitbox
 	const draw_cloud = document.createElement('div'); // On dessine le sprite associé
 	hhitbox.classList.add("warninghitbox");
 	draw_cloud.classList.add("drawingCloud");
+	coord = [r, c];
+	console.log(coord);
+	collision.push(coord);
 	hhitbox.style.left = `${r}px`;
    	hhitbox.style.top = `${c}px`;
 	draw_cloud.style.left = `${r-144}px`;
@@ -311,8 +331,12 @@ function spawn_box(){
 	
 	setTimeout(() => {
 		hhitbox.className = "hurthitbox";
+		degat = 'True';
 	}, 1200);
 	setTimeout(() => {
+		collision = [];
+		collision.length = 0;
+		degat = 'False';
 		hhitbox.remove();
 		draw_cloud.remove();
 	}, 1350);
