@@ -16,6 +16,9 @@ const labelP1 = document.getElementById("pseudoJ1");
 const J2pseudo = localStorage.getItem('pseudo_perso2');
 const labelP2 = document.getElementById('pseudoJ2');
 
+let PV = 3;
+const labelPV = document.getElementById('LifeJ1');
+
 // Pour l'attaque 2
 const moving_cloud = document.getElementById('hidden_cloud');
 const moving_cloudState = {
@@ -25,10 +28,11 @@ const moving_cloudState = {
   };
 let CanCloud_move = false;
 
-localStorage.removeItem('pseudo_perso1');
-localStorage.removeItem('pseudo_perso2');
+//localStorage.removeItem('pseudo_perso1');
+//localStorage.removeItem('pseudo_perso2');
 labelP1.textContent = J1pseudo;
 labelP2.textContent = J2pseudo;
+labelPV.textContent = PV;
 
 
 function sleep(ms) {
@@ -248,20 +252,20 @@ function RandomNumber(min, max) {
 
 function spawn_box(){
 	console.log("spawn a box 2");
-	const c= RandomNumber(9,32);
-	const r= RandomNumber(19,29);
+	let c= RandomNumber(0,213); //top
+	let r= RandomNumber(0,478); //left
 	const hhitbox = document.createElement('div'); // On crée l'élément div hurthitbox
 	const draw_cloud = document.createElement('div'); // On dessine le sprite associé
 	hhitbox.classList.add("warninghitbox");
 	draw_cloud.classList.add("drawingCloud");
-	hhitbox.style.gridRow = `${r}`;
-   	 hhitbox.style.gridColumn = `${c}`;
-	draw_cloud.style.gridRow = `${r}`;
-    	draw_cloud.style.gridColumn = `${c}`;
+	hhitbox.style.left = `${r}px`;
+   	hhitbox.style.top = `${c}px`;
+	draw_cloud.style.left = `${r-144}px`;
+    draw_cloud.style.top = `${c-248}px`;
 	console.log(r);
 	console.log(c);
-	gameBox.appendChild(hhitbox); // On ajoute l'élément sur la boîte de jeu
-	gameBox.appendChild(draw_cloud);
+	gameWorld.appendChild(hhitbox); // On ajoute l'élément sur la boîte de jeu
+	gameWorld.appendChild(draw_cloud);
 
 	// On dessine l'attaque du Nuage frame par frame (au secours!)
 	const frames = ["Sprites_assets/Boss/Cloud_Idle/1.png", "Sprites_assets/Boss/Cloud_Idle/2.png", "Sprites_assets/Boss/Cloud_Idle/3.png", "Sprites_assets/Boss/Cloud_Idle/4.png"]; 

@@ -116,14 +116,14 @@ body {
 
 /* Dessine les nuages */
 .drawingCloud {
-	position: relative;
+	position: absolute;
 	width: 312px;
 	height: 312px;
 	background-image: url("Sprites_assets/Boss/Attack/1.png");
 	background-size:cover;
 	background-position:top;
-	left: -144px;
-	top:-248px;
+	/*left: -144px;
+	top:-248px;*/
 	opacity: 0.9;
 }
 
