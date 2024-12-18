@@ -1,5 +1,22 @@
-//page javascript pour la page principal
-console.log('start main');
+window.onload = function() {
+
+	const scores = JSON.parse(localStorage.getItem('scores')) || [];
+    const tbody = document.getElementById('scoreTableBody');
+	tbody.innerHTML = '';
+
+	scores.forEach((score, index) => {
+		const row = `
+		  <tr>
+			<th scope="row">${index + 1}</th>
+			<td>${score.pseudoj1}</td>
+			<td>${score.pseudoj2}</td>
+			<td>${score.time}</td>
+		  </tr>
+		`;
+		tbody.innerHTML += row;
+	});
+
+};
 
 function Pseudo_ok(pseudo){
 	if (pseudo){
