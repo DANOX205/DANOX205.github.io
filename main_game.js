@@ -37,9 +37,29 @@ function sleep(ms) {
 
 //fonction de fin de jeux, sauvegarde du temps et retour à la page principal
 function GameOver(){
-	//sauvegarde du temps pour le mettre dans le tableau (à codé)
-	//retour à la page de départ
+	const formattedTime = formatTime(heures, minutes, secondes);
+	let scores = JSON.parse(localStorage.getItem('scores')) || [];
+	const newScore = { pseudoj1: J1pseudo, pseudoj2: J2pseudo, time: formattedTime };
+    scores.push(newScore);
+
+	scores.sort((a, b) => {
+        const aSeconds = timeToSeconds(a.time);
+        const bSeconds = timeToSeconds(b.time);
+        return bSeconds - aSeconds;
+    });
+
+	localStorage.setItem('scores', JSON.stringify(scores));
+
 	window.location.href = 'Projet_Web.html';
+}
+
+function timeToSeconds(time) {
+    const [h, m, s] = time.split(':').map(Number);
+    return h * 3600 + m * 60 + s;
+}
+
+function formatTime(h, m, s) {
+    return (h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
 }
 
 function attaqueP(attq){ //faire une fonction pour permettre de stoper le temps pendant l'attaque du perso
@@ -183,7 +203,7 @@ function Timer(){
 			alert("TRICHEUR ! C'est impossible.")
 			//retourner dans la page de base.
 		}
-		Clock.innerHTML= heures + " : " + minutes + " : " + secondes; 
+		Clock.innerHTML= heures + " : " + minutes + " : " + secondes;
 	}
 
 /* Gestion des attaques du BOSS */
