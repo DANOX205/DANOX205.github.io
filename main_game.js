@@ -15,6 +15,7 @@ const J1pseudo = localStorage.getItem('pseudo_perso1');
 const labelP1 = document.getElementById("pseudoJ1");
 const J2pseudo = localStorage.getItem('pseudo_perso2');
 const labelP2 = document.getElementById('pseudoJ2');
+const labelD = document.getElementById("degat");
 
 let PV = 3;
 const labelPV = document.getElementById('LifeJ1');
@@ -28,7 +29,7 @@ const moving_cloud = document.getElementById('hidden_cloud');
 const moving_cloudState = {
 	x: 260, // Starting X position
 	y: 100, // Starting Y position
-	speed: 3, // Movement speed
+	speed: 5, // Movement speed
   };
 let CanCloud_move = false;
 
@@ -45,6 +46,7 @@ function sleep(ms) {
 
 //fonction de fin de jeux, sauvegarde du temps et retour à la page principal
 function GameOver(){
+	alert("Game Over");
 	const formattedTime = formatTime(heures, minutes, secondes);
 	let scores = JSON.parse(localStorage.getItem('scores')) || [];
 	const newScore = { pseudoj1: J1pseudo, pseudoj2: J2pseudo, time: formattedTime };
@@ -133,9 +135,6 @@ function updatePlayer() {
 	attq_p.style.top = `${att_T}px`;
 	attq_p.style.left = `${att_L}px`;
 
-	//console.log(attq_p.style.top);
-	//console.log(attq_p.style.left);
-
 	//player's attack
 	if (keys["e"]) {
 		attaqueP(attq_p);
@@ -162,20 +161,29 @@ function updatePlayer() {
 		// Apply new position
 		moving_cloud.style.top = `${moving_cloudState.y}px`;
 		moving_cloud.style.left = `${moving_cloudState.x}px`;
+		coord = [moving_cloudState.x, moving_cloudState.y];
+		collision.push(coord);
 	}
+	labelD.textContent = degat;
 	if (collision.length != 0){
 		for (i=0; i<collision.length; i++){
 			if (((playerState.x >= collision[i][0] - 20 && playerState.x <= collision[i][0] + 30) && (playerState.y >= collision[i][1] - 20 && playerState.y <= collision[i][1] + 30)) && degat === 'True'){
 				PV = PV - 1;
 				degat = 'False';
 				labelPV.textContent = PV;
-				console.log(PV);
+				invincibleFrame(degat)
+				if (PV === 0) {
+					GameOver();
+				}
 			}
-			setTimeout(() => {
-				degat = 'True';
-			}, 10000);
 		}
 	}
+}
+
+function invincibleFrame(degat){
+	setTimeout(() => {
+		degat = 'True';
+	}, 1200);
 }
 
 function gameLoop() {
@@ -190,8 +198,8 @@ gameLoop();
 document.addEventListener ("keypress", (event) => {
 	let command = event.code;
 	if (command === 'Space'){
-		alert("Game Over");
-		GameOver();
+		//GameOver();
+		alert("Machin !!!")
 	}
 });
 //--------------------------------------------------
@@ -296,7 +304,6 @@ function spawn_box(){
 	hhitbox.classList.add("warninghitbox");
 	draw_cloud.classList.add("drawingCloud");
 	coord = [r, c];
-	console.log(coord);
 	collision.push(coord);
 	hhitbox.style.left = `${r}px`;
    	hhitbox.style.top = `${c}px`;
@@ -376,7 +383,8 @@ function spawn_moving_cloud(){
     setTimeout(() => {
 		CanCloud_move = false; // Stop movement
 		moving_cloud.classList.remove('warninghitbox');
-        moving_cloud.classList.add('hurthitbox'); 
+        moving_cloud.classList.add('hurthitbox');
+		degat = 'True'
     }, 2000);
 
     setTimeout(() => {
@@ -389,6 +397,9 @@ function spawn_moving_cloud(){
         moving_cloudState.y = 100;
         moving_cloud.style.left = `${moving_cloudState.x}px`;
         moving_cloud.style.top = `${moving_cloudState.y}px`;
+		collision = [];
+		collision.length = 0;
+		degat = 'False';
     }, 2500);
 }
 

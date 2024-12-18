@@ -17,6 +17,9 @@ window.onload = function() {
 	});
 
 };
+//faire en sorte qu'à partir d'un certain nombre d'élément stocker, que cela se reset
+//localStorage.removeItem('scores');
+//localStorage.removeItem('scoreTableBody');
 
 function Pseudo_ok(pseudo){
 	if (pseudo){
