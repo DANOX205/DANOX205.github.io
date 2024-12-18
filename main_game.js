@@ -33,8 +33,8 @@ const moving_cloudState = {
   };
 let CanCloud_move = false;
 
-//localStorage.removeItem('pseudo_perso1');
-//localStorage.removeItem('pseudo_perso2');
+localStorage.removeItem('pseudo_perso1');
+localStorage.removeItem('pseudo_perso2');
 labelP1.textContent = J1pseudo;
 labelP2.textContent = J2pseudo;
 labelPV.textContent = PV;
@@ -161,8 +161,6 @@ function updatePlayer() {
 		// Apply new position
 		moving_cloud.style.top = `${moving_cloudState.y}px`;
 		moving_cloud.style.left = `${moving_cloudState.x}px`;
-		coord = [moving_cloudState.x, moving_cloudState.y];
-		collision.push(coord);
 	}
 	labelD.textContent = degat;
 	if (collision.length != 0){
@@ -183,7 +181,7 @@ function updatePlayer() {
 function invincibleFrame(degat){
 	setTimeout(() => {
 		degat = 'True';
-	}, 1200);
+	}, 1300);
 }
 
 function gameLoop() {
@@ -198,8 +196,8 @@ gameLoop();
 document.addEventListener ("keypress", (event) => {
 	let command = event.code;
 	if (command === 'Space'){
-		//GameOver();
-		alert("Machin !!!")
+		alert("GameOver !")
+		GameOver();
 	}
 });
 //--------------------------------------------------
@@ -303,8 +301,6 @@ function spawn_box(){
 	const draw_cloud = document.createElement('div'); // On dessine le sprite associé
 	hhitbox.classList.add("warninghitbox");
 	draw_cloud.classList.add("drawingCloud");
-	coord = [r, c];
-	collision.push(coord);
 	hhitbox.style.left = `${r}px`;
    	hhitbox.style.top = `${c}px`;
 	draw_cloud.style.left = `${r-144}px`;
@@ -339,6 +335,8 @@ function spawn_box(){
 	setTimeout(() => {
 		hhitbox.className = "hurthitbox";
 		degat = 'True';
+		coord = [r, c];
+		collision.push(coord);
 	}, 1200);
 	setTimeout(() => {
 		collision = [];
@@ -385,6 +383,8 @@ function spawn_moving_cloud(){
 		moving_cloud.classList.remove('warninghitbox');
         moving_cloud.classList.add('hurthitbox');
 		degat = 'True'
+		coord = [moving_cloudState.x, moving_cloudState.y];
+		collision.push(coord);
     }, 2000);
 
     setTimeout(() => {
