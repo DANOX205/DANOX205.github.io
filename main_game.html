@@ -11,6 +11,18 @@
 	<div class="game_box">
 		<!-- Gestion de l'horloge -->
 	    <div id="clock" style="grid-column: 30; grid-row: 2;"></div> <!-- grid-column et grid-row : permet de changer l'emplacement du timer. -->
+
+	<!-- GESTION DE CERTAINS SPRITES ET CHARGEMENT D'IMAGES-->
+	<!-- Gestion des nuages en foreground (Juste pour le style)-->
+		<div id="foreground_buisson" > </div>
+
+		<!-- Chargement des Sprites -->
+		<div id = "LoadingCloud"> </div>
+		<div id = "LoadingAttackCloud"> </div>
+		<div id = "LoadingIdlePlayer"> </div>
+		<div id = "LoadingWalkingPlayer"> </div>
+		<div id = "LoadingZombie"> </div>
+		<div id = "LoadingSlowCloud"> </div>
 		
 		
 	    <!-- Chargement de l'attaque. -->
@@ -46,10 +58,12 @@
 	    <div id="gameWorld" style="grid-column: 9; grid-row: 19">
 		    	<!-- Pour la deuxième attaque -->
 			<div id="hidden_cloud" style="top: 100px; left: 200px;"></div>
+		    <div id="drawingMovingCloud" style="grid-area: 1 / 1;z-index: 1"></div>
 			<div id="att_player" style="grid-area: 1 / 1; display: none;"></div>
 			<div id="player" style="grid-area: 1 / 1;z-index: 2">
 				<img src="" alt="player" /> 
 			</div>
+		    <div id="drawingPlayer" style="grid-area: 1 / 1;z-index: 2"></div>
 	    </div>
 	</div>
   </body>
