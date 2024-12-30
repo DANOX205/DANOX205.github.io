@@ -62,6 +62,19 @@ body {
 	gap: 10px;
 }
 
+/* On ajoute un buisson en premier plan, (juste pour le style)*/
+#foreground_buisson{
+	position: relative;
+    		width: 800px;
+    		height: 600px;
+	background-image : url("Sprites_assets/Background/buissons_foreground.png");
+	background-size:cover;
+	margin: auto;
+	gap: 10px;
+	z-index: 5;
+	opacity:0.9;
+}
+
 .game_box, #gameWorld, .players{
 	display: grid;
 	grid-template-columns: repeat(100, 10px);
@@ -83,6 +96,18 @@ body {
 	width: 20px;
 	height: 20px;
 	background-color: blue;
+}
+
+/* Dessine le Joueur */
+#drawingPlayer {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	background-image: url("Sprites_assets/Player/Idle/1.png");
+	background-size:cover;
+	background-position:top;
+	opacity: 1;
+	transform: scale(-1,1);
 }
 
 #pseudo {
@@ -134,6 +159,28 @@ body {
 	background-color: red;
 }
 
+.drawingSlowCloud {
+	position: absolute;
+	width: 312px;
+	height: 312px;
+	background-image: url("Sprites_assets/Boss/Cloud_Idle_Rain/1.png");
+	background-size:cover;
+	background-position:top;
+	opacity: 0.9;
+	z-index: 1;
+}
+
+.Rain {
+	position: absolute;
+	width: 312px;
+	height: 312px;
+	background-image: url("Sprites_assets/Boss/Rain_Drop_Animation/1.png");
+	background-size:cover;
+	background-position:top;
+	opacity: 0.8;
+	z-index: 0;
+}
+
 .warningslowhitbox {
 	position: absolute;
 	width: 50px;
@@ -155,10 +202,109 @@ body {
 	display: none; /* caché */
 }
 
+/* Dessine les nuages */
+#drawingMovingCloud {
+	position: absolute;
+	width: 312px;
+	height: 312px;
+	background-image: url("Sprites_assets/Boss/Attack/1.png");
+	background-size:cover;
+	background-position:top;
+	opacity: 0.9;
+	display: none; /* caché */
+}
+
 .zombie {
 	position: absolute;
 	width: 20px;
 	height: 20px;
 	background-color: greenyellow;
-} /* j'implémente le zombie plus tard */
+	opacity: 0.1;
+} 
+
+.drawingZombie {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	background-image: url("Sprites_assets/Boss/Zombie/1.png");
+	background-size:cover;
+	background-position:top;
+	opacity: 1;
+	transform: scale(-1,1);
+}
+
+/* On Charge les Sprites avant le début de la partie*/
+
+#LoadingCloud {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	background-color: blue;
+	background-image: url("Sprites_assets/Boss/Cloud_Idle/1.png");
+	background-size:cover;
+	background-position:top;
+	z-index: 5;
+	opacity:0;
+}
+
+#LoadingAttackCloud {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	background-color: blue;
+	background-image: url("Sprites_assets/Boss/Attack/1.png");
+	background-size:cover;
+	background-position:top;
+	z-index: 5;
+	opacity:0;
+}
+
+#LoadingIdlePlayer {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	background-color: blue;
+	background-image: url("Sprites_assets/Player/Idle/1.png");
+	background-size:cover;
+	background-position:top;
+	z-index: 5;
+	opacity:0;
+}
+
+#LoadingWalkingPlayer {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	background-color: blue;
+	background-image: url("Sprites_assets/Player/Walking/1.png");
+	background-size:cover;
+	background-position:top;
+	z-index: 5;
+	opacity:0;
+}
+
+#LoadingZombie {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	background-image: url("Sprites_assets/Boss/Zombie/1.png");
+	background-size:cover;
+	background-position:top;
+	transform: scale(-1,1);
+	z-index: 5;
+	opacity:0;
+}
+
+#LoadingSlowCloud {
+	position: absolute;
+	width: 312px;
+	height: 312px;
+	background-image: url("Sprites_assets/Boss/Cloud_Idle_Rain/1.png");
+	background-size:cover;
+	background-position:top;
+	/*left: -144px;
+	top:-248px;*/
+	opacity: 0;
+	z-index: 5;
+}
 
