@@ -57,17 +57,29 @@ function sleep(ms) {
 
 //fonction de fin de jeux, sauvegarde du temps et retour à la page principal
 function GameOver(){
-	alert("Game Over");
+	//alert("Game Over");
 	const formattedTime = formatTime(heures, minutes, secondes);
 	let scores = JSON.parse(localStorage.getItem('scores')) || [];
 	const newScore = { pseudoj1: playerState.Pseudo, pseudoj2: J2pseudo, time: formattedTime };
-    scores.push(newScore);
-
+	if (scores.length < 10){
+		scores.push(newScore);
+	}
 	scores.sort((a, b) => {
         const aSeconds = timeToSeconds(a.time);
         const bSeconds = timeToSeconds(b.time);
         return bSeconds - aSeconds;
     });
+	if (scores.length === 10){
+		if ((timeToSeconds(newScore.time) - timeToSeconds(scores[9].time)) >=0){
+			scores[9] = newScore;
+			scores.sort((a, b) => {
+				const aSeconds = timeToSeconds(a.time);
+				const bSeconds = timeToSeconds(b.time);
+				return bSeconds - aSeconds;
+			});
+		}
+	}
+	alert("Game Over");
 
 	localStorage.setItem('scores', JSON.stringify(scores));
 
@@ -204,11 +216,11 @@ function updatePlayer() {
 			}
 
 			if (((playerState.x >= collision[i][0] - 20 && playerState.x <= collision[i][0] + 80) && (playerState.y >= collision[i][1] - 20 && playerState.y <= collision[i][1] + 34)) && degat === 'atk3'){
-				playerState.speed = 2;
+				playerState.speed = 1;
 				degat = 'False';
 				setTimeout(() =>{
 					playerState.speed = 4;
-				}, 4000);
+				}, 3500);
 			}
 		}
 	}
@@ -222,8 +234,7 @@ function updatePlayer() {
 				labelPV.textContent = playerState.PV;
 				invincibleFrameZ();
 				if (playerState.PV === 0) {
-					//GameOver();
-					console.log("perdu");
+					GameOver();
 				}
 			}
 
@@ -376,16 +387,6 @@ setInterval(() => {
 	SlowCloud_index = (SlowCloud_index + 1) % SlowCloud_frames.length;
 	LoadingSlowCloud.style.backgroundImage = `url(${SlowCloud_frames[SlowCloud_index]})`;
 }, SlowCloud_frameRate);
-
-
-//end game
-document.addEventListener ("keypress", (event) => {
-	let command = event.code;
-	if (command === 'Space'){
-		alert("GameOver !")
-		GameOver();
-	}
-});
 //--------------------------------------------------
 
 
@@ -717,7 +718,7 @@ function reload4(){
 		filler4.style.transition = "none";
 		filler4.style.width = "0";
 		can_attack4 = true;
-	}, 1);//10000);
+	}, 10000);
 }
 
 function attack4(){

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
     <link type="text/css" rel="stylesheet" href="main_page.css" />
@@ -21,11 +21,12 @@
 			</div>
 	
 			<div class="username-input">
-				<input type="text" id="idpseudo1" class="form-control" placeholder="Entrez le pseudo du joueur 1"><br>
-				<input type="text" id="idpseudo2" class="form-control" placeholder="Entrez le pseudo du joueur 2">
+				<input type="text" id="idpseudo1" maxlength="10" class="form-control" placeholder="Entrez le pseudo du joueur 1"><br>
+				<input type="text" id="idpseudo2" maxlength="10" class="form-control" placeholder="Entrez le pseudo du joueur 2">
 			</div>
 	
 			<button id="startGame" class="btn btn-primary btn-start" onClick="StartGame()">Jouer</button>
+			<button id="reset_table" class="btn btn-primary btn-start" onClick="ResetTable()">Réinitialisé le tableau des scores</button>
 	
 			<div id="scoreboard" class="scoreboard">
 				<table class="table table-hover">

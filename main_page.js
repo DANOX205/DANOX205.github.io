@@ -1,5 +1,6 @@
 window.onload = function() {
 
+
 	const scores = JSON.parse(localStorage.getItem('scores')) || [];
     const tbody = document.getElementById('scoreTableBody');
 	tbody.innerHTML = '';
@@ -17,26 +18,29 @@ window.onload = function() {
 	});
 
 };
-//faire en sorte qu'à partir d'un certain nombre d'élément stocker, que cela se reset
-//localStorage.removeItem('scores');
-//localStorage.removeItem('scoreTableBody');
+
+function ResetTable(){
+	localStorage.removeItem('scores');
+	localStorage.removeItem('scoreTableBody');
+	location.reload();
+}
 
 function Pseudo_ok(pseudo){
 	if (pseudo){
-		return true; //fonction à codé
+		return true;
 	} else {
-		return false;
+		return true;
 	}
 }
 
 function StartGame(){ //fonction de redirection vers la page du jeux
 	const Jpseudo1 = document.getElementById("idpseudo1").value;
 	const Jpseudo2 = document.getElementById("idpseudo2").value;
-	if (Pseudo_ok(Jpseudo1 && Jpseudo2)){
+	if (Pseudo_ok(Jpseudo1) && Pseudo_ok(Jpseudo2)){
 		localStorage.setItem('pseudo_perso1', Jpseudo1); //stockage du pseudo
 		localStorage.setItem('pseudo_perso2', Jpseudo2); //stockage du pseudo
 		window.location.href = "main_game.html" //redirection sur la page du jeux
 	} else {
-		alert("Veuillez entrer un pseudo correct pour continuer !");
+		alert("Veuillez entrer des pseudo pour continuer !");
 	}
 }
