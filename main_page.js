@@ -41,6 +41,6 @@ function StartGame(){ //fonction de redirection vers la page du jeux
 		localStorage.setItem('pseudo_perso2', Jpseudo2); //stockage du pseudo
 		window.location.href = "main_game.html" //redirection sur la page du jeux
 	} else {
-		alert("Veuillez entrer des pseudo pour continuer !");
+		alert("Veuillez entrer des pseudos pour continuer !");
 	}
 }

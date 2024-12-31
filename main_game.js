@@ -43,9 +43,6 @@ const moving_cloudState = {
 	speed: 5, // Movement speed
   };
 let CanCloud_move = false;
-
-//localStorage.removeItem('pseudo_perso1');
-//localStorage.removeItem('pseudo_perso2');
 labelP1.textContent = playerState.Pseudo;
 labelP2.textContent = J2pseudo;
 labelPV.textContent = playerState.PV;
@@ -57,7 +54,7 @@ function sleep(ms) {
 
 //fonction de fin de jeux, sauvegarde du temps et retour à la page principal
 function GameOver(){
-	//alert("Game Over");
+	alert("Game Over");
 	const formattedTime = formatTime(heures, minutes, secondes);
 	let scores = JSON.parse(localStorage.getItem('scores')) || [];
 	const newScore = { pseudoj1: playerState.Pseudo, pseudoj2: J2pseudo, time: formattedTime };
