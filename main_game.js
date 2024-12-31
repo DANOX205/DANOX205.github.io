@@ -21,9 +21,12 @@ const playerState = { //Move the player
 
 const labelPV = document.getElementById('LifeJ1');
 let degat = 'False';
+let degatZ = 'False';
 let coord = [];
 let collision = [];
 collision.length = 0;
+const zombies = [];
+zombies.length = 0;
 
 // Pour l'attaque 2
 const moving_cloud = document.getElementById('hidden_cloud');
@@ -181,14 +184,13 @@ function updatePlayer() {
 		drawingMovingCloud.style.left = `${moving_cloudState.x-144}px`;
 	}
 
-
 	if (collision.length != 0){
 		for (i=0; i<collision.length; i++){
 			if (((playerState.x >= collision[i][0] - 20 && playerState.x <= collision[i][0] + 30) && (playerState.y >= collision[i][1] - 20 && playerState.y <= collision[i][1] + 30)) && degat === 'True'){
 				playerState.PV = playerState.PV - 1;
 				degat = 'False';
 				labelPV.textContent = playerState.PV;
-				invincibleFrame(degat)
+				invincibleFrame(degat);
 				if (playerState.PV === 0) {
 					GameOver();
 				}
@@ -202,6 +204,25 @@ function updatePlayer() {
 				}, 4000);
 			}
 		}
+	}
+
+	console.log(degat);
+	console.log(degatZ);
+	console.log(zombies.length);
+	if (zombies.length != 0){
+		for (i=0; i<zombies.length; i++){
+			if (((playerState.x >= zombies[i].x - 20 && playerState.x <= zombies[i].x + 20) && (playerState.y >= zombies[i].y - 20 && playerState.y <= zombies[i].y + 20)) && degatZ === 'True'){
+				playerState.PV = playerState.PV - 1;
+				degatZ = 'False';
+				labelPV.textContent = playerState.PV;
+				invincibleFrame(degatZ);
+				if (playerState.PV === 0) {
+					GameOver();
+				}
+			}
+		}
+	} else if (zombies.length === 0){
+		degatZ = 'False';
 	}
 }
 
@@ -693,7 +714,6 @@ function attack4(){
 	reload4();
 }
 
-const zombies = [];
 function spawn_Zombies(){
 	console.log("spawn a zombie");
 	const y= RandomNumber(0,213);
@@ -724,6 +744,7 @@ function spawn_Zombies(){
 		y: y,
 		drawing: Draw_Zombie,
 	}); // Ajoute le tuple (element, x, y) dans la liste zombies. (pb => il faut l'index du zombie pour le tuer)
+	degatZ = 'True'
 }
 
 function moveZombiesTowardsPlayer() {
@@ -762,7 +783,6 @@ function moveZombiesTowardsPlayer() {
 			Draw_Zombie.style.top = `${zombie.y-60}px`;
 			Draw_Zombie.style.left = `${zombie.x-36}px`;
 		}
-
 	});
 }
 
