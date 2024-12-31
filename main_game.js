@@ -76,7 +76,6 @@ function GameOver(){
 			});
 		}
 	}
-	alert("Game Over");
 
 	localStorage.setItem('scores', JSON.stringify(scores));
 
