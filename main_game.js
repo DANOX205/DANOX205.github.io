@@ -19,14 +19,21 @@ const playerState = { //Move the player
 	Pseudo: localStorage.getItem('pseudo_perso1'), //nom du joueur 1
 };
 
+const AttPState = { //information sur l'attaque du joueur
+	Att_x: 0, //coordonnée x de l'attaque
+	Att_y: 0, //coordonnée y de l'attaque
+};
+
 const labelPV = document.getElementById('LifeJ1');
 let degat = 'False';
 let degatZ = 'False';
+let degatP = 'False';
 let coord = [];
 let collision = [];
 collision.length = 0;
 const zombies = [];
 zombies.length = 0;
+let NumZombie = 0;
 
 // Pour l'attaque 2
 const moving_cloud = document.getElementById('hidden_cloud');
@@ -78,8 +85,10 @@ function formatTime(h, m, s) {
 
 function attaqueP(attq){ //faire une fonction pour permettre de stoper le temps pendant l'attaque du perso
 	attq.style.display = "block";
+	degatP = 'True';
 	sleep(2000).then( () => {
 		attq.style.display = "none";
+		degatP = 'False';
 	});
 }
 
@@ -136,23 +145,21 @@ function updatePlayer() {
 	drawingPlayer.style.left = `${playerState.x-29}px`;
 	
   	//player's attack position
-	let att_T = 0;
-	let att_L = 0;
 	if (command === "z") {
-		att_T = (playerState.y * 1) - 20;
-		att_L = (playerState.x * 1);
+		AttPState.Att_y = (playerState.y * 1) - 20;
+		AttPState.Att_x = (playerState.x * 1);
 	} else if (command === "q") {
-		att_T = (playerState.y * 1);
-		att_L = (playerState.x * 1) - 20;
+		AttPState.Att_y = (playerState.y * 1);
+		AttPState.Att_x = (playerState.x * 1) - 20;
 	} else if (command === "s") {
-		att_T = (playerState.y * 1) + 20;
-		att_L = (playerState.x * 1);
+		AttPState.Att_y = (playerState.y * 1) + 20;
+		AttPState.Att_x = (playerState.x * 1);
 	} else if (command === "d") {
-		att_T = (playerState.y * 1);
-		att_L = (playerState.x * 1) + 20;
+		AttPState.Att_y = (playerState.y * 1);
+		AttPState.Att_x = (playerState.x * 1) + 20;
 	}
-	attq_p.style.top = `${att_T}px`;
-	attq_p.style.left = `${att_L}px`;
+	attq_p.style.top = `${AttPState.Att_y}px`;
+	attq_p.style.left = `${AttPState.Att_x}px`;
 
 	//player's attack
 	if (keys["e"]) {
@@ -190,7 +197,7 @@ function updatePlayer() {
 				playerState.PV = playerState.PV - 1;
 				degat = 'False';
 				labelPV.textContent = playerState.PV;
-				invincibleFrame(degat);
+				invincibleFrame();
 				if (playerState.PV === 0) {
 					GameOver();
 				}
@@ -206,19 +213,22 @@ function updatePlayer() {
 		}
 	}
 
-	console.log(degat);
-	console.log(degatZ);
-	console.log(zombies.length);
+
 	if (zombies.length != 0){
 		for (i=0; i<zombies.length; i++){
 			if (((playerState.x >= zombies[i].x - 20 && playerState.x <= zombies[i].x + 20) && (playerState.y >= zombies[i].y - 20 && playerState.y <= zombies[i].y + 20)) && degatZ === 'True'){
 				playerState.PV = playerState.PV - 1;
 				degatZ = 'False';
 				labelPV.textContent = playerState.PV;
-				invincibleFrame(degatZ);
+				invincibleFrameZ();
 				if (playerState.PV === 0) {
-					GameOver();
+					//GameOver();
+					console.log("perdu");
 				}
+			}
+
+			if (((AttPState.Att_x >= zombies[i].x - 20 && AttPState.Att_x <= zombies[i].x + 20) && (AttPState.Att_y >= zombies[i].y - 20 && AttPState.Att_y <= zombies[i].y + 20)) && degatP === 'True'){
+				killZombie(i);
 			}
 		}
 	} else if (zombies.length === 0){
@@ -226,9 +236,15 @@ function updatePlayer() {
 	}
 }
 
-function invincibleFrame(degat){
+function invincibleFrame(){
 	setTimeout(() => {
 		degat = 'True';
+	}, 1300);
+}
+
+function invincibleFrameZ(){
+	setTimeout(() => {
+		degatZ = 'True';
 	}, 1300);
 }
 
@@ -701,7 +717,7 @@ function reload4(){
 		filler4.style.transition = "none";
 		filler4.style.width = "0";
 		can_attack4 = true;
-	}, 10000);
+	}, 1);//10000);
 }
 
 function attack4(){
@@ -728,6 +744,7 @@ function spawn_Zombies(){
 	Draw_Zombie.classList.add("drawingZombie");
 	Draw_Zombie.style.left = Zombie.style.left;
 	Draw_Zombie.style.top = Zombie.style.top;
+	Draw_Zombie.id = "DZnum" + NumZombie;
 	gameWorld.appendChild(Draw_Zombie);
 	const Zombie_Walking_frames = ["Sprites_assets/Boss/Zombie/1.png", "Sprites_assets/Boss/Zombie/2.png", "Sprites_assets/Boss/Zombie/3.png", "Sprites_assets/Boss/Zombie/4.png","Sprites_assets/Boss/Zombie/5.png","Sprites_assets/Boss/Zombie/6.png","Sprites_assets/Boss/Zombie/7.png"];
 	const Zombie_Walking_frameRate = 200; // Vitesse de l'animation ==> 50ms par frame
@@ -736,15 +753,17 @@ function spawn_Zombies(){
 		Zombie_Walking_index = (Zombie_Walking_index + 1) % Zombie_Walking_frames.length;
 		Draw_Zombie.style.backgroundImage = `url(${Zombie_Walking_frames[Zombie_Walking_index]})`;
 	}, Zombie_Walking_frameRate);
-	
+	Zombie.id = "Znum" + NumZombie;
 	gameWorld.appendChild(Zombie); // On ajoute l'élément sur la boîte de jeu
 	zombies.push({
 		element: Zombie,
 		x: x,
 		y: y,
 		drawing: Draw_Zombie,
+		number: NumZombie,
 	}); // Ajoute le tuple (element, x, y) dans la liste zombies. (pb => il faut l'index du zombie pour le tuer)
-	degatZ = 'True'
+	degatZ = 'True';
+	NumZombie += 1;
 }
 
 function moveZombiesTowardsPlayer() {
@@ -791,5 +810,7 @@ setInterval(moveZombiesTowardsPlayer, 50);
 
 function killZombie(zombieIndex) {
     const zombie = zombies[zombieIndex];
-
+	document.getElementById("DZnum" + zombie.number).remove();
+	document.getElementById("Znum" + zombie.number).remove();
+	zombies.splice(i, 1);
 }
