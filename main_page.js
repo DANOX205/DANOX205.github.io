@@ -29,7 +29,7 @@ function Pseudo_ok(pseudo){
 	if (pseudo){
 		return true;
 	} else {
-		return true;
+		return false;
 	}
 }
 
