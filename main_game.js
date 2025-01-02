@@ -17,7 +17,7 @@ const playerState = { //Move the player
 	speed: 4, // Movement speed
 	PV: 3, // PV du joueur
 	Pseudo: localStorage.getItem('pseudo_perso1'), //nom du joueur 1
-	img_atk: ["Sprites_assets/Player/Attaque/atk_g.png", "Sprites_assets/Player/Attaque/atk_d.png"]
+	img_atk: ["Sprites_assets/Player/Attaque/atk_g.jpg", "Sprites_assets/Player/Attaque/atk_d.jpg"]
 };
 
 
