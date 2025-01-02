@@ -17,7 +17,7 @@ const playerState = { //Move the player
 	speed: 4, // Movement speed
 	PV: 3, // PV du joueur
 	Pseudo: localStorage.getItem('pseudo_perso1'), //nom du joueur 1
-	img_atk: ["Sprites_assets/Player/Attaque/atk_g.jpg", "Sprites_assets/Player/Attaque/atk_d.jpg"]
+	img_atk: ["Sprites_assets/Player/Attaque/atk_g.png", "Sprites_assets/Player/Attaque/atk_d.png", "Sprites_assets/Player/Attaque/atk_h.png", "Sprites_assets/Player/Attaque/atk_b.png"]
 };
 
 
@@ -158,7 +158,7 @@ function updatePlayer() {
 	if (command === "z") {
 		AttPState.Att_y = (playerState.y * 1) - 20;
 		AttPState.Att_x = (playerState.x * 1);
-		att_player.style.backgroundImage = `url(${playerState.img_atk[0]})`;
+		att_player.style.backgroundImage = `url(${playerState.img_atk[2]})`;
 	} else if (command === "q") {
 		AttPState.Att_y = (playerState.y * 1);
 		AttPState.Att_x = (playerState.x * 1) - 20;
@@ -166,7 +166,7 @@ function updatePlayer() {
 	} else if (command === "s") {
 		AttPState.Att_y = (playerState.y * 1) + 20;
 		AttPState.Att_x = (playerState.x * 1);
-		att_player.style.backgroundImage = `url(${playerState.img_atk[1]})`;
+		att_player.style.backgroundImage = `url(${playerState.img_atk[3]})`;
 	} else if (command === "d") {
 		AttPState.Att_y = (playerState.y * 1);
 		AttPState.Att_x = (playerState.x * 1) + 20;
