@@ -17,7 +17,7 @@ const playerState = { //Move the player
 	speed: 4, // Movement speed
 	PV: 3, // PV du joueur
 	Pseudo: localStorage.getItem('pseudo_perso1'), //nom du joueur 1
-	img_atk: ["Sprites_assets/Player/Attaque/atk_g.png", "Sprites_assets/Player/Attaque/atk_d.png", "Sprites_assets/Player/Attaque/atk_h.png", "Sprites_assets/Player/Attaque/atk_b.png"]
+	img_atk: ["Sprites_assets/Player/Attaque/atk_g.png", "Sprites_assets/Player/Attaque/atk_d.png", "Sprites_assets/Player/Attaque/atk_h.png", "Sprites_assets/Player/Attaque/atk_b.png"] //image de l'attaque du joueur
 };
 
 
@@ -27,6 +27,8 @@ const AttPState = { //information sur l'attaque du joueur
 };
 
 const labelPV = document.getElementById('LifeJ1');
+
+//initialisation des boolean pour géré si le personnage peut prrendre des dégat ou non
 let degat = 'False';
 let degatZ = 'False';
 let degatP = 'False';
@@ -49,12 +51,16 @@ labelP1.textContent = playerState.Pseudo;
 labelP2.textContent = J2pseudo;
 labelPV.textContent = playerState.PV;
 
-
+//création d'une fonction pour permettre de créer un délais / attendre
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 //fonction de fin de jeux, sauvegarde du temps et retour à la page principal
+/* la fonction affiche un message de fin, puis sauvegarde les score et pseudo dans un objet avant de regarder si la quantité max de scores est atteinte ou non
+si le nombre de score max est déjà enregistré (abitrairement choisi à 10) on compare pour voir si ce score est meilleur que le dernier.
+Si c'est le cas on remplace le dernier par celui-ci sinon on ne change rien 
+Et on regirige le joueur et les score vers la page d'accueil*/
 function GameOver(){
 	alert("Game Over");
 	const formattedTime = formatTime(heures, minutes, secondes);
@@ -84,19 +90,21 @@ function GameOver(){
 	window.location.href = 'Projet_Web.html';
 }
 
+//fonction de convertion du temps en seconde
 function timeToSeconds(time) {
     const [h, m, s] = time.split(':').map(Number);
     return h * 3600 + m * 60 + s;
 }
 
+//fonction de conversion du temps en format heure:minute:seconde
 function formatTime(h, m, s) {
     return (h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
 }
 
-function attaqueP(attq){ //faire une fonction pour permettre de stoper le temps pendant l'attaque du perso
+function attaqueP(attq){ //fonction permettant d'afficher et de cacher l'attaque du joueur et d'activé le possiblité de faire des dégats
 	attq.style.display = "block";
 	degatP = 'True';
-	sleep(2000).then( () => {
+	sleep(2000).then( () => { //on attend 2000 seconde avec l'attaque actif puis on la désactive
 		attq.style.display = "none";
 		degatP = 'False';
 	});
@@ -154,20 +162,20 @@ function updatePlayer() {
 	drawingPlayer.style.top = `${playerState.y-60}px`;
 	drawingPlayer.style.left = `${playerState.x-29}px`;
 	
-  	//player's attack position
-	if (command === "z") {
+  	//player's attack position and sprite
+	if (command === "z") { //up
 		AttPState.Att_y = (playerState.y * 1) - 20;
 		AttPState.Att_x = (playerState.x * 1);
 		att_player.style.backgroundImage = `url(${playerState.img_atk[2]})`;
-	} else if (command === "q") {
+	} else if (command === "q") { //left
 		AttPState.Att_y = (playerState.y * 1);
 		AttPState.Att_x = (playerState.x * 1) - 20;
 		att_player.style.backgroundImage = `url(${playerState.img_atk[0]})`;
-	} else if (command === "s") {
+	} else if (command === "s") { //down
 		AttPState.Att_y = (playerState.y * 1) + 20;
 		AttPState.Att_x = (playerState.x * 1);
 		att_player.style.backgroundImage = `url(${playerState.img_atk[3]})`;
-	} else if (command === "d") {
+	} else if (command === "d") { //right
 		AttPState.Att_y = (playerState.y * 1);
 		AttPState.Att_x = (playerState.x * 1) + 20;
 		att_player.style.backgroundImage = `url(${playerState.img_atk[1]})`;
@@ -205,29 +213,31 @@ function updatePlayer() {
 		drawingMovingCloud.style.left = `${moving_cloudState.x-144}px`;
 	}
 
-	if (collision.length != 0){
+	if (collision.length != 0){ //vérification qu'il existe des objet permettant de blesser le joueur
+		//pour chaque objet pouvant blesser le joueur on regarde si le joueur est dans le carré de collision de cet objet et si c'est le cas on lui retire un point de vie et on le rend invulnérable pendant quelque instant
 		for (i in collision){
 			if (((playerState.x >= collision[i][0] - 20 && playerState.x <= collision[i][0] + 30) && (playerState.y >= collision[i][1] - 20 && playerState.y <= collision[i][1] + 30)) && degat === 'True'){
 				playerState.PV = playerState.PV - 1;
 				degat = 'False';
 				labelPV.textContent = playerState.PV;
-				invincibleFrame();
+				invincibleFrame(); //fonction pour rendre invulnérable puis remettre la possibilité de prendre les dégats
 				if (playerState.PV === 0) {
 					GameOver();
 				}
 			}
 
+			//même chose que pour les dégat, mais uniquement pour l'attaque 3 afin de baisser la vitesse du joueur et non ces point de vie
 			if (((playerState.x >= collision[i][0] - 20 && playerState.x <= collision[i][0] + 80) && (playerState.y >= collision[i][1] - 20 && playerState.y <= collision[i][1] + 34)) && degat === 'atk3'){
 				playerState.speed = 1;
 				degat = 'False';
-				setTimeout(() =>{
+				setTimeout(() =>{ //vitesse retour à la normal au bout de 3.5 seconde
 					playerState.speed = 4;
 				}, 3500);
 			}
 		}
 	}
 
-
+	//même principe que pour les objet pouvant blesser les joueur, mais à part puisqu'ici les dégat peuvent être pris en continue contrairement au autres attaque (concerne l'attaque 4)
 	if (zombies.length != 0){
 		for (element_Z of zombies){
 			if (((playerState.x >= element_Z.x - 20 && playerState.x <= element_Z.x + 20) && (playerState.y >= element_Z.y - 20 && playerState.y <= element_Z.y + 20)) && degatZ === 'True'){
@@ -240,6 +250,7 @@ function updatePlayer() {
 				}
 			}
 
+			//faire en sorte que le joueur puisse attaqué
 			if (((AttPState.Att_x >= element_Z.x - 20 && AttPState.Att_x <= element_Z.x + 20) && (AttPState.Att_y >= element_Z.y - 20 && AttPState.Att_y <= element_Z.y + 20)) && degatP === 'True'){
 				killZombie(element_Z);
 			}
@@ -249,6 +260,7 @@ function updatePlayer() {
 	}
 }
 
+//frame d'invincibilité si jamais le joueur se fait toucher
 function invincibleFrame(){
 	setTimeout(() => {
 		degat = 'True';
@@ -262,7 +274,7 @@ function invincibleFrameZ(){
 }
 
 function gameLoop() {
-  updatePlayer(); // Update player's position
+  updatePlayer(); // Update player's position and attak position and colision
   requestAnimationFrame(gameLoop); // Repeat the loop
 }
 
@@ -432,6 +444,8 @@ reload2();
 reload3();
 reload4();
 
+
+//gestion des touches pour les attaque du boss et de possibilité ou non d'attaquer
 document.addEventListener("keydown", (event) => {
     switch (event.keyCode) {
         case 97:
@@ -521,6 +535,7 @@ function spawn_box(){
 		// L'animation va durer 9 * framerate (dans notre cas framerate=50ms donc elle va durer 450ms et l'attaque apparaît au bout de 300ms)
 	},900);
 	
+	//sauvegarde des position de l'attaque pour les collision puis réinitialisation de la table à la fin de l'attaque
 	setTimeout(() => {
 		hhitbox.className = "hurthitbox";
 		degat = 'True';
@@ -536,7 +551,7 @@ function spawn_box(){
 	}, 1350);
 }
 
-
+//attaque 1
 function attack1(){
 	let attack1_loading = document.getElementById("AL1");
 	let nbNuage = 0
@@ -590,6 +605,8 @@ function spawn_moving_cloud(){
 
 	}, 2100);
 
+
+	//sauvegarde des position de l'attaque pour les collision puis réinitialisation de la table à la fin de l'attaque
     setTimeout(() => {
 		moving_cloud.classList.remove('warninghitbox');
         moving_cloud.classList.add('hurthitbox');
@@ -616,6 +633,7 @@ function spawn_moving_cloud(){
     }, 2600);
 }
 
+//attaque 2
 function attack2(){
 	let attack2_loading = document.getElementById("AL2");
 	attack2_loading.className = "attack_loading";
@@ -684,6 +702,8 @@ function spawn_box3(){
 			}
 		}, Rain_frameRate);
 	}, 20);
+
+	//sauvegarde des position de l'attaque pour les collision puis réinitialisation de la table à la fin de l'attaque
 	setTimeout(() => {
 		slowhitbox.className = "slowhitbox";
 		clearInterval(Rain_animation);
@@ -699,6 +719,7 @@ function spawn_box3(){
 	}, 1500);
 }
 
+//attaque 3
 function attack3(){
 	let attack3_loading = document.getElementById("AL3");
 	let nbNuage = 0;
@@ -753,7 +774,7 @@ function spawn_Zombies(){
 	Draw_Zombie.classList.add("drawingZombie");
 	Draw_Zombie.style.left = Zombie.style.left;
 	Draw_Zombie.style.top = Zombie.style.top;
-	Draw_Zombie.id = "DZnum" + NumZombie;
+	Draw_Zombie.id = "DZnum" + NumZombie; //don d'id spécifique au zombie avec un nombre pour le retrouver et suprimer la div au moment ou le zombie meurt
 	gameWorld.appendChild(Draw_Zombie);
 	const Zombie_Walking_frames = ["Sprites_assets/Boss/Zombie/1.png", "Sprites_assets/Boss/Zombie/2.png", "Sprites_assets/Boss/Zombie/3.png", "Sprites_assets/Boss/Zombie/4.png","Sprites_assets/Boss/Zombie/5.png","Sprites_assets/Boss/Zombie/6.png","Sprites_assets/Boss/Zombie/7.png"];
 	const Zombie_Walking_frameRate = 200; // Vitesse de l'animation ==> 50ms par frame
@@ -762,15 +783,15 @@ function spawn_Zombies(){
 		Zombie_Walking_index = (Zombie_Walking_index + 1) % Zombie_Walking_frames.length;
 		Draw_Zombie.style.backgroundImage = `url(${Zombie_Walking_frames[Zombie_Walking_index]})`;
 	}, Zombie_Walking_frameRate);
-	Zombie.id = "Znum" + NumZombie;
+	Zombie.id = "Znum" + NumZombie; //don d'id spécifique au zombie avec un nombre pour le retrouver et suprimer la div au moment ou le zombie meurt
 	gameWorld.appendChild(Zombie); // On ajoute l'élément sur la boîte de jeu
 	zombies.push({
 		element: Zombie,
 		x: x,
 		y: y,
 		drawing: Draw_Zombie,
-		number: NumZombie,
-	}); // Ajoute le tuple (element, x, y) dans la liste zombies. (pb => il faut l'index du zombie pour le tuer)
+		number: NumZombie, //à chaque zombie on associe un nombre pour pouvoir le tuer
+	}); // Ajoute le tuple (element, x, y) dans la liste zombies.
 	degatZ = 'True';
 	NumZombie += 1;
 }
@@ -818,6 +839,7 @@ function moveZombiesTowardsPlayer() {
 setInterval(moveZombiesTowardsPlayer, 50);
 
 function killZombie(element_zombie) {
+	//supression des div contenant les zombie et les zombies mort de la table
 	document.getElementById("DZnum" + element_zombie.number).remove();
 	document.getElementById("Znum" + element_zombie.number).remove();
 	let ZombieIndex = zombies.indexOf(element_zombie)

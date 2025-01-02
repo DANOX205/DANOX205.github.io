@@ -29,8 +29,7 @@ function ResetTable(){
 const offensive_words = ["con", "conne", "merde", "connard", "salaud", "putain", "enfoiré", "tocard", "abruti",
     "crétin", "batard", "ordure", "nique", "foutu", "trouduc", "bouffon", "couillon",
     "taré", "morue", "raclure", "pouffias", "naïf", "salope", "cul", "débile", "blaireau",
-    "péquenaud", "bâtard", "chieur", "baltringue", "cinglé",
-];
+    "péquenaud", "bâtard", "chieur", "baltringue", "cinglé"];
 
 
 function isEqual(str1, str2) {
@@ -38,7 +37,7 @@ function isEqual(str1, str2) {
 }
 
 
-function Pseudo_ok(pseudo){
+function Pseudo_ok(pseudo){ //fonction pour empêcher le joueur de mettre n'importe quoi pour pseudo (pas d'insulte ni d'espace)
 	let cmp_fw = 0;
 	for (nom of offensive_words){
 		if ( isEqual(pseudo, nom) || (!pseudo) ){
@@ -65,6 +64,6 @@ function StartGame(){ //fonction de redirection vers la page du jeux
 		localStorage.setItem('pseudo_perso2', Jpseudo2); //stockage du pseudo
 		window.location.href = "main_game.html" //redirection sur la page du jeux
 	} else {
-		alert("Veuillez entrer des pseudo correct pour continuer ! (pas de pseudo vide, d'espace ou de gros mots)");
+		alert("Veuillez entrer des pseudo correct pour continuer ! (pas de pseudo vide, d'espaces ou d'insulte)");
 	}
 }
