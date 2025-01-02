@@ -19,6 +19,7 @@ const playerState = { //Move the player
 	Pseudo: localStorage.getItem('pseudo_perso1'), //nom du joueur 1
 };
 
+
 const AttPState = { //information sur l'attaque du joueur
 	Att_x: 0, //coordonnée x de l'attaque
 	Att_y: 0, //coordonnée y de l'attaque
@@ -200,7 +201,7 @@ function updatePlayer() {
 	}
 
 	if (collision.length != 0){
-		for (i=0; i<collision.length; i++){
+		for (i in collision){
 			if (((playerState.x >= collision[i][0] - 20 && playerState.x <= collision[i][0] + 30) && (playerState.y >= collision[i][1] - 20 && playerState.y <= collision[i][1] + 30)) && degat === 'True'){
 				playerState.PV = playerState.PV - 1;
 				degat = 'False';
@@ -223,8 +224,8 @@ function updatePlayer() {
 
 
 	if (zombies.length != 0){
-		for (i=0; i<zombies.length; i++){
-			if (((playerState.x >= zombies[i].x - 20 && playerState.x <= zombies[i].x + 20) && (playerState.y >= zombies[i].y - 20 && playerState.y <= zombies[i].y + 20)) && degatZ === 'True'){
+		for (element_Z of zombies){
+			if (((playerState.x >= element_Z.x - 20 && playerState.x <= element_Z.x + 20) && (playerState.y >= element_Z.y - 20 && playerState.y <= element_Z.y + 20)) && degatZ === 'True'){
 				playerState.PV = playerState.PV - 1;
 				degatZ = 'False';
 				labelPV.textContent = playerState.PV;
@@ -234,8 +235,8 @@ function updatePlayer() {
 				}
 			}
 
-			if (((AttPState.Att_x >= zombies[i].x - 20 && AttPState.Att_x <= zombies[i].x + 20) && (AttPState.Att_y >= zombies[i].y - 20 && AttPState.Att_y <= zombies[i].y + 20)) && degatP === 'True'){
-				killZombie(i);
+			if (((AttPState.Att_x >= element_Z.x - 20 && AttPState.Att_x <= element_Z.x + 20) && (AttPState.Att_y >= element_Z.y - 20 && AttPState.Att_y <= element_Z.y + 20)) && degatP === 'True'){
+				killZombie(element_Z);
 			}
 		}
 	} else if (zombies.length === 0){
@@ -533,10 +534,12 @@ function spawn_box(){
 
 function attack1(){
 	let attack1_loading = document.getElementById("AL1");
+	let nbNuage = 0
 	attack1_loading.className = "attack_loading";
 	can_attack1 = false;
-	for (i=0;i<20; i++){
+	while (nbNuage < 20){
 		spawn_box();
+		nbNuage++;
 	}
 	reload1();
 }
@@ -693,11 +696,13 @@ function spawn_box3(){
 
 function attack3(){
 	let attack3_loading = document.getElementById("AL3");
+	let nbNuage = 0;
 	console.log("oui je marche");
 	attack3_loading.className = "attack_loading";
 	can_attack3 = false;
-	for (i=0;i<10; i++){
+	while (nbNuage < 10){
 		spawn_box3();
+		nbNuage++;
 	}
 	reload3();
 }
@@ -719,10 +724,12 @@ function reload4(){
 
 function attack4(){
 	let attack4_loading = document.getElementById("AL4");
+	let nbNuage = 0;
 	attack4_loading.className = "attack_loading";
 	can_attack4 = false;
-	for (i=0;i<5; i++){
+	while (nbNuage < 5){
 		spawn_Zombies();
+		nbNuage++;
 	}
 	reload4();
 }
@@ -805,9 +812,10 @@ function moveZombiesTowardsPlayer() {
 // On appelle la fonction toute les 50 ms
 setInterval(moveZombiesTowardsPlayer, 50);
 
-function killZombie(zombieIndex) {
-    const zombie = zombies[zombieIndex];
-	document.getElementById("DZnum" + zombie.number).remove();
-	document.getElementById("Znum" + zombie.number).remove();
-	zombies.splice(i, 1);
+function killZombie(element_zombie) {
+	document.getElementById("DZnum" + element_zombie.number).remove();
+	document.getElementById("Znum" + element_zombie.number).remove();
+	let ZombieIndex = zombies.indexOf(element_zombie)
+	zombies.splice(ZombieIndex, 1);
+
 }
