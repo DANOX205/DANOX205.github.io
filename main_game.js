@@ -102,6 +102,7 @@ function formatTime(h, m, s) {
 }
 
 function attaqueP(attq){ //fonction permettant d'afficher et de cacher l'attaque du joueur et d'activé le possiblité de faire des dégats
+	Can_attack_player=false;
 	attq.style.display = "block";
 	degatP = 'True';
 	sleep(700).then( () => { //on attend 700 seconde avec l'attaque actif puis on la désactive
