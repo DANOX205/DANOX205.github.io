@@ -104,9 +104,10 @@ function formatTime(h, m, s) {
 function attaqueP(attq){ //fonction permettant d'afficher et de cacher l'attaque du joueur et d'activé le possiblité de faire des dégats
 	attq.style.display = "block";
 	degatP = 'True';
-	sleep(2000).then( () => { //on attend 2000 seconde avec l'attaque actif puis on la désactive
+	sleep(700).then( () => { //on attend 700 seconde avec l'attaque actif puis on la désactive
 		attq.style.display = "none";
 		degatP = 'False';
+		Can_attack_player=true;
 	});
 }
 
@@ -123,6 +124,8 @@ document.addEventListener("keyup", (e) => {
 let command = "z";
 let facing = "left";
 let moving = false;
+let Can_attack_player= true;
+let upORdown=false;
 function updatePlayer() {
 	// Move up
 	if (keys["z"] || keys["Z"]) {
@@ -167,25 +170,38 @@ function updatePlayer() {
 		AttPState.Att_y = (playerState.y * 1) - 20;
 		AttPState.Att_x = (playerState.x * 1);
 		att_player.style.backgroundImage = `url(${playerState.img_atk[2]})`;
+		drawingAtt_Player.style.transform = `scale(1, -1)`;
+		upORdown=true;
 	} else if (command === "q") { //left
 		AttPState.Att_y = (playerState.y * 1);
 		AttPState.Att_x = (playerState.x * 1) - 20;
 		att_player.style.backgroundImage = `url(${playerState.img_atk[0]})`;
+		drawingAtt_Player.style.transform = `scale(-1, 1)`;
+		upORdown=false;
 	} else if (command === "s") { //down
 		AttPState.Att_y = (playerState.y * 1) + 20;
 		AttPState.Att_x = (playerState.x * 1);
 		att_player.style.backgroundImage = `url(${playerState.img_atk[3]})`;
+		drawingAtt_Player.style.transform = `scale(1, 1)`;
+		upORdown=true;
 	} else if (command === "d") { //right
 		AttPState.Att_y = (playerState.y * 1);
 		AttPState.Att_x = (playerState.x * 1) + 20;
 		att_player.style.backgroundImage = `url(${playerState.img_atk[1]})`;
+		drawingAtt_Player.style.transform = `scale(1, 1)`;
+		upORdown=false;
 	}
 	attq_p.style.top = `${AttPState.Att_y}px`;
 	attq_p.style.left = `${AttPState.Att_x}px`;
+	drawingAtt_Player.style.top = `${AttPState.Att_y- 30}px`;
+	drawingAtt_Player.style.left = `${AttPState.Att_x- 26}px`;
 
 	//player's attack
 	if (keys["e"]) {
-		attaqueP(attq_p);
+		if (Can_attack_player){
+			attaqueP(attq_p);
+			animation_attack();
+		}
 	}
 
 	// Pour le second joueur et la seconde attaque
@@ -279,6 +295,43 @@ function gameLoop() {
 }
 
 gameLoop();
+
+// Animation pour l'attaque 
+
+function animation_attack(){
+	drawingAtt_Player.style.display= "block";
+	if (upORdown){
+	const Attack_frames = ["Sprites_assets/Player/Attack2/1.png", "Sprites_assets/Player/Attack2/2.png", "Sprites_assets/Player/Attack2/4.png", "Sprites_assets/Player/Attack2/5.png","Sprites_assets/Player/Attack2/6.png","Sprites_assets/Player/Attack2/7.png"]; 
+	const Attack_frameRate = 100; // Vitesse de l'animation ==> 50ms par frame
+	let Attack_index = 0;	
+	const Interval_Attack_animation = setInterval(() => {
+		Attack_index = Attack_index + 1;
+		drawingAtt_Player.style.backgroundImage = `url(${Attack_frames[Attack_index]})`;
+		if (Attack_index==Attack_frames.length){
+			drawingAtt_Player.style.display= "none";
+		}
+	}, Attack_frameRate);
+	setTimeout(() =>{
+		drawingAtt_Player.style.display="none";
+		clearInterval(Interval_Attack_animation);
+	}, 700)
+	} else{
+	const Attack_frames = ["Sprites_assets/Player/Attack1/1.png", "Sprites_assets/Player/Attack1/2.png", "Sprites_assets/Player/Attack1/4.png", "Sprites_assets/Player/Attack1/5.png","Sprites_assets/Player/Attack1/6.png","Sprites_assets/Player/Attack1/7.png"]; 
+	const Attack_frameRate = 100; // Vitesse de l'animation ==> 50ms par frame
+	let Attack_index = 0;	
+	const Interval_Attack_animation = setInterval(() => {
+		Attack_index = Attack_index + 1;
+		drawingAtt_Player.style.backgroundImage = `url(${Attack_frames[Attack_index]})`;
+		if (Attack_index==Attack_frames.length){
+			drawingAtt_Player.style.display= "none";
+		}
+	}, Attack_frameRate);
+	setTimeout(() =>{
+		drawingAtt_Player.style.display="none";
+		clearInterval(Interval_Attack_animation);
+	}, 700)
+	}
+}
 
 // On met à jour l'animation du Joueur
 function animation_Joueur(){
