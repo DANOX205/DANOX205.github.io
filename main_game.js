@@ -169,25 +169,25 @@ function updatePlayer() {
 	if (command === "z") { //up
 		AttPState.Att_y = (playerState.y * 1) - 20;
 		AttPState.Att_x = (playerState.x * 1);
-		att_player.style.backgroundImage = `url(${playerState.img_atk[2]})`;
+		//att_player.style.backgroundImage = `url(${playerState.img_atk[2]})`;
 		drawingAtt_Player.style.transform = `scale(1, -1)`;
 		upORdown=true;
 	} else if (command === "q") { //left
 		AttPState.Att_y = (playerState.y * 1);
 		AttPState.Att_x = (playerState.x * 1) - 20;
-		att_player.style.backgroundImage = `url(${playerState.img_atk[0]})`;
+		//att_player.style.backgroundImage = `url(${playerState.img_atk[0]})`;
 		drawingAtt_Player.style.transform = `scale(-1, 1)`;
 		upORdown=false;
 	} else if (command === "s") { //down
 		AttPState.Att_y = (playerState.y * 1) + 20;
 		AttPState.Att_x = (playerState.x * 1);
-		att_player.style.backgroundImage = `url(${playerState.img_atk[3]})`;
+		//att_player.style.backgroundImage = `url(${playerState.img_atk[3]})`;
 		drawingAtt_Player.style.transform = `scale(1, 1)`;
 		upORdown=true;
 	} else if (command === "d") { //right
 		AttPState.Att_y = (playerState.y * 1);
 		AttPState.Att_x = (playerState.x * 1) + 20;
-		att_player.style.backgroundImage = `url(${playerState.img_atk[1]})`;
+		//att_player.style.backgroundImage = `url(${playerState.img_atk[1]})`;
 		drawingAtt_Player.style.transform = `scale(1, 1)`;
 		upORdown=false;
 	}
@@ -454,6 +454,22 @@ setInterval(() => {
 	SlowCloud_index = (SlowCloud_index + 1) % SlowCloud_frames.length;
 	LoadingSlowCloud.style.backgroundImage = `url(${SlowCloud_frames[SlowCloud_index]})`;
 }, SlowCloud_frameRate);
+
+//On charge l'attaque du Joueur
+const Attack1_frames = ["Sprites_assets/Player/Attack1/1.png", "Sprites_assets/Player/Attack1/2.png", "Sprites_assets/Player/Attack1/4.png", "Sprites_assets/Player/Attack1/5.png","Sprites_assets/Player/Attack1/6.png","Sprites_assets/Player/Attack1/7.png"]; 
+const Attack1_frameRate = 50; // Vitesse de l'animation ==> 50ms par frame
+let Attack1_index = 0;	
+setInterval(() => {
+	Attack1_index = (Attack1_index + 1) % Attack1_frames.length;
+	LoadingAtt1_Player.style.backgroundImage = `url(${Attack1_frames[Attack1_index]})`;
+}, Attack1_frameRate);
+const Attack2_frames = ["Sprites_assets/Player/Attack2/1.png", "Sprites_assets/Player/Attack2/2.png", "Sprites_assets/Player/Attack2/4.png", "Sprites_assets/Player/Attack2/5.png","Sprites_assets/Player/Attack2/6.png","Sprites_assets/Player/Attack2/7.png"]; 
+const Attack2_frameRate = 50; // Vitesse de l'animation ==> 50ms par frame
+let Attack2_index = 0;	
+setInterval(() => {
+	Attack2_index = (Attack2_index + 1) % Attack2_frames.length;
+	LoadingAtt2_Player.style.backgroundImage = `url(${Attack2_frames[Attack2_index]})`;
+}, Attack2_frameRate);
 //--------------------------------------------------
 
 
