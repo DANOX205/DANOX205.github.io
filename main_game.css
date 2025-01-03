@@ -119,7 +119,8 @@ body {
 	position: absolute;
 	width: 20px;
 	height: 20px;
-	/*background-color: green;*/
+	background-color: green;
+	opacity:0.2;
 }
 
 #drawingAtt_Player {
