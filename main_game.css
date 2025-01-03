@@ -126,7 +126,7 @@ body {
 	position: absolute;
 	width: 80px;
 	height: 80px;
-	background-image: url("Sprites_assets/Player/Attack/1.png");
+	background-image: url("Sprites_assets/Player/Attack1/1.png");
 	background-size:cover;
 	background-position:top;
 	opacity: 1;
@@ -324,7 +324,7 @@ body {
 	position: absolute;
 	width: 80px;
 	height: 80px;
-	background-image: url("Sprites_assets/Player/Attack/1.png");
+	background-image: url("Sprites_assets/Player/Attack1/1.png");
 	background-size:cover;
 	background-position:top;
 	/*left: -144px;
@@ -337,7 +337,7 @@ body {
 	position: absolute;
 	width: 80px;
 	height: 80px;
-	background-image: url("Sprites_assets/Player/Attack/1.png");
+	background-image: url("Sprites_assets/Player/Attack2/1.png");
 	background-size:cover;
 	background-position:top;
 	/*left: -144px;
