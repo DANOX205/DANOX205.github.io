@@ -122,6 +122,17 @@ body {
 	/*background-color: green;*/
 }
 
+#drawingAtt_Player {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	background-image: url("Sprites_assets/Player/Attack/1.png");
+	background-size:cover;
+	background-position:top;
+	opacity: 1;
+	transform: scale(1,1);
+}
+
 #boss {
 	position: absolute;
 	width: 200px;
@@ -301,6 +312,32 @@ body {
 	width: 312px;
 	height: 312px;
 	background-image: url("Sprites_assets/Boss/Cloud_Idle_Rain/1.png");
+	background-size:cover;
+	background-position:top;
+	/*left: -144px;
+	top:-248px;*/
+	opacity: 0;
+	z-index: 5;
+}
+
+#LoadingAtt1_Player {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	background-image: url("Sprites_assets/Player/Attack/1.png");
+	background-size:cover;
+	background-position:top;
+	/*left: -144px;
+	top:-248px;*/
+	opacity: 0;
+	z-index: 5;
+}
+
+#LoadingAtt2_Player {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	background-image: url("Sprites_assets/Player/Attack/1.png");
 	background-size:cover;
 	background-position:top;
 	/*left: -144px;
