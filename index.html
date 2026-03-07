@@ -2,8 +2,15 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Cheating Card Game</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+    <input id="nameInput" type="text" 
+    style="
+    position:absolute;
+    top:-100px;
+    opacity:0;
+    ">
 </head>
 <body>
     <script src="game/Player.js"></script>
@@ -18,6 +25,21 @@
     <script src="game/PiocheCard.js"></script>
     <script src="game/CartesShow.js"></script>
     <script type ="module" src="main.js"></script>
+    <style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        background: black;
+        height: 100dvh;
+        overflow: hidden;
+    }
+    </style>
+    <style>
+    body {
+        margin: 0;
+        background-color: black;
+    }
+    </style>
     <style>
     @font-face {
         font-family: "Kristen";

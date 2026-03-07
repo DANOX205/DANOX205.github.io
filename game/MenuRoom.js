@@ -239,6 +239,8 @@ export class MenuRoom extends Phaser.Scene {
         nameTaghitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
         // Action
         nameTaghitbox.on('pointerdown', () => {
+            const input = document.getElementById("nameInput");
+            input.focus();
             this.isEditingName = true;
             this.playerName = "";
             this.editOverlay.setVisible(true);
