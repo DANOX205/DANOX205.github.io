@@ -116,6 +116,8 @@ export class MenuRoom extends Phaser.Scene {
     // Variables Globales pour le jeu
     
     create() {
+        window.scrollTo(0, 1);
+
         this.TRICHE = false;
         this.EMOTE = false;
         this.SkinTeteIndex = 0;
