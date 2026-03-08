@@ -22,6 +22,14 @@ export class MenuRoom extends Phaser.Scene {
         }
         this.load.image('Emote_0','./assets/sEmote_0.png');
         this.load.image('btnPlay','./assets/sPlay_new_0.png');
+        for (let i = 0;i <=3 ; i++) { // 4 images (0 à 3)
+            this.load.image('Rules_'+i,'./assets/sRules_' + i + '.png');    
+        }
+        for (let i = 0;i <=1 ; i++) { 
+            this.load.image('InitServer_'+i,'./assets/sInitServer_' + i + '.png');    
+        }
+        this.load.image('btnFullScreenOFF','./assets/sFullScreen_0.png');
+        this.load.image('btnFullScreenON','./assets/sFullScreen_1.png');
 
         // Pour le Joueur
         this.load.image('TeteBlank','./assets/sTete_Blank_0.png');
@@ -191,6 +199,10 @@ export class MenuRoom extends Phaser.Scene {
         const buttonCheat_Y = 160;
         const buttonEmote_X = 284.5;
         const buttonEmote_Y = 160;
+        const buttonRules_X = 286;
+        const buttonRules_Y = 160;
+        const buttonFullScreen_X = 284.5;
+        const buttonFullScreen_Y = 160;
         const buttonPlay_X = 284.5 - 250;
         const buttonPlay_Y = 160;
         const Player_X = 295;
@@ -205,6 +217,11 @@ export class MenuRoom extends Phaser.Scene {
         const switchCosmeticCorps_1_Y = 210;
         const switchCosmeticCorps_2_X = 338;
         const switchCosmeticCorps_2_Y = 210;
+
+        // BOUTON FULLSCREEN --------------------------------------------------------------
+        const buttonFullScreen = new FullScreen(this,buttonFullScreen_X,buttonFullScreen_Y);
+        // this.Selected
+        this.buttonRules = new DisplayRules(this,buttonRules_X,buttonRules_Y);
 
         // Joueur --------------------------------------------------------------
         const PLAYER = new Player(this,Player_X ,Player_Y);
@@ -239,19 +256,21 @@ export class MenuRoom extends Phaser.Scene {
         nameTaghitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
         // Action
         nameTaghitbox.on('pointerdown', () => {
-            const input = document.getElementById("nameInput");
-            input.focus();
-            this.isEditingName = true;
-            this.playerName = "";
-            this.editOverlay.setVisible(true);
-            this.editHint.setVisible(true);
-            this.tweens.add({
-                targets: this.nameText,
-                alpha: 0.5,
-                duration: 500,
-                yoyo: true,
-                repeat: -1
-            });
+            if (!this.buttonRules.Selected){
+                const input = document.getElementById("nameInput");
+                input.focus();
+                this.isEditingName = true;
+                this.playerName = "";
+                this.editOverlay.setVisible(true);
+                this.editHint.setVisible(true);
+                this.tweens.add({
+                    targets: this.nameText,
+                    alpha: 0.5,
+                    duration: 500,
+                    yoyo: true,
+                    repeat: -1
+                });
+            }
         });
         // Nametag
         this.editOverlay = this.add.rectangle(
@@ -314,12 +333,14 @@ export class MenuRoom extends Phaser.Scene {
         hitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
         // Action 
         buttonCheathitbox.on('pointerdown', () => {
-            this.TRICHE = !this.TRICHE;
-            console.log('Bouton TRICHE cliqué : TRICHE =',this.TRICHE);
-            if (this.TRICHE){
-                buttonCheat.setTexture('btnCheatOn');
-            } else {
-                buttonCheat.setTexture('btnCheatOff');
+            if (!this.buttonRules.Selected){
+                this.TRICHE = !this.TRICHE;
+                console.log('Bouton TRICHE cliqué : TRICHE =',this.TRICHE);
+                if (this.TRICHE){
+                    buttonCheat.setTexture('btnCheatOn');
+                } else {
+                    buttonCheat.setTexture('btnCheatOff');
+                }
             }
         });
 
@@ -394,7 +415,6 @@ export class MenuRoom extends Phaser.Scene {
             }
         });
 
-
         // BOUTON PLAY --------------------------------------------------------------
         const buttonPlay = this.add.sprite(buttonPlay_X,buttonPlay_Y ,'btnPlay');
         //Depth
@@ -415,15 +435,17 @@ export class MenuRoom extends Phaser.Scene {
         hitboxDebug_buttonPlay.setOrigin(0.5, 0.5); // centre sur la zone
         // Action 
         buttonPlayhitbox.on('pointerdown', () => {
-            console.log('Bouton PLAY cliqué.');
-            const playerData = {
-                SkinTeteIndex: this.SkinTeteIndex,
-                SkinCorpsIndex: this.SkinCorpsIndex,
-                Username: this.playerName,
-                Emotion: PLAYER.getEmotion(),
-                Triche : this.TRICHE
-            };
-            this.scene.start("GameRoom", {playerData : playerData});
+            if (!this.buttonRules.Selected) {
+                console.log('Bouton PLAY cliqué.');
+                const playerData = {
+                    SkinTeteIndex: this.SkinTeteIndex,
+                    SkinCorpsIndex: this.SkinCorpsIndex,
+                    Username: this.playerName,
+                    Emotion: PLAYER.getEmotion(),
+                    Triche : this.TRICHE
+                };
+                this.scene.start("GameRoom", {playerData : playerData});
+            }
         });
 
         // BOUTON Switch Cosmetics --------------------------------------------------------------
@@ -461,17 +483,21 @@ export class MenuRoom extends Phaser.Scene {
         hitboxDebug_switchCosmeticTete_2.setOrigin(0.5, 0.5); // centre sur la zone
         // Action 
         switchCosmeticTete_2hitbox.on('pointerdown', () => {
-            console.log('Bouton CosmeticTete_2 cliqué.');
-            if (this.SkinTeteIndex < this.NbrSkinTete) {
-                this.SkinTeteIndex = this.SkinTeteIndex + 1;
-                PLAYER.setSkinTete(this.SkinTeteIndex);
+            if (!this.buttonRules.Selected){
+                console.log('Bouton CosmeticTete_2 cliqué.');
+                if (this.SkinTeteIndex < this.NbrSkinTete) {
+                    this.SkinTeteIndex = this.SkinTeteIndex + 1;
+                    PLAYER.setSkinTete(this.SkinTeteIndex);
+                }
             }
         });
         switchCosmeticTete_1hitbox.on('pointerdown', () => {
+            if (!this.buttonRules.Selected){
             console.log('Bouton CosmeticTete_1 cliqué.');
-            if (this.SkinTeteIndex > 0) {
-                this.SkinTeteIndex = this.SkinTeteIndex - 1;
-                PLAYER.setSkinTete(this.SkinTeteIndex);
+                if (this.SkinTeteIndex > 0) {
+                    this.SkinTeteIndex = this.SkinTeteIndex - 1;
+                    PLAYER.setSkinTete(this.SkinTeteIndex);
+                }
             }
         });
 
@@ -509,17 +535,21 @@ export class MenuRoom extends Phaser.Scene {
         hitboxDebug_switchCosmeticCorps_2.setOrigin(0.5, 0.5); // centre sur la zone
         // Action 
         switchCosmeticCorps_2hitbox.on('pointerdown', () => {
-            console.log('Bouton CosmeticTete_2 cliqué.');
-            if (this.SkinCorpsIndex < this.NbrSkinCorps) {
-                this.SkinCorpsIndex = this.SkinCorpsIndex + 1;
-                PLAYER.setSkinCorps(this.SkinCorpsIndex);
+            if (!this.buttonRules.Selected){
+                console.log('Bouton CosmeticTete_2 cliqué.');
+                if (this.SkinCorpsIndex < this.NbrSkinCorps) {
+                    this.SkinCorpsIndex = this.SkinCorpsIndex + 1;
+                    PLAYER.setSkinCorps(this.SkinCorpsIndex);
+                }
             }
         });
         switchCosmeticCorps_1hitbox.on('pointerdown', () => {
-            console.log('Bouton CosmeticTete_1 cliqué.');
-            if (this.SkinCorpsIndex > 0) {
-                this.SkinCorpsIndex = this.SkinCorpsIndex - 1;
-                PLAYER.setSkinCorps(this.SkinCorpsIndex);
+            if (!this.buttonRules.Selected){
+                console.log('Bouton CosmeticTete_1 cliqué.');
+                if (this.SkinCorpsIndex > 0) {
+                    this.SkinCorpsIndex = this.SkinCorpsIndex - 1;
+                    PLAYER.setSkinCorps(this.SkinCorpsIndex);
+                }
             }
         });
     }
