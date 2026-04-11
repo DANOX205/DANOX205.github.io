@@ -51,6 +51,12 @@ function preload() {
     for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
         this.load.image('TeteSkin4_' + i, 'assets/sTete_Roi_Carreau_' + i + '.png');
     }
+    for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+        this.load.image('TeteSkin5_' + i, 'assets/sTete_Jester_' + i + '.png');
+    }
+    for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+        this.load.image('TeteSkin6_' + i, 'assets/sTete_Witch_' + i + '.png');
+    }
 
     this.load.image('TeteSweat','assets/sTete_sweat_0.png');
 
@@ -71,6 +77,13 @@ function preload() {
     for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
         this.load.image('CorpsSkin4_' + i, 'assets/sCorps_Armor_' + i + '.png');
     }
+    for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+        this.load.image('CorpsSkin5_' + i, 'assets/sCorps_Jester_' + i + '.png');
+    }
+    for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+        this.load.image('CorpsSkin6_' + i, 'assets/sCorps_Witch_' + i + '.png');
+    }
+
 
     this.load.image('Cartes','assets/sCartes_Default_0.png');
     //Nametag

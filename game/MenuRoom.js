@@ -56,6 +56,12 @@ export class MenuRoom extends Phaser.Scene {
         for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
             this.load.image('TeteSkin4_' + i, './assets/sTete_Roi_Carreau_' + i + '.png');
         }
+        for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+            this.load.image('TeteSkin5_' + i, 'assets/sTete_Jester_' + i + '.png');
+        }
+        for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+            this.load.image('TeteSkin6_' + i, 'assets/sTete_Witch_' + i + '.png');
+        }
 
         this.load.image('TeteSweat','./assets/sTete_sweat_0.png');
 
@@ -76,6 +82,13 @@ export class MenuRoom extends Phaser.Scene {
         for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
             this.load.image('CorpsSkin4_' + i, './assets/sCorps_Armor_' + i + '.png');
         }
+        for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+            this.load.image('CorpsSkin5_' + i, 'assets/sCorps_Jester_' + i + '.png');
+        }
+        for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+            this.load.image('CorpsSkin6_' + i, 'assets/sCorps_Witch_' + i + '.png');
+        }
+
 
         for (let i = 0; i <= 11; i++) {  // 12 images (0 à 11)
             this.load.image('NbrCartes_' + i, './assets/sNbr_Cartes_others_' + i + '.png');
@@ -122,8 +135,8 @@ export class MenuRoom extends Phaser.Scene {
         this.EMOTE = false;
         this.SkinTeteIndex = 0;
         this.SkinCorpsIndex = 0;
-        this.NbrSkinTete = 4;
-        this.NbrSkinCorps = 4;
+        this.NbrSkinTete = 6;
+        this.NbrSkinCorps = 6;
 
         // Transition du Début
         this.anims.create({
