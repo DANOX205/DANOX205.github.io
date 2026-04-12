@@ -32,6 +32,7 @@ export class GameRoom extends Phaser.Scene {
             this.load.image('CartesSurTable_' + i, './assets/sCartes_sur_table_' + i + '.png');
         }
         this.load.image('CarteEnEchange','./assets/sCard_Echange_0.png');
+        this.load.image('CarteCantPlay','./assets/sCard_Cant_Play_0.png');
 
         for (let i = 0; i <= 24; i++) {  // 25 images (0 à 24)
             this.load.image('Timer_' + i, './assets/sTimer_' + i + '.png');
@@ -49,6 +50,9 @@ export class GameRoom extends Phaser.Scene {
         this.load.image('Depot', './assets/oCartes_Empty_0.png');
         for (let i = 0; i <= 53; i++) {  // 54 images (0 à 53)
             this.load.image('CartesMinis_' + i, './assets/oCartes_Main_' + i + '.png');
+        }
+        for (let i = 54; i <= 65; i++) {  // 11 images (54 à 65)
+            this.load.image('CartesMinis_' + i, './assets/oCartes_Main2_' + (i-1) + '.png');
         }
         for (let i = 0; i <= 2; i++) {  // 3 images (0 à 2)
             this.load.image('CartesPioche_' + i, './assets/sDistribution_' + i + '.png');
@@ -95,6 +99,7 @@ export class GameRoom extends Phaser.Scene {
         this.playerCountReady = 0;
         this.HoldCartesSelected = false;
         this.ReadySelected = false;
+        this.CurrentCard = 0;
 
         this.anims.create({
             key: 'TimerAnim',
@@ -149,8 +154,9 @@ export class GameRoom extends Phaser.Scene {
         const light = this.add.sprite(284.5,200 ,'Light');
         light.setDepth(70); 
         light.setAlpha(0.2);
-        const timer = this.add.sprite(284.5,160 ,'Timer_0');
-        timer.setDepth(70);
+        this.timerIndex = 0;
+        this.timer = this.add.sprite(284.5,160 ,'Timer_0');
+        this.timer.setDepth(70);
         //timer.play('TimerAnim'); 
         const objetIcon = this.add.sprite(330,100 ,'ObjetIcon_0');
         objetIcon.setDepth(70);
@@ -396,10 +402,14 @@ export class GameRoom extends Phaser.Scene {
             }
             if (data.type === "gameUpdate"){
                 this.Turn = data.payload.Turn;
+                this.CurrentCard = data.payload.CurrentCard;
                 this.cartes = data.payload.Cartes;
             }
             if (data.type === "EchangeUpdate"){
                 this.listes_echanges = data.payload;
+            }
+            if (data.type === "TimerUpdate"){
+                this.timerIndex = data.payload;
             }
             if (data.type === "CancelEchange"){
                 this.listes_echanges = data.payload;
@@ -495,6 +505,8 @@ export class GameRoom extends Phaser.Scene {
     }
 
     updateGame(time){
+        this.CarteEnJeu.ChangeSprite(this.CurrentCard);
+        this.timer.setTexture('Timer_' + this.timerIndex);
         if (this.Turn === this.myNum){
             this.Depot.setVisible(true);
             this.PLAYER.ChangeNameTagSprite(1);

@@ -24,4 +24,7 @@ class CarteEnJeu {
         this.floatTween.stop();
     }
 
+    ChangeSprite(Valeur){
+        this.sprite.setTexture('CartesMinis_'+ Valeur);
+    }
 }

@@ -23,6 +23,8 @@ class PiocheCard {
         this.spritehitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
         // Action 
         this.spritehitbox.on('pointerdown', () => {
+            // Si c'est mon tour, j'envoie un paquet au Serveur !
+            // Mettre une protection pour n'appuyer qu'une seule fois sur la pioche.
             console.log("On a appuyé sur la pioche.");
         });
         // Quand la souris passe dessus

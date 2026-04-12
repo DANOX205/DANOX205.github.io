@@ -59,6 +59,7 @@ class HoldCartes {
                 } else if (this.cartes[i].Valeur !== Valeurs[i].Valeur) {
                     this.cartes[i].updateValue(Valeurs[i].Valeur);
                 }
+                this.cartes[i].updateStatus();
             }
 
             // supprimer les cartes en trop
