@@ -7,6 +7,7 @@ class PiocheCard {
         this.sprite = scene.add.sprite(x, y, 'CartesPioche_0').setVisible(seen);
         this.floatTween = null;
         this.sprite.setDepth(80);
+        this.wait = true;
         // Création de l'hitbox pour la pioche.
         this.spritehitbox = scene.add.zone(x,y-2, 19, 25).setVisible(seen);
         this.spritehitbox.setInteractive();  
@@ -23,6 +24,13 @@ class PiocheCard {
         this.spritehitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
         // Action 
         this.spritehitbox.on('pointerdown', () => {
+            if (this.scene.Turn === this.scene.myNum){
+                if (this.wait){
+                    this.wait = false;
+                    this.sendJePioche();
+                    this.waitBeforeNextSend();
+                }
+            }
             // Si c'est mon tour, j'envoie un paquet au Serveur !
             // Mettre une protection pour n'appuyer qu'une seule fois sur la pioche.
             console.log("On a appuyé sur la pioche.");
@@ -72,7 +80,6 @@ class PiocheCard {
         }
     }
 
-
     StartAnimation(){
         this.floatTween = this.scene.tweens.add({
             targets: this.sprite,          // si on est dans l'objet CarteEnJeu
@@ -88,4 +95,52 @@ class PiocheCard {
         this.floatTween.stop();
     }
 
+    StartAnimation_ReceivingCard(){
+        const sprite = this.scene.add.sprite(this.x, this.y, 'CartesMinis_53');
+        sprite.setDepth(100);
+        const startY = sprite.y;
+        const targetY = startY + 100;
+        this.scene.tweens.add({
+            targets: sprite,
+            y: targetY,
+            duration: 600,
+            ease: 'Sine.easeOut',
+            onComplete: () => {
+                sprite.destroy();
+            }
+        });
+    }
+
+    StartAnimation_OtherReceivingCard(){
+        const sprite = this.scene.add.sprite(this.x, this.y, 'CartesMinis_53');
+        sprite.setDepth(100);
+        const startY = sprite.y;
+        const targetY = startY - 50;
+        this.scene.tweens.add({
+            targets: sprite,
+            y: targetY,
+            duration: 600,
+            ease: 'Sine.easeOut',
+            onComplete: () => {
+                sprite.destroy();
+            }
+        });
+    }
+
+    waitBeforeNextSend(){
+        let Timer = 0;
+        let interval = setInterval(() => {
+            Timer++;
+            if (Timer > 10){
+                this.wait = true;
+            }
+        },50);
+    }
+
+    sendJePioche(){
+        this.scene.socket.send(JSON.stringify({
+            type: "JePioche",
+            payload: this.scene.myNum
+        }));
+    }
 }

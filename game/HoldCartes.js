@@ -6,6 +6,7 @@ class HoldCartes {
         this.y = y;
         this.HoldCartes = this.scene.add.sprite(x,y ,'CartesHitboxON');
         this.cartes = [];
+        this.GeneralY = 335;
         //Depth
         this.HoldCartes.setDepth(101);
         this.HoldCartes.setAlpha(0.8);
@@ -45,17 +46,17 @@ class HoldCartes {
 
     addCartes(Valeurs) {
         for (let i = 0;i<Valeurs.length;i++){
-            const Carte = new Cartes(this.scene,this.x,335,Valeurs[i].Valeur);
+            const Carte = new Cartes(this.scene,this.x,this.GeneralY,Valeurs[i].Valeur);
             this.cartes.push(Carte);
         }
-        this.setXValueCards();
     }
 
     updateCartes(Valeurs){
         if (this.scene.roomState != RoomState.WAITING_PLAYERS) {
             for (let i = 0; i < Valeurs.length; i++) {
                 if (!this.cartes[i]) {
-                    this.cartes[i] = new Cartes(this.scene,this.x,335,Valeurs[i].Valeur);
+                    this.cartes[i] = new Cartes(this.scene,this.x,this.GeneralY,Valeurs[i].Valeur);
+                    this.setXValueCards();
                 } else if (this.cartes[i].Valeur !== Valeurs[i].Valeur) {
                     this.cartes[i].updateValue(Valeurs[i].Valeur);
                 }
@@ -77,32 +78,24 @@ class HoldCartes {
         const total = this.cartes.length;
         for (let i = 0; i < total; i++) {
             const Carte = this.cartes[i];
-            const offset = (i - (total - 1) / 4) * spacing;
-            Carte.setPosition(this.x + 13 + offset, Carte.y);
+            const offset = (i - (total - 1) / 2) * spacing;
+            Carte.setPosition(this.x + 3 + offset, this.GeneralY);
         }
     }
-    /*
-    setXValueCards() {
-        const spacing = 40;
-        const total = this.cartes.length;
-        for (let i = 0; i < total; i++) {
-            const Carte = this.cartes[i];
-            const offset = (i - (total - 1) / 2) * spacing;
-            Carte.setPosition(this.x + 3 + offset, Carte.y);
-        }
-    }*/
 
     HoldCardsDown(){
+        this.GeneralY = 335;
         for (let i = 0;i<this.cartes.length;i++){
             const Carte = this.cartes[i];
-            Carte.setPosition(Carte.initialX,335);
+            Carte.setPosition(Carte.initialX,this.GeneralY);
         }
     }
 
     HoldCardsUp(){
+        this.GeneralY = 295;
         for (let i = 0;i<this.cartes.length;i++){
             const Carte = this.cartes[i];
-            Carte.setPosition(Carte.initialX,295);
+            Carte.setPosition(Carte.initialX,this.GeneralY);
         }
     }
 }

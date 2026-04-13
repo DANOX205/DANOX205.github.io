@@ -411,6 +411,15 @@ export class GameRoom extends Phaser.Scene {
             if (data.type === "TimerUpdate"){
                 this.timerIndex = data.payload;
             }
+            if (data.type === "Pioche"){
+                if (data.payload === this.myNum){
+                    // Lancer animation de je reçois une carte
+                    this.PiocheCard.StartAnimation_ReceivingCard();
+                } else {
+                    // Lancer animation adversaire reçoit une carte
+                    this.PiocheCard.StartAnimation_OtherReceivingCard();
+                }
+            }
             if (data.type === "CancelEchange"){
                 this.listes_echanges = data.payload;
                 for (let e of this.listes_echanges) {

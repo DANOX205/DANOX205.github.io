@@ -9,6 +9,7 @@ class Cartes {
         this.Seen = Seen;
         this.CanCombo = CanCombo;
         this.isComboing = false;
+        this.isDragging = false;
         this.otherCardCombo = null;
         this.Echange = Echange;
         this.sprite = scene.add.sprite(x, y, 'CartesMinis_'+ Valeur);
@@ -63,16 +64,18 @@ class Cartes {
             }
         });
         scene.input.on('dragstart', (pointer, gameObject) => {
-            this.isComboing = false;
             if (gameObject === this.spritehitbox) {
+                this.isDragging = true;
+                this.isComboing = false;
                 this.sprite.setScale(2.2);
                 this.seen.setScale(2.2);
                 this.spritecanCombo.setScale(2.2);
             }
         });
         scene.input.on('dragend', (pointer, gameObject) => {
-            this.isComboing = false;
             if (gameObject === this.spritehitbox) {
+                this.isDragging = false;
+                this.isComboing = false;
                 this.BacktoInitPositionAnimation(this);
                 if (this.otherCardCombo != null){
                     this.BacktoInitPositionAnimation(this.otherCardCombo);
@@ -136,17 +139,24 @@ class Cartes {
     }
 
     setPosition(x,y){
-        this.x = x;
-        this.y = y;
+        console.log("Carte", this.id, "drag?", this.isDragging);
+        this.setInitPosition(x,y)
+        if (!this.isDragging){
+            this.x = x;
+            this.y = y;
+            this.sprite.setPosition(x,y);
+            this.spritehitbox.setPosition(x,y);
+            this.spritehitboxDebug.setPosition(x,y);
+            this.seen.setPosition(x,y);
+            this.spritecanCombo.setPosition(x,y);
+            this.spritecantPlay.setPosition(x,y);
+            this.carteEnEchange.setPosition(x,y);
+        }
+    }
+
+    setInitPosition(x,y){
         this.initialX = x;
         this.initialY = y;
-        this.sprite.setPosition(x,y);
-        this.spritehitbox.setPosition(x,y);
-        this.spritehitboxDebug.setPosition(x,y);
-        this.seen.setPosition(x,y);
-        this.spritecanCombo.setPosition(x,y);
-        this.spritecantPlay.setPosition(x,y);
-        this.carteEnEchange.setPosition(x,y);
     }
 
     updateValue(value){
