@@ -296,7 +296,9 @@ export class GameRoom extends Phaser.Scene {
                 buttonEmote.setTexture('btnEmote_2');
                 // Exemple : créer 5 boutons Emote
                 for (let i = 0; i < 11; i++) {
-                    const btn = new Emote(this, buttonEmote_X - 165 + i*32, buttonEmote_Y-95, i, this.PLAYER);
+                    let Y = (34 * Math.trunc(i/11));
+                    let X = 32 * (i % 11);
+                    const btn = new Emote(this, buttonEmote_X - 165 + X, buttonEmote_Y-95+Y, i, PLAYER);
                     this.emotes.push(btn);
                 }
             } else {
