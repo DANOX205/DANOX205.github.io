@@ -75,8 +75,15 @@ class Cartes {
         scene.input.on('dragend', (pointer, gameObject) => {
             if (gameObject === this.spritehitbox) {
                 this.isDragging = false;
-                this.isComboing = false;
                 this.BacktoInitPositionAnimation(this);
+
+                // Vérifier collision avec le Dépôt 
+                if (this.isOverlapping(this.spritehitbox, this.scene.Depot.spritehitbox)) {
+                    console.log("Je dois envoyer la carte au serveur");
+                    this.sendCard() // Envoyer le message au Serveur.
+                }
+                // Important de mettre ça après la collision avec le dépôt
+                this.isComboing = false;
                 if (this.otherCardCombo != null){
                     this.BacktoInitPositionAnimation(this.otherCardCombo);
                     this.otherCardCombo = null;
@@ -139,7 +146,7 @@ class Cartes {
     }
 
     setPosition(x,y){
-        console.log("Carte", this.id, "drag?", this.isDragging);
+        //console.log("Carte", this.id, "drag?", this.isDragging);
         this.setInitPosition(x,y)
         if (!this.isDragging){
             this.x = x;
@@ -200,7 +207,7 @@ class Cartes {
 
     canPlay(){
         const val = this.Valeur % 13;
-        const currentCard = this.scene.CurrentCard;
+        const currentCard = this.scene.CurrentCard % 13;
         if ((val === 0) || (val === 11) || (val === 12)) { // C'est un Valet, Reine ou Roi
             return true;
         } else {
@@ -237,6 +244,23 @@ class Cartes {
             obj1.getBounds(),
             obj2.getBounds()
         );
+    }
+
+    sendCard(){
+        let otherValeur = null;
+        if (this.otherCardCombo != null){
+            otherValeur = this.otherCardCombo.Valeur;
+        }
+        const payload = {
+            playerNum : this.scene.myNum,
+            Valeur: this.Valeur,
+            IsComboing: this.isComboing,
+            OtherValeur: otherValeur
+        };
+        this.scene.socket.send(JSON.stringify({
+            type: "CardPlayed",
+            payload: payload
+        })); 
     }
 
     destroy(){

@@ -17,7 +17,7 @@ export class MenuRoom extends Phaser.Scene {
         this.load.image('btnEmote_1','./assets/sEmote_Bouton_1.png');
         this.load.image('btnEmote_2','./assets/sEmote_Bouton_2.png');
         this.load.image('SwitchCosmetic','./assets/sSwitch_Cosmetic_0.png');
-        for (let i = 0; i <= 11; i++) {  // 12 images (0 à 11)
+        for (let i = 0; i <= 12; i++) {  // 12 images (0 à 11)
             this.load.image('Emote_' + i, './assets/sEmotes_' + i + '.png');
         }
         this.load.image('Emote_0','./assets/sEmote_0.png');
@@ -35,7 +35,7 @@ export class MenuRoom extends Phaser.Scene {
         this.load.image('TeteBlank','./assets/sTete_Blank_0.png');
         this.load.image('TeteLunettes','./assets/sLunettes_Perso_0.png');
         this.load.image('CorpsMenottes','./assets/sMenottes_Perso_0.png');
-        for (let i = 0; i <= 11; i++) {  // 12 images (0 à 11)
+        for (let i = 0; i <= 12; i++) {  // 12 images (0 à 11)
             this.load.image('TeteSup_' + i, './assets/sTete_Sup_' + i + '.png');
             this.load.image('TeteFace_' + i, './assets/sTete_Face_' + i + '.png');
         }
@@ -61,6 +61,15 @@ export class MenuRoom extends Phaser.Scene {
         }
         for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
             this.load.image('TeteSkin6_' + i, 'assets/sTete_Witch_' + i + '.png');
+        }
+        for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+            this.load.image('TeteSkin7_' + i, 'assets/sTete_Servant_' + i + '.png');
+        }
+        for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+            this.load.image('TeteSkin8_' + i, 'assets/sTete_Messenger_' + i + '.png');
+        }
+        for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+            this.load.image('TeteSkin9_' + i, 'assets/sTete_Detective_' + i + '.png');
         }
 
         this.load.image('TeteSweat','./assets/sTete_sweat_0.png');
@@ -88,7 +97,15 @@ export class MenuRoom extends Phaser.Scene {
         for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
             this.load.image('CorpsSkin6_' + i, 'assets/sCorps_Witch_' + i + '.png');
         }
-
+        for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+            this.load.image('CorpsSkin7_' + i, 'assets/sCorps_Servant_' + i + '.png');
+        }
+        for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+            this.load.image('CorpsSkin8_' + i, 'assets/sCorps_Messenger_' + i + '.png');
+        }
+        for (let i = 0; i <= 1; i++) {  // 2 images (0 à 1)
+            this.load.image('CorpsSkin9_' + i, 'assets/sCorps_Detective_' + i + '.png');
+        }
 
         for (let i = 0; i <= 11; i++) {  // 12 images (0 à 11)
             this.load.image('NbrCartes_' + i, './assets/sNbr_Cartes_others_' + i + '.png');
@@ -135,8 +152,8 @@ export class MenuRoom extends Phaser.Scene {
         this.EMOTE = false;
         this.SkinTeteIndex = 0;
         this.SkinCorpsIndex = 0;
-        this.NbrSkinTete = 6;
-        this.NbrSkinCorps = 6;
+        this.NbrSkinTete = 9;
+        this.NbrSkinCorps = 9;
 
         // Transition du Début
         this.anims.create({
@@ -403,8 +420,10 @@ export class MenuRoom extends Phaser.Scene {
             if (this.EMOTE){
                 buttonEmote.setTexture('btnEmote_2');
                 // Exemple : créer 5 boutons Emote
-                for (let i = 0; i < 11; i++) {
-                    const btn = new Emote(this, buttonEmote_X - 165 + i*32, buttonEmote_Y-95, i, PLAYER);
+                for (let i = 0; i < 13; i++) {
+                    let Y = (34 * Math.trunc(i/11));
+                    let X = 32 * (i % 11);
+                    const btn = new Emote(this, buttonEmote_X - 165 + X, buttonEmote_Y-95+Y, i, PLAYER);
                     this.emotes.push(btn);
                 }
             } else {

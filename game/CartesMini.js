@@ -10,6 +10,7 @@ class CartesMini {
         this.Echange = Echange;
         this.cliquable = cliquable;
         this.draggable = draggable;
+        this.isDragging = false;
         this.Player = Player;
         this.PlayerEchange = PlayerEchange;
         this.yours = Yours;
@@ -53,6 +54,7 @@ class CartesMini {
         scene.input.on('dragstart', (pointer, gameObject) => {
             if (draggable){
                 if (gameObject === this.spritehitbox) {
+                    this.isDragging = true;
                     this.sprite.setScale(1.2);
                 }
             }
@@ -80,6 +82,7 @@ class CartesMini {
                     }
                 }
                 if (gameObject === this.spritehitbox) {
+                    this.isDragging = false;
                     scene.tweens.add({
                         targets: [
                             this.sprite,
@@ -185,6 +188,13 @@ class CartesMini {
             type: "playerProposeEchange",
             payload: payload
         }));
+    }
+
+    destroy(){
+        this.sprite.destroy();
+        this.echange.destroy();
+        this.spritehitbox.destroy();
+        this.spritehitboxDebug.destroy();
     }
 
 }

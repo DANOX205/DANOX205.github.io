@@ -41,6 +41,7 @@ class CartesShow {
         this.carteshitbox.on('pointerdown', () => {
             if (NUM != 0){
                 console.log('Bouton Cartes cliqué : ' + this.clickAllowed);
+                this.ShowEchange = false;
                 this.ClickOnCards();
             }
         });
@@ -69,6 +70,8 @@ class CartesShow {
         this.OtherAccept = false;
         this.Accept = false;
 
+        this.ShowEchange = false;
+
         // Alerte proposition Echange
         this.alert_EchangePropose = scene.add.sprite(x-13,y+61,'AlertEchangePropose').setVisible(false);
 
@@ -91,6 +94,7 @@ class CartesShow {
         this.cartesShowEchangesBoutonhitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
         // Action 
         this.cartesShowEchangesBoutonhitbox.on('pointerdown', () => {
+            this.ShowEchange = !this.ShowEchange;
             this.ClickOncartesShowEchangesBouton();
         });
 
@@ -215,6 +219,11 @@ class CartesShow {
     updateCartesShow(Cartes) {
         this.updateEchangePropose();
         this.updatePlayerCards(Cartes);
+        if (!this.ShowEchange){
+            this.UpdateCartesJoueurPosition(this.x, this.y); // TEST
+        } else {
+            this.UpdateSceneCartesJoueurPosition(this.x, this.y, true); // TEST
+        }
     }
 
     updateEchangePropose(){
@@ -230,7 +239,7 @@ class CartesShow {
                     this.cartes_joueur[i].updateValue(Cartes[i].Valeur);
                 }
             }
-            this.deleteUselessElements(Cartes,this.cartes_joueur);
+            this.deleteUselessElements2(Cartes,this.cartes_joueur);
             this.updateSceneCartes();
         }
         this.setNbrCartes(Cartes);
@@ -263,6 +272,7 @@ class CartesShow {
                 }
             }
         }
+        this.deleteUselessElements2(this.scene.cartes_joueur,this.scene_cartes_joueur);
         // Si des cartes ont été supprimées
         if (this.scene_cartes_joueur.length > this.scene.cartes_joueur.length) {
             this.scene_cartes_joueur.length = this.scene.cartes_joueur.length;
@@ -274,6 +284,17 @@ class CartesShow {
             if (Cartes_Objets[i] && Cartes_Objets[i] !== -1) {
                 if (!Cartes[i]) {
                     Cartes_Objets[i].sprite.destroy(); // important en Phaser
+                    Cartes_Objets.splice(i, 1);
+                }
+            }
+        }
+    }
+
+    deleteUselessElements2(Cartes,Cartes_Objets){
+        for (let i = Cartes_Objets.length - 1; i >= 0; i--) {
+            if (Cartes_Objets[i] && Cartes_Objets[i] !== -1) {
+                if (!Cartes[i]) {
+                    Cartes_Objets[i].destroy(); // important en Phaser
                     Cartes_Objets.splice(i, 1);
                 }
             }
@@ -367,16 +388,7 @@ class CartesShow {
             this.cartesShow.setVisible(this.SelectedCartes).setTexture('CartesShow');
             this.cartesShowEchangesBouton.setVisible(this.SelectedCartes).setTexture('CartesShowEchangeBouton');;
             this.cartesShowEchangesBoutonhitboxDebug.setVisible(this.SelectedCartes);
-            for (let i = 0;i < this.cartes_joueur.length; i++) {
-                if ((this.cartes_joueur[i]) && (this.cartes_joueur[i] != -1)){
-                    this.cartes_joueur[i].setSpriteVisible(this.SelectedCartes);
-                    let reste = i%4;
-                    let div_ent = Math.floor(i/4);
-                    let X = (this.x - 34) + reste * 21; 
-                    let Y = (this.y - 50) + div_ent * 30;
-                    this.cartes_joueur[i].setPosition(X,Y);
-                }
-            }
+            this.UpdateCartesJoueurPosition(this.x, this.y);
             this.cartesShowEchanges.setVisible(false);
             this.AcceptEchange.setVisible(false);
             this.AcceptEchangehitbox.setVisible(false);
@@ -386,14 +398,34 @@ class CartesShow {
             this.depothitbox.setVisible(false);
             this.depothitboxDebug.setVisible(false);
             this.cartesShowEchangeshitboxDebug.setVisible(false);
-            for (let i = 0;i < this.scene_cartes_joueur.length; i++) {
+            this.UpdateSceneCartesJoueurPosition(this.x, this.y, false);
+        }
+    }
+
+    UpdateCartesJoueurPosition(x, y){
+        for (let i = 0;i < this.cartes_joueur.length; i++) {
+            if ((this.cartes_joueur[i]) && (this.cartes_joueur[i] != -1)){
+                this.cartes_joueur[i].setSpriteVisible(this.SelectedCartes);
+                let reste = i%4;
+                let div_ent = Math.floor(i/4);
+                let X = (x - 34) + reste * 21; 
+                let Y = (y - 50) + div_ent * 30;
+                this.cartes_joueur[i].setPosition(X,Y);
+            }
+        }
+    }
+
+    UpdateSceneCartesJoueurPosition(x, y, visible) {
+         for (let i = 0;i < this.scene_cartes_joueur.length; i++) {
                 if ((this.scene_cartes_joueur[i]) && (this.scene_cartes_joueur[i] != -1)){
-                    this.scene_cartes_joueur[i].setSpriteVisible(false);
+                    this.scene_cartes_joueur[i].setSpriteVisible(visible);
                     let reste = i%4;
                     let div_ent = Math.floor(i/4);
-                    let X = (this.x - 34) + reste * 21; 
-                    let Y = (this.y - 25) + div_ent * 30;
-                    this.scene_cartes_joueur[i].setPosition(X,Y);
+                    let X = (x - 34) + reste * 21; 
+                    let Y = (y - 25) + div_ent * 30;
+                    if (!this.scene_cartes_joueur[i].isDragging){
+                        this.scene_cartes_joueur[i].setPosition(X,Y);
+                    }
                     if (this.scene_cartes_joueur[i].Echange){
                         if (this.scene_cartes_joueur[i].PlayerEchange === this) {
                             this.scene_cartes_joueur[i].setPosition(this.depothitbox.x,this.depothitbox.y);
@@ -401,8 +433,8 @@ class CartesShow {
                     }
                 }
             }
-        }
     }
+
 
     ClickOncartesShowEchangesBouton(){
         if (this.clickAllowed){
@@ -511,7 +543,7 @@ class CartesShow {
 
     sendAccept(carte){
         const payload = {
-            playerNum : this.scene.myNum,
+           playerNum : this.scene.myNum,
             Source: this.scene.myNum,
             Destination: this.scene.giveNumBasedOnNumPlayer(this.NUM),
             Carte: carte,
@@ -521,7 +553,7 @@ class CartesShow {
         this.scene.socket.send(JSON.stringify({
             type: "playerProposeEchange",
             payload: payload
-        }));
+        })); 
     }
 
     sendCancel(){

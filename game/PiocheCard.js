@@ -127,6 +127,48 @@ class PiocheCard {
         });
     }
 
+    StartAnimation_GivingCard(){
+        const sprite = this.scene.add.sprite(this.x+35, this.y+100, 'CartesMinis_53');
+        sprite.setDepth(100);
+        const targetY = this.y;
+        this.scene.tweens.add({
+            targets: sprite,
+            y: targetY,
+            duration: 600,
+            ease: 'Sine.easeOut',
+            onComplete: () => {
+                const transition = this.scene.add.sprite(this.x+35,this.y ,'FlippingCarte_0');
+                transition.setDepth(100);
+                transition.play('FlippingCardAnim'); 
+                transition.on('animationcomplete', () => {
+                    transition.destroy();
+                });
+                sprite.destroy();
+            }
+        });
+    }
+
+    StartAnimation_OtherGivingCard(){
+        const sprite = this.scene.add.sprite(this.x+35, this.y- 50, 'CartesMinis_53');
+        sprite.setDepth(100);
+        const targetY = this.y;
+        this.scene.tweens.add({
+            targets: sprite,
+            y: targetY,
+            duration: 600,
+            ease: 'Sine.easeOut',
+            onComplete: () => {
+                const transition = this.scene.add.sprite(this.x+35,this.y ,'FlippingCarte_0');
+                transition.setDepth(100);
+                transition.play('FlippingCardAnim'); 
+                transition.on('animationcomplete', () => {
+                    transition.destroy();
+                });
+                sprite.destroy();
+            }
+        });
+    }
+
     waitBeforeNextSend(){
         let Timer = 0;
         let interval = setInterval(() => {

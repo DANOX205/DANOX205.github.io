@@ -198,6 +198,16 @@ class Player {
                     this.oeilGauche.y = this.y;
                 }
                 break;  
+            case 12:
+                this.oeilDroit.x = this.x;
+                this.oeilDroit.setTexture('OeilDroit_0'); 
+                this.oeilGauche.x = this.x;
+                this.oeilGauche.setTexture('OeilGauche_0');
+                if (!this.Looking_Down){
+                    this.oeilDroit.y = this.y;
+                    this.oeilGauche.y = this.y;
+                }
+                break;  
             default : 
                 this.oeilDroit.x = this.x;
                 this.oeilDroit.setTexture('OeilDroit_0'); 

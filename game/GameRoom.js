@@ -57,6 +57,9 @@ export class GameRoom extends Phaser.Scene {
         for (let i = 0; i <= 2; i++) {  // 3 images (0 à 2)
             this.load.image('CartesPioche_' + i, './assets/sDistribution_' + i + '.png');
         }
+        for (let i = 0; i <= 6; i++) {  // 7 images (0 à 6)
+            this.load.image('FlippingCarte_' + i, './assets/sFlipping_Carte_Animation_' + i + '.png');
+        }
         this.load.image('ObjetBackground_NotSelected', './assets/sObjets_Background_0.png');
         this.load.image('ObjetBackground_Selected', './assets/sObjets_Background_1.png');
         // On load les objets 
@@ -132,6 +135,21 @@ export class GameRoom extends Phaser.Scene {
             ],
             frameRate: 2, // 2 images par seconde
             repeat: -1      // 0 = joue une fois, -1 = boucle infinie
+        });
+
+        this.anims.create({
+            key: 'FlippingCardAnim',
+            frames: [
+                { key: 'FlippingCarte_0' },
+                { key: 'FlippingCarte_1' },
+                { key: 'FlippingCarte_2' },
+                { key: 'FlippingCarte_3' },
+                { key: 'FlippingCarte_4' },
+                { key: 'FlippingCarte_5' },
+                { key: 'FlippingCarte_6' }
+            ],
+            frameRate: 8, // 2 images par seconde
+            repeat: 0      // 0 = joue une fois, -1 = boucle infinie
         });
 
         const transition = this.add.sprite(284.5,160 ,'Transition_0');
@@ -418,6 +436,15 @@ export class GameRoom extends Phaser.Scene {
                 } else {
                     // Lancer animation adversaire reçoit une carte
                     this.PiocheCard.StartAnimation_OtherReceivingCard();
+                }
+            }
+            if (data.type === "CardPlayed"){
+                if (data.payload === this.myNum){
+                    // Lancer animation de je reçois une carte
+                    this.PiocheCard.StartAnimation_GivingCard();
+                } else {
+                    // Lancer animation adversaire reçoit une carte
+                    this.PiocheCard.StartAnimation_OtherGivingCard();
                 }
             }
             if (data.type === "CancelEchange"){

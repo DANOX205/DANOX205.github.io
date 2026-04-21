@@ -56,12 +56,13 @@ class HoldCartes {
             for (let i = 0; i < Valeurs.length; i++) {
                 if (!this.cartes[i]) {
                     this.cartes[i] = new Cartes(this.scene,this.x,this.GeneralY,Valeurs[i].Valeur);
-                    this.setXValueCards();
+                    //this.setXValueCards();
                 } else if (this.cartes[i].Valeur !== Valeurs[i].Valeur) {
                     this.cartes[i].updateValue(Valeurs[i].Valeur);
                 }
                 this.cartes[i].updateStatus();
             }
+            this.setXValueCards();
 
             // supprimer les cartes en trop
             for (let i = this.cartes.length - 1; i >= Valeurs.length; i--) {
