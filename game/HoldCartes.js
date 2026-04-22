@@ -60,10 +60,10 @@ class HoldCartes {
                 } else if (this.cartes[i].Valeur !== Valeurs[i].Valeur) {
                     this.cartes[i].updateValue(Valeurs[i].Valeur);
                 }
+                this.cartes[i].Seen = Valeurs[i].Seen;
                 this.cartes[i].updateStatus();
             }
             this.setXValueCards();
-
             // supprimer les cartes en trop
             for (let i = this.cartes.length - 1; i >= Valeurs.length; i--) {
                 if (this.cartes[i]) {

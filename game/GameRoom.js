@@ -48,11 +48,11 @@ export class GameRoom extends Phaser.Scene {
         this.load.image('Carte_Seen', './assets/oCartes_Seen_0.png');
         this.load.image('Carte_CanCombo', './assets/sCartes_Can_Combo_0.png');
         this.load.image('Depot', './assets/oCartes_Empty_0.png');
-        for (let i = 0; i <= 53; i++) {  // 54 images (0 à 53)
+        for (let i = 0; i <= 52; i++) {  // 53 images (0 à 52)
             this.load.image('CartesMinis_' + i, './assets/oCartes_Main_' + i + '.png');
         }
-        for (let i = 54; i <= 65; i++) {  // 11 images (54 à 65)
-            this.load.image('CartesMinis_' + i, './assets/oCartes_Main2_' + (i-1) + '.png');
+        for (let i = 53; i <= 70; i++) {  // 17 images (53 à 70)
+            this.load.image('CartesMinis_' + i, './assets/sCartes_Main2_' + i + '.png');
         }
         for (let i = 0; i <= 2; i++) {  // 3 images (0 à 2)
             this.load.image('CartesPioche_' + i, './assets/sDistribution_' + i + '.png');
@@ -83,6 +83,10 @@ export class GameRoom extends Phaser.Scene {
         }
         this.load.image('CartesHitboxON','./assets/sCartes_Hitbox_0.png');
         this.load.image('CartesHitboxOFF','./assets/sCartes_Hitbox_1.png');
+
+        this.load.image('RoiDescription','./assets/sRoi_Action_0.png');
+        this.load.image('ReineDescription','./assets/sRoi_Action_1.png');
+        this.load.image('ValetDescription','./assets/sRoi_Action_2.png');
     }
 
     create() {
@@ -103,6 +107,7 @@ export class GameRoom extends Phaser.Scene {
         this.HoldCartesSelected = false;
         this.ReadySelected = false;
         this.CurrentCard = 0;
+        this.special_card_power = [];
 
         this.anims.create({
             key: 'TimerAnim',
@@ -206,6 +211,8 @@ export class GameRoom extends Phaser.Scene {
         const Pioche_Y = 150+5;
         const Depot_X = 290;
         const Depot_Y = 160;
+        const DescriptifPower_X = 284.5;
+        const DescriptifPower_Y = 160;
 
         // Joueur0(TOI) --------------------------------------------------------------
         const fondJoueur = this.add.sprite(284.5,160 ,'FondJoueur');
@@ -248,6 +255,9 @@ export class GameRoom extends Phaser.Scene {
         // Depot --------------------------------------------------------------
         this.Depot = new Depot(this,Depot_X,Depot_Y);
 
+        // Descriptif pouvoirs (Roi, Reine, Valet)
+        this.DescriptifPower = new DescriptifPower(this,DescriptifPower_X,DescriptifPower_Y,0);
+        
         // BOUTON SAC --------------------------------------------------------------
         const sac = new Sac(this,this.PLAYER,buttonSac_X,buttonSac_Y);
 
@@ -424,6 +434,9 @@ export class GameRoom extends Phaser.Scene {
                 this.Turn = data.payload.Turn;
                 this.CurrentCard = data.payload.CurrentCard;
                 this.cartes = data.payload.Cartes;
+                this.special_card_power = data.payload.Special_Power;
+                this.DescriptifPower.update(this.special_card_power[0].power);
+                this.DescriptifPower.updatesprite();
             }
             if (data.type === "EchangeUpdate"){
                 this.listes_echanges = data.payload;
@@ -889,7 +902,7 @@ export class GameRoom extends Phaser.Scene {
     updatePlayerMyCards(Cartes) {
         for (let i= 0;i < Cartes.length;i++){
             if ((!this.cartes_joueur[i]) || (this.cartes_joueur[i] == -1)) {
-                this.cartes_joueur[i] = new CartesMini(this,this.x,this.y,Cartes[i].Valeur,true,false,false,true,null,true);
+                this.cartes_joueur[i] = new CartesMini(this,this.x,this.y,Cartes[i].Valeur,this.myNum,true,false,false,true,null,true);
             } else {
                 this.cartes_joueur[i].updateValue(Cartes[i].Valeur);
             }

@@ -1,11 +1,12 @@
 class CartesMini {
-    constructor(scene, x, y,Valeur, Seen = false, Echange = false,cliquable = true, draggable = false,Player = null,PlayerEchange = null, Yours = false){
+    constructor(scene, x, y,Valeur,NUM = 0, Seen = false, Echange = false,cliquable = true, draggable = false,Player = null,PlayerEchange = null, Yours = false){
         this.scene = scene;
         this.x = x;
         this.y = y;
         this.initialX = x;
         this.initialY = y;
         this.Valeur = Valeur;
+        this.NUM = NUM;
         this.Seen = Seen;
         this.Echange = Echange;
         this.cliquable = cliquable;
@@ -39,6 +40,9 @@ class CartesMini {
         // Action 
         this.spritehitbox.on('pointerdown', () => {
             if (this.cliquable){
+                if ((this.scene.special_card_power[0].power == 1) && (this.scene.special_card_power[0].playernum == this.scene.myNum)){
+                    this.sendPower();
+                }
                 console.log("Mini Carte Appuyée.");
             }
         });
@@ -188,6 +192,18 @@ class CartesMini {
             type: "playerProposeEchange",
             payload: payload
         }));
+    }
+
+    sendPower() {
+        const payload = {
+            playerNum : this.scene.giveNumBasedOnNumPlayer(this.NUM),
+            Carte: this.Valeur,
+            power: 1
+        };
+        this.scene.socket.send(JSON.stringify({
+            type: "specialPowerCard",
+            payload: payload
+        })); 
     }
 
     destroy(){

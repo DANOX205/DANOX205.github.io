@@ -40,9 +40,13 @@ class CartesShow {
         // Action 
         this.carteshitbox.on('pointerdown', () => {
             if (NUM != 0){
-                console.log('Bouton Cartes cliqué : ' + this.clickAllowed);
-                this.ShowEchange = false;
-                this.ClickOnCards();
+                if ((this.scene.special_card_power[0].power == 2) && (this.scene.special_card_power[0].playernum == this.scene.myNum)){
+                    this.sendPower();
+                } else {
+                    console.log('Bouton Cartes cliqué : ' + this.clickAllowed);
+                    this.ShowEchange = false;
+                    this.ClickOnCards();
+                }
             }
         });
 
@@ -64,7 +68,7 @@ class CartesShow {
             }
         });
         // Echanges 
-        this.carte_en_echange = new CartesMini(this.scene, x,y,0,true,false,false,false);
+        this.carte_en_echange = new CartesMini(this.scene, x,y,0,this.NUM,true,false,false,false);
         this.carte_en_echange.setSpriteVisible(false);
         this.EchangePropose = false;
         this.OtherAccept = false;
@@ -234,9 +238,10 @@ class CartesShow {
         if (this.scene.roomState != RoomState.WAITING_PLAYERS) {
             for (let i= 0;i < Cartes.length;i++){
                 if ((!this.cartes_joueur[i]) || (this.cartes_joueur[i] == -1)) {
-                    this.cartes_joueur[i] = new CartesMini(this.scene,this.x,this.y,Cartes[i].Valeur);
+                    this.cartes_joueur[i] = new CartesMini(this.scene,this.x,this.y,Cartes[i].Valeur,this.NUM);
                 } else {
                     this.cartes_joueur[i].updateValue(Cartes[i].Valeur);
+                    this.cartes_joueur[i].Seen = Cartes[i].Seen;
                 }
             }
             this.deleteUselessElements2(Cartes,this.cartes_joueur);
@@ -255,6 +260,7 @@ class CartesShow {
                     carteSource.x,
                     carteSource.y,
                     carteSource.Valeur,
+                    this.scene.myNum,
                     carteSource.Seen,
                     carteSource.Echange,
                     carteSource.cliquable,
@@ -552,6 +558,18 @@ class CartesShow {
         };
         this.scene.socket.send(JSON.stringify({
             type: "playerProposeEchange",
+            payload: payload
+        })); 
+    }
+
+    sendPower() {
+        const payload = {
+            playerNum : this.scene.giveNumBasedOnNumPlayer(this.NUM),
+            Carte: -1,
+            power: 2
+        };
+        this.scene.socket.send(JSON.stringify({
+            type: "specialPowerCard",
             payload: payload
         })); 
     }

@@ -43,7 +43,7 @@ class Player {
                 //fontStyle: "bold",
                 color: '#ffffff'
             }).setOrigin(0.5);
-            this.nameText.setDepth(100);
+            this.nameText.setDepth(90);
         } else {
             this.playerName = "toi";
         }

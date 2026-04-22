@@ -57,6 +57,7 @@ class Cartes {
                             if (this.canComboWith(otherCard)) {
                                 this.isComboing = true;
                                 this.otherCardCombo = otherCard;
+                                this.otherCardCombo.isComboing = true;
                             }
                         }
                     });
@@ -78,13 +79,14 @@ class Cartes {
                 this.BacktoInitPositionAnimation(this);
 
                 // Vérifier collision avec le Dépôt 
-                if (this.isOverlapping(this.spritehitbox, this.scene.Depot.spritehitbox)) {
+                if ((this.isOverlapping(this.spritehitbox, this.scene.Depot.spritehitbox)) && (this.scene.Turn == this.scene.myNum)) {
                     console.log("Je dois envoyer la carte au serveur");
                     this.sendCard() // Envoyer le message au Serveur.
                 }
                 // Important de mettre ça après la collision avec le dépôt
                 this.isComboing = false;
                 if (this.otherCardCombo != null){
+                    this.otherCardCombo.isComboing = false;
                     this.BacktoInitPositionAnimation(this.otherCardCombo);
                     this.otherCardCombo = null;
                 }
@@ -109,7 +111,7 @@ class Cartes {
         this.sprite.setPosition(x,y);
         this.spritehitbox.setPosition(x,y);
         this.spritehitboxDebug.setPosition(x,y);
-        this.seen.setPosition(x,y);
+        this.seen.setPosition(x+4,y);
         this.spritecanCombo.setPosition(x,y);
     }
     setPosition_WhileCombo(x,y){
@@ -118,7 +120,7 @@ class Cartes {
         this.sprite.setPosition(x,y);
         this.spritehitbox.setPosition(x,y);
         this.spritehitboxDebug.setPosition(x,y);
-        this.seen.setPosition(x,y);
+        this.seen.setPosition(x+4,y);
         this.spritecanCombo.setPosition(x,y);
         this.sprite.setScale(2.2);
         this.seen.setScale(2.2);
@@ -148,13 +150,13 @@ class Cartes {
     setPosition(x,y){
         //console.log("Carte", this.id, "drag?", this.isDragging);
         this.setInitPosition(x,y)
-        if (!this.isDragging){
+        if ((!this.isDragging) && (!this.isComboing)){
             this.x = x;
             this.y = y;
             this.sprite.setPosition(x,y);
             this.spritehitbox.setPosition(x,y);
             this.spritehitboxDebug.setPosition(x,y);
-            this.seen.setPosition(x,y);
+            this.seen.setPosition(x+4,y);
             this.spritecanCombo.setPosition(x,y);
             this.spritecantPlay.setPosition(x,y);
             this.carteEnEchange.setPosition(x,y);
@@ -236,6 +238,11 @@ class Cartes {
                 this.spritecantPlay.setVisible(true);
                 this.setDraggableState(false);
             }
+        }
+        if (this.Seen){
+            this.seen.setVisible(true);
+        } else {
+            this.seen.setVisible(false);
         }
     }
 
