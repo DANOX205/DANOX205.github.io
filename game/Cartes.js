@@ -209,9 +209,14 @@ class Cartes {
 
     canPlay(){
         const val = this.Valeur % 13;
-        const currentCard = this.scene.CurrentCard % 13;
+        let currentCard = this.scene.CurrentCard % 13;
+        if ((currentCard === 11) || (currentCard === 12)){ // currentCard est un Valet, Reine
+            currentCard = 5;
+        }
         if ((val === 0) || (val === 11) || (val === 12)) { // C'est un Valet, Reine ou Roi
             return true;
+        } else if (this.scene.CurrentCard >= 53){ // C'est une carte Combo
+            return false;
         } else {
             if (val < currentCard) {
                 return false;

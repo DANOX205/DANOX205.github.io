@@ -103,7 +103,7 @@ class CartesShow {
         });
 
         this.cartesShowEchangeshitbox = scene.add.zone(x-3,y+50, 20, 20);
-        this.cartesShowEchangeshitbox.setInteractive();  
+        this.cartesShowEchangeshitbox.setInteractive();
         // Rectangle visuel pour debug
         this.cartesShowEchangeshitboxDebug = scene.add.rectangle(
             x-3,
@@ -120,7 +120,7 @@ class CartesShow {
             this.AnnulerBouton();
         });
 
-        this.AcceptEchange = scene.add.sprite(x-3, y-58, 'CartesShowEchangeAccept').setVisible(false); // TODO : Mettre à false
+        this.AcceptEchange = scene.add.sprite(x-3, y-58, 'CartesShowEchangeAccept').setVisible(false);
         this.AcceptEchangehitbox = scene.add.zone(x-3,y-55, 20, 20);
         this.AcceptEchangehitbox.setInteractive();  
         // Rectangle visuel pour debug
@@ -132,7 +132,7 @@ class CartesShow {
             0x008000, // couleur verte
             0.5       // opacité 0.5
         );
-        this.AcceptEchangehitboxDebug.setVisible(false).setDepth(85); // TODO : Mettre à false
+        this.AcceptEchangehitboxDebug.setVisible(false).setDepth(85);
         this.AcceptEchangehitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
         // Action 
         this.AcceptEchangehitbox.on('pointerdown', () => {
@@ -217,7 +217,9 @@ class CartesShow {
         this.AcceptEchangehitbox.setVisible(false);
         this.AcceptEchangehitboxDebug.setVisible(false);
         this.cartesShowEchangesBoutonhitboxDebug.setVisible(false);
+        this.cartesShowEchangesBoutonhitbox.setVisible(false);
         this.cartesShowEchangeshitboxDebug.setVisible(false);
+        this.cartesShowEchangeshitbox.setVisible(false);
     }
 
     updateCartesShow(Cartes) {
@@ -394,6 +396,7 @@ class CartesShow {
             this.cartesShow.setVisible(this.SelectedCartes).setTexture('CartesShow');
             this.cartesShowEchangesBouton.setVisible(this.SelectedCartes).setTexture('CartesShowEchangeBouton');;
             this.cartesShowEchangesBoutonhitboxDebug.setVisible(this.SelectedCartes);
+            this.cartesShowEchangesBoutonhitbox.setVisible(this.SelectedCartes);
             this.UpdateCartesJoueurPosition(this.x, this.y);
             this.cartesShowEchanges.setVisible(false);
             this.AcceptEchange.setVisible(false);
@@ -403,6 +406,7 @@ class CartesShow {
             this.carte_en_echange.setSpriteVisible(false);
             this.depothitbox.setVisible(false);
             this.depothitboxDebug.setVisible(false);
+            this.cartesShowEchangeshitbox.setVisible(false);
             this.cartesShowEchangeshitboxDebug.setVisible(false);
             this.UpdateSceneCartesJoueurPosition(this.x, this.y, false);
         }
@@ -454,6 +458,7 @@ class CartesShow {
                     this.echangeTimer.setVisible(this.SelectedCartes);
                     this.depothitbox.setVisible(this.SelectedCartes);
                     this.depothitboxDebug.setVisible(this.SelectedCartes);
+                    this.cartesShowEchangeshitbox.setVisible(this.SelectedCartes);
                     this.cartesShowEchangeshitboxDebug.setVisible(this.SelectedCartes);
                     for (let i = 0;i < this.cartes_joueur.length; i++) {
                         if ((this.cartes_joueur[i]) && (this.cartes_joueur[i] != -1)){
@@ -484,6 +489,7 @@ class CartesShow {
                     this.AcceptEchangehitboxDebug.setVisible(false);
                     this.depothitbox.setVisible(false);
                     this.depothitboxDebug.setVisible(false);
+                    this.cartesShowEchangeshitbox.setVisible(false);
                     this.cartesShowEchangeshitboxDebug.setVisible(false);
                     for (let i = 0;i < this.cartes_joueur.length; i++) {
                         if ((this.cartes_joueur[i]) && (this.cartes_joueur[i] != -1)){
