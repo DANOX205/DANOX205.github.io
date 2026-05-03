@@ -680,7 +680,7 @@ function connectToServer(callback) {
 function updateShowHitboxes(scene){
     scene.hitboxDebug_buttonEmote.setVisible(scene.HITBOXES);
     scene.buttonFullScreen.hitboxspriteDebug.setVisible(scene.HITBOXES);
-    scene.buttonRules.hitboxspriteDebug.setVisible(scene.scene.HITBOXES);
+    scene.buttonRules.hitboxspriteDebug.setVisible(scene.HITBOXES);
     scene.hitboxDebug_buttonPlay.setVisible(scene.HITBOXES);
     scene.hitboxDebug_switchCosmeticTete_1.setVisible(scene.HITBOXES);
     scene.hitboxDebug_switchCosmeticTete_2.setVisible(scene.HITBOXES);
@@ -688,6 +688,6 @@ function updateShowHitboxes(scene){
     scene.hitboxDebug_switchCosmeticCorps_2.setVisible(scene.HITBOXES);
     scene.hitboxDebug.setVisible(scene.HITBOXES);
     scene.nameTaghitboxDebug.setVisible(scene.HITBOXES);
-    scene.PLAYER.cartesShow.carteshitboxDebug.setVisible(scene.scene.HITBOXES);
+    scene.PLAYER.cartesShow.carteshitboxDebug.setVisible(scene.HITBOXES);
     scene.hitboxHitboxesDebug.setVisible(scene.HITBOXES);
 }
