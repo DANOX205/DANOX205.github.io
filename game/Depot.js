@@ -21,6 +21,7 @@ class Depot {
             0.15       // opacité 0.5
         );
         this.hitboxspriteDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxspriteDebug.setVisible(false);
         // Action 
         this.spritehitbox.on('pointerdown', () => {
             console.log('Depot cliqué');
@@ -38,7 +39,9 @@ class Depot {
     setVisible(bool){
         this.sprite.setVisible(bool);
         this.spritehitbox.setVisible(bool);
-        this.hitboxspriteDebug.setVisible(bool);
+        if (this.scene.HITBOXES){
+            this.hitboxspriteDebug.setVisible(bool);
+        }
     }
 
 }

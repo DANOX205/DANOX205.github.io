@@ -144,7 +144,9 @@ class CartesMini {
     setSpriteVisible(bool){
         this.sprite.setVisible(bool);
         this.spritehitbox.setVisible(bool);
-        this.spritehitboxDebug.setVisible(bool);
+        if (this.scene.HITBOXES){
+            this.spritehitboxDebug.setVisible(bool);
+        }
         if (bool){
             this.echange.setAlpha(0.5);
             this.echange.setVisible(this.Echange);

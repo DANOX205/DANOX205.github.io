@@ -35,6 +35,7 @@ class Cartes {
             0.5       // opacité 0.5
         );
         this.spritehitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.spritehitboxDebug.setVisible(this.scene.HITBOXES);
         // Action 
         scene.input.setDraggable(this.spritehitbox);
         scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {

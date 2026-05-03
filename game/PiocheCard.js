@@ -22,6 +22,7 @@ class PiocheCard {
         ).setVisible(seen);
         this.spritehitboxDebug.setDepth(85);
         this.spritehitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.spritehitboxDebug.setVisible(false);
         // Action 
         this.spritehitbox.on('pointerdown', () => {
             if (this.scene.Turn === this.scene.myNum){
@@ -48,7 +49,9 @@ class PiocheCard {
     setVisible(bool){
         this.sprite.setVisible(bool);
         this.spritehitbox.setVisible(bool);
-        this.spritehitboxDebug.setVisible(bool);
+        if (this.scene.HITBOXES){
+            this.spritehitboxDebug.setVisible(bool);
+        }
     }
 
     StartAnimationDistribution() {

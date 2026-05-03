@@ -209,7 +209,6 @@ class CartesShow {
         this.cartes.setVisible(bool);
         this.nbrCartes.setVisible(bool);
         this.cartesShow.setVisible(false);
-        this.carteshitboxDebug.setVisible(bool);
         this.cartesShowEchangesBouton.setVisible(false);
         this.cartesShowEchanges.setVisible(false);
         this.echangeTimer.setVisible(false);
@@ -221,6 +220,9 @@ class CartesShow {
         this.cartesShowEchangesBoutonhitbox.setVisible(false);
         this.cartesShowEchangeshitboxDebug.setVisible(false);
         this.cartesShowEchangeshitbox.setVisible(false);
+        if (this.scene.HITBOXES){
+            this.carteshitboxDebug.setVisible(bool);
+        }
     }
 
     updateCartesShow(Cartes) {
@@ -375,7 +377,9 @@ class CartesShow {
             if (EchangePropose && this.EchangeEnCours) {
                 this.AcceptEchange.setVisible(this.SelectedCartes);
                 this.AcceptEchangehitbox.setVisible(this.SelectedCartes);
-                this.AcceptEchangehitboxDebug.setVisible(this.SelectedCartes);
+                if (this.scene.HITBOXES){
+                    this.AcceptEchangehitboxDebug.setVisible(this.SelectedCartes);
+                }
             } else {
                 this.AcceptEchange.setVisible(false);
                 this.AcceptEchangehitbox.setVisible(false);
@@ -396,7 +400,9 @@ class CartesShow {
             this.SelectedEchanges = false;
             this.cartesShow.setVisible(this.SelectedCartes).setTexture('CartesShow');
             this.cartesShowEchangesBouton.setVisible(this.SelectedCartes).setTexture('CartesShowEchangeBouton');;
-            this.cartesShowEchangesBoutonhitboxDebug.setVisible(this.SelectedCartes);
+            if (this.scene.HITBOXES){
+                this.cartesShowEchangesBoutonhitboxDebug.setVisible(this.SelectedCartes);
+            }
             this.cartesShowEchangesBoutonhitbox.setVisible(this.SelectedCartes);
             this.UpdateCartesJoueurPosition(this.x, this.y);
             this.cartesShowEchanges.setVisible(false);
@@ -458,9 +464,11 @@ class CartesShow {
                     this.cartesShowEchanges.setVisible(this.SelectedCartes);
                     this.echangeTimer.setVisible(this.SelectedCartes);
                     this.depothitbox.setVisible(this.SelectedCartes);
-                    this.depothitboxDebug.setVisible(this.SelectedCartes);
                     this.cartesShowEchangeshitbox.setVisible(this.SelectedCartes);
-                    this.cartesShowEchangeshitboxDebug.setVisible(this.SelectedCartes);
+                    if (this.scene.HITBOXES){
+                        this.depothitboxDebug.setVisible(this.SelectedCartes);
+                        this.cartesShowEchangeshitboxDebug.setVisible(this.SelectedCartes);
+                    }
                     for (let i = 0;i < this.cartes_joueur.length; i++) {
                         if ((this.cartes_joueur[i]) && (this.cartes_joueur[i] != -1)){
                             this.cartes_joueur[i].setSpriteVisible(false);
@@ -477,7 +485,9 @@ class CartesShow {
                     if (this.EchangePropose && this.EchangeEnCours) {
                         this.AcceptEchange.setVisible(this.SelectedCartes);
                         this.AcceptEchangehitbox.setVisible(this.SelectedCartes);
-                        this.AcceptEchangehitboxDebug.setVisible(this.SelectedCartes);
+                        if (this.scene.HITBOXES){
+                            this.AcceptEchangehitboxDebug.setVisible(this.SelectedCartes);
+                        }
                     }
                 } else {
                     this.cartesShow.setTexture('CartesShow');
