@@ -25,6 +25,7 @@ class ObjetSelected {
         ).setVisible(false);
         this.hitboxbackgroundObjetDebug.setDepth(105);
         this.hitboxbackgroundObjetDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxbackgroundObjetDebug.setVisible(false);
         // Action 
         this.backgroundObjethitbox.on('pointerdown', () => {
             console.log('Objet cliqué');
@@ -53,7 +54,9 @@ class ObjetSelected {
     setVisible(bool){
         this.backgroundObjet.setVisible(bool);
         this.backgroundObjethitbox.setVisible(bool);// disableInteractive();
-        this.hitboxbackgroundObjetDebug.setVisible(bool);
+        if (this.scene.HITBOXES){
+            this.hitboxbackgroundObjetDebug.setVisible(bool);
+        }
     }
 
 }

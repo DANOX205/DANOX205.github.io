@@ -13,6 +13,7 @@ export class GameRoom extends Phaser.Scene {
 
     init(data) {
         this.playerData = data.playerData;
+        this.HITBOXES = data.playerData.ShowHitboxes;
     }
 
     preload(){
@@ -108,7 +109,7 @@ export class GameRoom extends Phaser.Scene {
         this.ReadySelected = false;
         this.CurrentCard = 0;
         this.special_card_power = [];
-
+    
         this.anims.create({
             key: 'TimerAnim',
             frames: [
@@ -281,6 +282,7 @@ export class GameRoom extends Phaser.Scene {
         );
         hitboxDebug_buttonEmote.setDepth(85);
         hitboxDebug_buttonEmote.setOrigin(0.5, 0.5); // centre sur la zone
+        hitboxDebug_buttonEmote.setVisible(this.HITBOXES);
         // Action 
         // Fonction pour détruire tous les boutons
         this.DestroyAllButtons = () => {
@@ -352,6 +354,7 @@ export class GameRoom extends Phaser.Scene {
         );
         this.hitboxDebug_buttonReady.setDepth(101);
         this.hitboxDebug_buttonReady.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug_buttonReady.setVisible(this.HITBOXES);
         // Action 
         this.buttonReadyhitbox.on('pointerdown', () => {
             this.ReadySelected = !this.ReadySelected;
@@ -423,7 +426,7 @@ export class GameRoom extends Phaser.Scene {
                     this.PiocheCard.StartAnimation();
                     this.HoldCartes.HoldCartes.setVisible(true);
                     this.HoldCartes.HoldCarteshitbox.setInteractive();
-                    this.HoldCartes.hitboxHoldCartesDebug.setVisible(true);
+                    this.HoldCartes.hitboxHoldCartesDebug.setVisible(this.HITBOXES);
                 }
             }
             if (data.type === "GAME_START"){

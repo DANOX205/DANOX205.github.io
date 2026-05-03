@@ -12,6 +12,8 @@ export class MenuRoom extends Phaser.Scene {
         this.load.image('Light','./assets/sLight_0.png');
         this.load.image('btnCheatOff','./assets/sCheats_2_0.png');
         this.load.image('btnCheatOn','./assets/sCheats_2_1.png');
+        this.load.image('btnHitboxesOff','./assets/sHitboxes_0.png');
+        this.load.image('btnHitboxesOn','./assets/sHitboxes_1.png');
         this.load.image('Version','./assets/sVersion_0.png');
         this.load.image('btnEmote_0','./assets/sEmote_Bouton_0.png');
         this.load.image('btnEmote_1','./assets/sEmote_Bouton_1.png');
@@ -149,6 +151,7 @@ export class MenuRoom extends Phaser.Scene {
         window.scrollTo(0, 1);
 
         this.TRICHE = false;
+        this.HITBOXES = true; // false
         this.EMOTE = false;
         this.SkinTeteIndex = 0;
         this.SkinCorpsIndex = 0;
@@ -229,6 +232,8 @@ export class MenuRoom extends Phaser.Scene {
 
         const buttonCheat_X = 284.5;
         const buttonCheat_Y = 160;
+        const buttonHitboxes_X = 284.5;
+        const buttonHitboxes_Y = 160;
         const buttonEmote_X = 284.5;
         const buttonEmote_Y = 160;
         const buttonRules_X = 286;
@@ -251,12 +256,12 @@ export class MenuRoom extends Phaser.Scene {
         const switchCosmeticCorps_2_Y = 210;
 
         // BOUTON FULLSCREEN --------------------------------------------------------------
-        const buttonFullScreen = new FullScreen(this,buttonFullScreen_X,buttonFullScreen_Y);
+        this.buttonFullScreen = new FullScreen(this,buttonFullScreen_X,buttonFullScreen_Y);
         // this.Selected
         this.buttonRules = new DisplayRules(this,buttonRules_X,buttonRules_Y);
 
         // Joueur --------------------------------------------------------------
-        const PLAYER = new Player(this,Player_X ,Player_Y);
+        this.PLAYER = new Player(this,Player_X ,Player_Y);
 
         // Nametag --------------------------------------------------------------
         this.playerName = "toi";
@@ -276,7 +281,7 @@ export class MenuRoom extends Phaser.Scene {
         const nameTaghitbox = this.add.zone(Nametag_X + 5, Nametag_Y - 96 , 150, 34);
         nameTaghitbox.setInteractive();
         // Rectangle visuel pour debug
-        const nameTaghitboxDebug = this.add.rectangle(
+        this.nameTaghitboxDebug = this.add.rectangle(
             Nametag_X + 5,
             Nametag_Y - 96,
             150,
@@ -284,8 +289,9 @@ export class MenuRoom extends Phaser.Scene {
             0xff0000, // couleur rouge
             0.25       // opacité 0.5
         );
-        nameTaghitboxDebug.setDepth(85);
-        nameTaghitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.nameTaghitboxDebug.setDepth(85);
+        this.nameTaghitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.nameTaghitboxDebug.setVisible(this.HITBOXES);
         // Action
         nameTaghitbox.on('pointerdown', () => {
             if (!this.buttonRules.Selected){
@@ -353,7 +359,7 @@ export class MenuRoom extends Phaser.Scene {
         const buttonCheathitbox = this.add.zone(buttonCheat_X + 240, buttonCheat_Y + 105, 90, 110);
         buttonCheathitbox.setInteractive();  
         // Rectangle visuel pour debug
-        const hitboxDebug = this.add.rectangle(
+        this.hitboxDebug = this.add.rectangle(
             buttonCheat_X + 240,
             buttonCheat_Y + 105,
             90,
@@ -361,8 +367,9 @@ export class MenuRoom extends Phaser.Scene {
             0xff0000, // couleur rouge
             0.15       // opacité 0.5
         );
-        hitboxDebug.setDepth(85);
-        hitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug.setDepth(85);
+        this.hitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug.setVisible(this.HITBOXES);
         // Action 
         buttonCheathitbox.on('pointerdown', () => {
             if (!this.buttonRules.Selected){
@@ -372,6 +379,39 @@ export class MenuRoom extends Phaser.Scene {
                     buttonCheat.setTexture('btnCheatOn');
                 } else {
                     buttonCheat.setTexture('btnCheatOff');
+                }
+            }
+        });
+
+        // BOUTON HITBOXES --------------------------------------------------------------
+        const buttonHitboxes = this.add.sprite(buttonHitboxes_X,buttonHitboxes_Y ,'btnHitboxesOn');
+        //Depth
+        buttonHitboxes.setDepth(80);
+        //Hitbox
+        const buttonHitboxeshitbox = this.add.zone(buttonHitboxes_X + 245, buttonHitboxes_Y - 90, 75, 15);
+        buttonHitboxeshitbox.setInteractive();  
+        // Rectangle visuel pour debug
+        this.hitboxHitboxesDebug = this.add.rectangle(
+            buttonHitboxes_X + 245,
+            buttonHitboxes_Y- 90,
+            75,
+            15,
+            0xff0000, // couleur rouge
+            0.15       // opacité 0.5
+        );
+        this.hitboxHitboxesDebug.setDepth(85);
+        this.hitboxHitboxesDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxHitboxesDebug.setVisible(this.HITBOXES);
+        // Action 
+        buttonHitboxeshitbox.on('pointerdown', () => {
+            if (!this.buttonRules.Selected){
+                this.HITBOXES = !this.HITBOXES;
+                console.log('Bouton Hitboxes cliqué : HITBOXES =',this.HITBOXES);
+                updateShowHitboxes(this);
+                if (this.HITBOXES){
+                    buttonHitboxes.setTexture('btnHitboxesOn');
+                } else {
+                    buttonHitboxes.setTexture('btnHitboxesOff');
                 }
             }
         });
@@ -386,7 +426,7 @@ export class MenuRoom extends Phaser.Scene {
         const buttonEmotehitbox = this.add.zone(buttonEmote_X - 262, buttonEmote_Y - 73, 40, 40);
         buttonEmotehitbox.setInteractive();  
         // Rectangle visuel pour debug
-        const hitboxDebug_buttonEmote = this.add.rectangle(
+        this.hitboxDebug_buttonEmote = this.add.rectangle(
             buttonEmote_X - 262,
             buttonEmote_Y- 73,
             40,
@@ -394,8 +434,9 @@ export class MenuRoom extends Phaser.Scene {
             0xff0000, // couleur rouge
             0.15       // opacité 0.5
         );
-        hitboxDebug_buttonEmote.setDepth(85);
-        hitboxDebug_buttonEmote.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug_buttonEmote.setDepth(85);
+        this.hitboxDebug_buttonEmote.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug_buttonEmote.setVisible(this.HITBOXES);
         // Action 
         // Fonction pour détruire tous les boutons
         this.DestroyAllButtons = () => {
@@ -423,7 +464,7 @@ export class MenuRoom extends Phaser.Scene {
                 for (let i = 0; i < 13; i++) {
                     let Y = (34 * Math.trunc(i/11));
                     let X = 32 * (i % 11);
-                    const btn = new Emote(this, buttonEmote_X - 165 + X, buttonEmote_Y-95+Y, i, PLAYER);
+                    const btn = new Emote(this, buttonEmote_X - 165 + X, buttonEmote_Y-95+Y, i, this.PLAYER);
                     this.emotes.push(btn);
                 }
             } else {
@@ -457,7 +498,7 @@ export class MenuRoom extends Phaser.Scene {
         const buttonPlayhitbox = this.add.zone(buttonPlay_X+ 7, buttonPlay_Y+ 101, 62, 98);
         buttonPlayhitbox.setInteractive(); 
         // Rectangle visuel pour debug
-        const hitboxDebug_buttonPlay = this.add.rectangle(
+        this.hitboxDebug_buttonPlay = this.add.rectangle(
             buttonPlay_X + 7,
             buttonPlay_Y + 101,
             62,
@@ -465,8 +506,9 @@ export class MenuRoom extends Phaser.Scene {
             0x0000ff, // couleur bleu
             0.25       // opacité 0.5
         );
-        hitboxDebug_buttonPlay.setDepth(85);
-        hitboxDebug_buttonPlay.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug_buttonPlay.setDepth(85);
+        this.hitboxDebug_buttonPlay.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug_buttonPlay.setVisible(this.HITBOXES);
         // Action 
         buttonPlayhitbox.on('pointerdown', () => {
             if (!this.buttonRules.Selected) {
@@ -475,8 +517,9 @@ export class MenuRoom extends Phaser.Scene {
                     SkinTeteIndex: this.SkinTeteIndex,
                     SkinCorpsIndex: this.SkinCorpsIndex,
                     Username: this.playerName,
-                    Emotion: PLAYER.getEmotion(),
-                    Triche : this.TRICHE
+                    Emotion: this.PLAYER.getEmotion(),
+                    Triche : this.TRICHE,
+                    ShowHitboxes : this.HITBOXES,
                 };
                 this.scene.start("GameRoom", {playerData : playerData});
             }
@@ -495,7 +538,7 @@ export class MenuRoom extends Phaser.Scene {
         const switchCosmeticTete_2hitbox = this.add.zone(switchCosmeticTete_2_X + 2, switchCosmeticTete_2_Y, 30, 30);
         switchCosmeticTete_2hitbox.setInteractive(); 
         // Rectangles visuels pour debug
-        const hitboxDebug_switchCosmeticTete_1 = this.add.rectangle(
+        this.hitboxDebug_switchCosmeticTete_1 = this.add.rectangle(
             switchCosmeticTete_1_X,
             switchCosmeticTete_1_Y,
             30,
@@ -503,9 +546,10 @@ export class MenuRoom extends Phaser.Scene {
             0x0000ff, // couleur bleu
             0.25       // opacité 0.5
         );
-        hitboxDebug_switchCosmeticTete_1.setDepth(85);
-        hitboxDebug_switchCosmeticTete_1.setOrigin(0.5, 0.5); // centre sur la zone
-        const hitboxDebug_switchCosmeticTete_2 = this.add.rectangle(
+        this.hitboxDebug_switchCosmeticTete_1.setDepth(85);
+        this.hitboxDebug_switchCosmeticTete_1.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug_switchCosmeticTete_1.setVisible(this.HITBOXES);
+        this.hitboxDebug_switchCosmeticTete_2 = this.add.rectangle(
             switchCosmeticTete_2_X + 2,
             switchCosmeticTete_2_Y,
             30,
@@ -513,15 +557,16 @@ export class MenuRoom extends Phaser.Scene {
             0x0000ff, // couleur bleu
             0.25       // opacité 0.5
         );
-        hitboxDebug_switchCosmeticTete_2.setDepth(85);
-        hitboxDebug_switchCosmeticTete_2.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug_switchCosmeticTete_2.setDepth(85);
+        this.hitboxDebug_switchCosmeticTete_2.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug_switchCosmeticTete_2.setVisible(this.HITBOXES);
         // Action 
         switchCosmeticTete_2hitbox.on('pointerdown', () => {
             if (!this.buttonRules.Selected){
                 console.log('Bouton CosmeticTete_2 cliqué.');
                 if (this.SkinTeteIndex < this.NbrSkinTete) {
                     this.SkinTeteIndex = this.SkinTeteIndex + 1;
-                    PLAYER.setSkinTete(this.SkinTeteIndex);
+                    this.PLAYER.setSkinTete(this.SkinTeteIndex);
                 }
             }
         });
@@ -530,7 +575,7 @@ export class MenuRoom extends Phaser.Scene {
             console.log('Bouton CosmeticTete_1 cliqué.');
                 if (this.SkinTeteIndex > 0) {
                     this.SkinTeteIndex = this.SkinTeteIndex - 1;
-                    PLAYER.setSkinTete(this.SkinTeteIndex);
+                    this.PLAYER.setSkinTete(this.SkinTeteIndex);
                 }
             }
         });
@@ -547,7 +592,7 @@ export class MenuRoom extends Phaser.Scene {
         const switchCosmeticCorps_2hitbox = this.add.zone(switchCosmeticCorps_2_X + 2, switchCosmeticCorps_2_Y, 30, 30);
         switchCosmeticCorps_2hitbox.setInteractive(); 
         // Rectangles visuels pour debug
-        const hitboxDebug_switchCosmeticCorps_1 = this.add.rectangle(
+        this.hitboxDebug_switchCosmeticCorps_1 = this.add.rectangle(
             switchCosmeticCorps_1_X,
             switchCosmeticCorps_1_Y,
             30,
@@ -555,9 +600,10 @@ export class MenuRoom extends Phaser.Scene {
             0x0000ff, // couleur bleu
             0.25       // opacité 0.5
         );
-        hitboxDebug_switchCosmeticCorps_1.setDepth(85);
-        hitboxDebug_switchCosmeticCorps_1.setOrigin(0.5, 0.5); // centre sur la zone
-        const hitboxDebug_switchCosmeticCorps_2 = this.add.rectangle(
+        this.hitboxDebug_switchCosmeticCorps_1.setDepth(85);
+        this.hitboxDebug_switchCosmeticCorps_1.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug_switchCosmeticCorps_1.setVisible(this.HITBOXES);
+        this.hitboxDebug_switchCosmeticCorps_2 = this.add.rectangle(
             switchCosmeticCorps_2_X + 2,
             switchCosmeticCorps_2_Y,
             30,
@@ -565,15 +611,16 @@ export class MenuRoom extends Phaser.Scene {
             0x0000ff, // couleur bleu
             0.25       // opacité 0.5
         );
-        hitboxDebug_switchCosmeticCorps_2.setDepth(85);
-        hitboxDebug_switchCosmeticCorps_2.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug_switchCosmeticCorps_2.setDepth(85);
+        this.hitboxDebug_switchCosmeticCorps_2.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxDebug_switchCosmeticCorps_2.setVisible(this.HITBOXES);
         // Action 
         switchCosmeticCorps_2hitbox.on('pointerdown', () => {
             if (!this.buttonRules.Selected){
                 console.log('Bouton CosmeticTete_2 cliqué.');
                 if (this.SkinCorpsIndex < this.NbrSkinCorps) {
                     this.SkinCorpsIndex = this.SkinCorpsIndex + 1;
-                    PLAYER.setSkinCorps(this.SkinCorpsIndex);
+                    this.PLAYER.setSkinCorps(this.SkinCorpsIndex);
                 }
             }
         });
@@ -582,7 +629,7 @@ export class MenuRoom extends Phaser.Scene {
                 console.log('Bouton CosmeticTete_1 cliqué.');
                 if (this.SkinCorpsIndex > 0) {
                     this.SkinCorpsIndex = this.SkinCorpsIndex - 1;
-                    PLAYER.setSkinCorps(this.SkinCorpsIndex);
+                    this.PLAYER.setSkinCorps(this.SkinCorpsIndex);
                 }
             }
         });
@@ -628,4 +675,19 @@ function connectToServer(callback) {
     socket.onerror = () => {
         console.log("Erreur connexion serveur");
     };
+}
+
+function updateShowHitboxes(scene){
+    scene.hitboxDebug_buttonEmote.setVisible(scene.HITBOXES);
+    scene.buttonFullScreen.hitboxspriteDebug.setVisible(scene.HITBOXES);
+    scene.buttonRules.hitboxspriteDebug.setVisible(scene.scene.HITBOXES);
+    scene.hitboxDebug_buttonPlay.setVisible(scene.HITBOXES);
+    scene.hitboxDebug_switchCosmeticTete_1.setVisible(scene.HITBOXES);
+    scene.hitboxDebug_switchCosmeticTete_2.setVisible(scene.HITBOXES);
+    scene.hitboxDebug_switchCosmeticCorps_1.setVisible(scene.HITBOXES);
+    scene.hitboxDebug_switchCosmeticCorps_2.setVisible(scene.HITBOXES);
+    scene.hitboxDebug.setVisible(scene.HITBOXES);
+    scene.nameTaghitboxDebug.setVisible(scene.HITBOXES);
+    scene.PLAYER.cartesShow.carteshitboxDebug.setVisible(scene.scene.HITBOXES);
+    scene.hitboxHitboxesDebug.setVisible(scene.HITBOXES);
 }

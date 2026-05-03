@@ -20,6 +20,7 @@ class DisplayRules{
             0.2       // opacité 0.2
         );
         this.hitboxspriteDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxspriteDebug.setVisible(this.scene.HITBOXES);
 
         this.spritehitbox.on('pointerdown', () => {
             this.Selected = !this.Selected;
@@ -33,9 +34,9 @@ class DisplayRules{
             } else {
                 this.sprite.setTexture('Rules_1');
                 this.nexthitbox.setVisible(true);
-                this.hitboxnextDebug.setVisible(true);
+                this.hitboxnextDebug.setVisible(this.scene.HITBOXES);
                 this.previoushitbox.setVisible(true);
-                this.hitboxpreviousDebug.setVisible(true);
+                this.hitboxpreviousDebug.setVisible(this.scene.HITBOXES);
                 this.RulesPage = 1;
 
             }

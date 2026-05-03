@@ -25,6 +25,7 @@ class Sac {
         );
         this.hitboxSacDebug.setDepth(85);
         this.hitboxSacDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxSacDebug.setVisible(this.scene.HITBOXES);
         // Action 
         this.buttonSachitbox.on('pointerdown', () => {
             this.TRICHE = !this.TRICHE;

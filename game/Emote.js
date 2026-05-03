@@ -20,7 +20,7 @@ class Emote {
         );
         this.hitboxDebug_Emote.setDepth(105);
         this.hitboxDebug_Emote.setOrigin(0.5, 0.5); // centre sur la zone
-
+        this.hitboxDebug_Emote.setVisible(this.scene.HITBOXES);
         // Action 
         this.Emotehitbox.on('pointerdown', () => {
             this.ButtonPressed(i, p);

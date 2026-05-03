@@ -37,6 +37,7 @@ class CartesShow {
         );
         this.carteshitboxDebug.setDepth(85);
         this.carteshitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.carteshitboxDebug.setVisible(this.scene.HITBOXES);
         // Action 
         this.carteshitbox.on('pointerdown', () => {
             if (NUM != 0){

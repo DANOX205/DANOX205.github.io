@@ -17,6 +17,7 @@ class FullScreen{
             0.2       // opacité 0.2
         );
         this.hitboxspriteDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.hitboxspriteDebug.setVisible(this.scene.HITBOXES);
 
         this.spritehitbox.on('pointerdown', () => {
             if (!this.scene.scale.isFullscreen) {
