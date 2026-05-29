@@ -188,7 +188,7 @@ export class GameRoom extends Phaser.Scene {
         this.timer = this.add.sprite(284.5,160 ,'Timer_0');
         this.timer.setDepth(70);
         //timer.play('TimerAnim'); 
-        const objetIcon = new ObjectIcon(this,330,100); 
+        this.objetIcon = new ObjectIcon(this,330,100); 
 
 
         // Positionnement des éléments intéractifs

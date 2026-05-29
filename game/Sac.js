@@ -44,8 +44,7 @@ class Sac {
                 this.player.setLookingDownChange();
             }
         });
-
-
+        this.Objets_test(0);
         this.setDepth();
     }
 
@@ -79,6 +78,25 @@ class Sac {
     }
 
     ClickOnObject(ObjectSelected){
-        
+        this.backgroundObjet1.backgroundObjet.setTexture('ObjetBackground_NotSelected');
+        this.backgroundObjet2.backgroundObjet.setTexture('ObjetBackground_NotSelected');
+        this.backgroundObjet3.backgroundObjet.setTexture('ObjetBackground_NotSelected');
+        if (ObjectSelected === null){
+            this.scene.objetIcon.setSprite(this.selectedObject);
+        } else {
+            ObjectSelected.backgroundObjet.setTexture('ObjetBackground_Selected');
+            this.scene.objetIcon.setSprite(this.selectedObject);
+        }
+    }
+
+    Objets_test(id){
+        switch (id) {
+            case 0 :
+                this.backgroundObjet1.setObjectID(1);
+                this.backgroundObjet2.setObjectID(2);
+                this.backgroundObjet3.setObjectID(3);
+                break;
+
+        }
     }
 }

@@ -16,7 +16,7 @@ class ObjetSelected {
         this.backgroundObjethitbox.setInteractive();
         this.backgroundObjethitbox.setVisible(false);
 
-        this.objectImage = new ObjectImage(this.scene,this.x,this.y,1);
+        this.objectImage = new ObjectImage(this.scene,this.x,this.y,this.object_id);
         // Rectangle visuel pour debug
         this.hitboxbackgroundObjetDebug = this.scene.add.rectangle(
             x-2,
@@ -32,10 +32,20 @@ class ObjetSelected {
         // Action 
         this.backgroundObjethitbox.on('pointerdown', () => {
             console.log('Objet cliqué');
-            this.sac.ClickOnObject(this);
-            this.sac.updateDescription(this.object_id);
+            if (this.backgroundObjet.texture.key === 'ObjetBackground_Selected') {
+                this.sac.updateDescription(0);
+                this.sac.ClickOnObject(null);
+            } else {
+                this.sac.updateDescription(this.object_id);
+                this.sac.ClickOnObject(this);
+            }
         });
         this.setDepth();
+    }
+
+    setObjectID(id){
+        this.object_id = id;
+        this.objectImage.setObjectID(id);
     }
 
     setDepth(){

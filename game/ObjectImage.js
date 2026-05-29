@@ -41,25 +41,25 @@ class ObjectImage {
     idToString(id){
         switch (id){
             case 1 :
-                return 'Batte';
-                break;
-            case 2 :
-                return 'Canne';
-                break;
-            case 3 :
                 return 'Ciseaux';
                 break;
+            case 2 :
+                return 'Batte';
+                break;
+            case 3 :
+                return 'Canne';
+                break;
             case 4 :
-                return 'Crayon';
+                return 'Telephone';
                 break;
             case 5 :
-                return 'Lunettes';
+                return 'Crayon';
                 break;
             case 6 :
                 return 'Menottes';
                 break;
             case 7 :
-                return 'Telephone';
+                return 'Lunettes';
                 break;
         }
         return 'DescriptifObjet_0';

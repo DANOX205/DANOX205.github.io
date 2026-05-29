@@ -5,7 +5,7 @@ class DescriptifObjet {
         this.x = x;
         this.y = y;
 
-        this.sprite = this.scene.add.sprite(0,0,'DescriptifObjet_0').setVisible(false);
+        this.sprite = this.scene.add.sprite(284.5,160,'DescriptifObjet_0').setVisible(false);
         this.sprite.setAlpha(0);
         
         this.setDepth();
