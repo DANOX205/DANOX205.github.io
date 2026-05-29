@@ -10,6 +10,9 @@ class Sac {
         this.backgroundObjet1 = new ObjetSelected(this.scene,this,x+10,y-10,1);
         this.backgroundObjet2 = new ObjetSelected(this.scene,this,x-130,y-10,2);
         this.backgroundObjet3 = new ObjetSelected(this.scene,this,x+150,y-10,3);
+        this.DescriptifObjet = new DescriptifObjet(this.scene,this,x,y);
+
+        this.selectedObject = 0;
                
         //Hitbox
         this.buttonSachitbox = this.scene.add.zone(x + 240, y + 105, 90, 110);
@@ -30,6 +33,7 @@ class Sac {
         this.buttonSachitbox.on('pointerdown', () => {
             this.TRICHE = !this.TRICHE;
             console.log('Bouton SAC cliqué : TRICHE =',this.TRICHE);
+            this.player.SacSelected = this.TRICHE;
             if (this.TRICHE){
                 this.buttonSac.setTexture('SacBoutonOn');
                 this.objectsAppear();
@@ -53,6 +57,7 @@ class Sac {
         this.backgroundObjet1.FadeTo(1);
         this.backgroundObjet2.FadeTo(1);
         this.backgroundObjet3.FadeTo(1);
+        this.DescriptifObjet.FadeTo(1);
     }
 
     objectsDisappear(){
@@ -65,7 +70,15 @@ class Sac {
         this.backgroundObjet3.FadeTo(0);
         this.backgroundObjet3.backgroundObjethitbox.setVisible(false);
         this.backgroundObjet3.hitboxbackgroundObjetDebug.setVisible(false);
+        this.DescriptifObjet.FadeTo(0);
     }
 
+    updateDescription(value){
+        this.selectedObject = value;
+        this.DescriptifObjet.updateSprite(value);
+    }
 
+    ClickOnObject(ObjectSelected){
+        
+    }
 }

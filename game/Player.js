@@ -23,6 +23,10 @@ class Player {
         this.teteSweat = scene.add.sprite(x, y, 'TeteSweat').setVisible(sweat);
         this.teteLunettes = scene.add.sprite(x, y, 'TeteLunettes').setVisible(lunettes);
 
+        // En + 
+        this.HoldCartesSelected = false;
+        this.SacSelected = false;
+
         // Corps
         this.corpsMain = scene.add.sprite(x, y, 'Corps_0');
         this.corpsBras = scene.add.sprite(x, y, 'Corps_1');
@@ -104,7 +108,12 @@ class Player {
     }
 
     setLookingDownChange(){
-        this.Looking_Down = !this.Looking_Down;
+        //this.HoldCartesSelected = false; this.SacSelected = false;
+        if (this.HoldCartesSelected || this.SacSelected) {
+            this.Looking_Down = true;
+        } else {
+            this.Looking_Down = !this.Looking_Down;
+        }
         if (this.Looking_Down){
             this.oeilDroit.y = this.y + 10;
             this.oeilGauche.y = this.y + 10;
@@ -325,7 +334,9 @@ class Player {
     }
 
     updatePlayerSkin(Name){
-        this.setEmotion(this.emotion);
+        if (this.scene.roomState != RoomState.GAME_ENDED) {
+            this.setEmotion(this.emotion);
+        }
         this.setSkinCorps(this.skinCorpsIndex);
         this.setSkinTete(this.skinTeteIndex);
         this.setSkinTete(this.skinTeteIndex);

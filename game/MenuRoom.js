@@ -1,6 +1,18 @@
+export const RoomState = Object.freeze({
+    WAITING_PLAYERS: "WAITING_PLAYERS",
+    GAME_STARTED: "GAME_STARTED",
+    GAME_PAUSED: "GAME_PAUSED",
+    GAME_ENDED: "GAME_ENDED"
+});
+
 export class MenuRoom extends Phaser.Scene {
     constructor() {
         super("MenuRoom");
+        this.roomState = RoomState.WAITING_PLAYERS;
+    }
+
+    init(data) {
+        this.playerData = data.playerData;
     }
 
     preload() {
@@ -149,10 +161,10 @@ export class MenuRoom extends Phaser.Scene {
     
     create() {
         window.scrollTo(0, 1);
-
         this.TRICHE = false;
         this.HITBOXES = true; // false
         this.EMOTE = false;
+        this.Button_Play = false;
         this.SkinTeteIndex = 0;
         this.SkinCorpsIndex = 0;
         this.NbrSkinTete = 9;
@@ -513,15 +525,7 @@ export class MenuRoom extends Phaser.Scene {
         buttonPlayhitbox.on('pointerdown', () => {
             if (!this.buttonRules.Selected) {
                 console.log('Bouton PLAY cliqué.');
-                const playerData = {
-                    SkinTeteIndex: this.SkinTeteIndex,
-                    SkinCorpsIndex: this.SkinCorpsIndex,
-                    Username: this.playerName,
-                    Emotion: this.PLAYER.getEmotion(),
-                    Triche : this.TRICHE,
-                    ShowHitboxes : this.HITBOXES,
-                };
-                this.scene.start("GameRoom", {playerData : playerData});
+                connectToServer(this);
             }
         });
 
@@ -633,6 +637,15 @@ export class MenuRoom extends Phaser.Scene {
                 }
             }
         });
+        if (this.playerData != null) { // On restaure le personnage si besoin
+            this.PLAYER.setEmotion(this.playerData.Emotion);
+            this.SkinTeteIndex = this.playerData.SkinTeteIndex;
+            this.PLAYER.setSkinTete(this.playerData.SkinTeteIndex);
+            this.SkinCorpsIndex = this.playerData.SkinCorpsIndex;
+            this.PLAYER.setSkinCorps(this.playerData.SkinCorpsIndex);
+            this.nameText.setText(this.playerData.Username);
+            //console.log(this.playerData);
+        }
     }
 
     update() {
@@ -663,17 +676,41 @@ export class MenuRoom extends Phaser.Scene {
     }
 }
 
-function connectToServer(callback) {
-
-    const socket = new WebSocket("ws://card-game-server.onrender.com");
-
-    socket.onopen = () => {
-        console.log("Connecté au serveur !");
-        callback();
+function connectToServer(scene) {
+    scene.socket = new WebSocket("ws://localhost:6510");
+    const playerData = {
+        SkinTeteIndex: scene.SkinTeteIndex,
+        SkinCorpsIndex: scene.SkinCorpsIndex,
+        Username: scene.playerName,
+        Emotion: scene.PLAYER.getEmotion(),
+        Triche: scene.TRICHE,
+        ShowHitboxes: scene.HITBOXES,
     };
+    scene.socket.addEventListener("message", (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === "welcome") {
+            console.log("Message welcome reçu");
+            const serverData = {
+                socket: scene.socket,
+                NUM: data.payload.num,
+                ID: data.payload.id,
+            };
+            scene.scene.start("GameRoom", {
+                playerData,
+                serverData
+            });
+        }
+        if (data.type === "serverFull") {
+            alert("Le serveur est plein 😢");
+            scene.socket.close();
+        }
+    });
 
-    socket.onerror = () => {
-        console.log("Erreur connexion serveur");
+    scene.socket.onopen = () => {
+        scene.socket.send(JSON.stringify({
+            type: "joinRoom",
+            payload: playerData
+        }));
     };
 }
 
@@ -691,3 +728,4 @@ function updateShowHitboxes(scene){
     scene.PLAYER.cartesShow.carteshitboxDebug.setVisible(scene.HITBOXES);
     scene.hitboxHitboxesDebug.setVisible(scene.HITBOXES);
 }
+

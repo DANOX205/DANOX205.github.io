@@ -31,6 +31,7 @@ class HoldCartes {
         this.HoldCarteshitbox.on('pointerdown', () => {
             this.HoldCartesSelected = !this.HoldCartesSelected;
             console.log('Bouton HoldCartes cliqué : HoldCartesSelected =',this.HoldCartesSelected);
+            this.Player.HoldCartesSelected =this.HoldCartesSelected;
             if (this.HoldCartesSelected){
                 this.HoldCartes.setTexture('CartesHitboxOFF');
                 this.HoldCardsUp();

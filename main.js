@@ -1,5 +1,6 @@
 import { MenuRoom } from "./game/MenuRoom.js";
 import { GameRoom } from "./game/GameRoom.js";
+import { EndRoom } from "./game/EndRoom.js";
 
 const config = {
     type: Phaser.AUTO,
@@ -11,7 +12,7 @@ const config = {
     },
     pixelArt : true,
     backgroundColor: '#1e1e1e',
-    scene: [MenuRoom, GameRoom]
+    scene: [MenuRoom, GameRoom, EndRoom]
 };
 
 const game = new Phaser.Game(config);

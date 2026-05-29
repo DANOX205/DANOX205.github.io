@@ -14,6 +14,9 @@ export class GameRoom extends Phaser.Scene {
     init(data) {
         this.playerData = data.playerData;
         this.HITBOXES = data.playerData.ShowHitboxes;
+        this.socket = data.serverData.socket;
+        this.myNum = data.serverData.NUM;
+        this.myId = data.serverData.ID;
     }
 
     preload(){
@@ -63,6 +66,7 @@ export class GameRoom extends Phaser.Scene {
         }
         this.load.image('ObjetBackground_NotSelected', './assets/sObjets_Background_0.png');
         this.load.image('ObjetBackground_Selected', './assets/sObjets_Background_1.png');
+
         // On load les objets 
         this.load.image('Batte', './assets/sBatte_0.png');
         this.load.image('BatteIcon', './assets/sDrag_Batte_0.png');
@@ -78,6 +82,9 @@ export class GameRoom extends Phaser.Scene {
         this.load.image('MenottesIcon', './assets/sDrag_Menottes_0.png');
         this.load.image('Telephone', './assets/sDrag_Telephone_0.png');
         this.load.image('TelephoneIcon', './assets/sDrag_Telephone_0.png');
+        for (let i = 0; i <= 9; i++) {  // 10 images (0 à 9)
+            this.load.image('DescriptifObjet_' + i, './assets/sDescription_Objet_' + i + '.png');
+        }
 
         for (let i = 0; i <= 64; i++) {  // 65 images (0 à 64)
             this.load.image('CartesNormales_' + i, './assets/oCartes_Main2_' + i + '.png');
@@ -99,10 +106,9 @@ export class GameRoom extends Phaser.Scene {
         this.cartes = []; 
         this.cartes_joueur = []; // Liste d'objet CartesMinis 
         this.Turn = -1;
+        this.Triche_allowed = false;
         // this.NbrCartesAutres = [11,11,11,11]; // 11 = le jeu n'a pas commencé.
         this.listes_echanges = [];
-        this.myNum = 0;
-        this.myId = -1;
         this.playerCount = 1;
         this.playerCountReady = 0;
         this.HoldCartesSelected = false;
@@ -182,8 +188,7 @@ export class GameRoom extends Phaser.Scene {
         this.timer = this.add.sprite(284.5,160 ,'Timer_0');
         this.timer.setDepth(70);
         //timer.play('TimerAnim'); 
-        const objetIcon = this.add.sprite(330,100 ,'ObjetIcon_0');
-        objetIcon.setDepth(70);
+        const objetIcon = new ObjectIcon(this,330,100); 
 
 
         // Positionnement des éléments intéractifs
@@ -386,17 +391,9 @@ export class GameRoom extends Phaser.Scene {
         // ===================== NETWORK ======================== //
         // ====================================================== //
 
-        this.socket = new WebSocket("ws://localhost:6510");
         this.socket.addEventListener("message", (event) => {
             //console.log("Message reçu :", event.data);
             const data = JSON.parse(event.data);
-            if (data.type === "welcome") {
-                console.log("Message welcome reçu");
-                this.myNum = data.payload.num;
-                this.myId = data.payload.id;
-                console.log("Mon ID :", this.myId);
-                console.log("Mon numéro :", this.myNum);
-            }
             if (data.type === "worldUpdate") {
                 this.players = data.payload.players;
                 this.updatePlayers();
@@ -431,7 +428,8 @@ export class GameRoom extends Phaser.Scene {
             }
             if (data.type === "GAME_START"){
                 console.log("Je connais mes cartes.");
-                this.cartes = data.payload;
+                this.cartes = data.payload.cartes;
+                this.Triche_allowed = data.payload.Triche_allowed;
             }
             if (data.type === "gameUpdate"){
                 this.Turn = data.payload.Turn;
@@ -490,18 +488,28 @@ export class GameRoom extends Phaser.Scene {
 
                 }
             }
-            if (data.type === "serverFull") {
-                alert("Le serveur est plein 😢");
-                this.socket.close();
-                return;
+            if (data.type === "gameEnded"){
+                //const NUM_WIN = this.giveNumBasedOnNumPlayer(data.payload.Winner);
+                const NUM_WIN = data.payload.Winner;
+                console.log("La partie est terminée, le gagnant est : " + NUM_WIN + "🏆");
+                const serverData = {
+                    socket: this.socket,
+                    NUM: this.myNum,
+                    ID: this.myId,
+                    Winner : NUM_WIN,
+                    playerCount : this.playerCount,
+                };
+                console.log(this.playerData);
+                console.log(serverData);
+                this.scene.start("EndRoom", {playerData : this.playerData, serverData}); // EndRoom
             }
         });
-        this.socket.onopen = () => {
-            this.socket.send(JSON.stringify({
-                type: "joinRoom",
-                payload: this.playerData 
-            })); 
-        }
+        this.events.on('shutdown', () => {
+            if (this.socket) {
+                this.socket.onmessage = null;
+            }
+
+        });
         console.log("GameRoom lancée !");
     }
 

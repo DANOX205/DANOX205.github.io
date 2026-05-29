@@ -7,13 +7,16 @@ class ObjetSelected {
         this.id = id;
         this.appear = null;
         this.disappear = null;
+        this.object_id = 0;
 
         //Hitbox Des BackgroundObjet
         this.backgroundObjet = this.scene.add.sprite(x,y,'ObjetBackground_NotSelected').setVisible(false);
         this.backgroundObjet.setAlpha(0);
-        this.backgroundObjethitbox = this.scene.add.zone(x + 240, y + 105, 90, 110);
+        this.backgroundObjethitbox = this.scene.add.zone(x -2, y -2, 105, 105);
         this.backgroundObjethitbox.setInteractive();
         this.backgroundObjethitbox.setVisible(false);
+
+        this.objectImage = new ObjectImage(this.scene,this.x,this.y,1);
         // Rectangle visuel pour debug
         this.hitboxbackgroundObjetDebug = this.scene.add.rectangle(
             x-2,
@@ -29,6 +32,8 @@ class ObjetSelected {
         // Action 
         this.backgroundObjethitbox.on('pointerdown', () => {
             console.log('Objet cliqué');
+            this.sac.ClickOnObject(this);
+            this.sac.updateDescription(this.object_id);
         });
         this.setDepth();
     }
@@ -38,6 +43,7 @@ class ObjetSelected {
     }
 
     FadeTo(value) {
+        this.objectImage.FadeTo(value);
         this.setVisible(true);
         this.scene.tweens.killTweensOf(this.backgroundObjet);
         this.scene.tweens.add({
@@ -52,6 +58,7 @@ class ObjetSelected {
     }
 
     setVisible(bool){
+        this.objectImage.setVisible(bool);
         this.backgroundObjet.setVisible(bool);
         this.backgroundObjethitbox.setVisible(bool);// disableInteractive();
         if (this.scene.HITBOXES){

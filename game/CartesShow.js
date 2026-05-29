@@ -240,7 +240,7 @@ class CartesShow {
     }
 
     updatePlayerCards(Cartes){
-        if (this.scene.roomState != RoomState.WAITING_PLAYERS) {
+        if ((this.scene.roomState != RoomState.WAITING_PLAYERS) && (this.scene.roomState != RoomState.GAME_ENDED)) {
             for (let i= 0;i < Cartes.length;i++){
                 if ((!this.cartes_joueur[i]) || (this.cartes_joueur[i] == -1)) {
                     this.cartes_joueur[i] = new CartesMini(this.scene,this.x,this.y,Cartes[i].Valeur,this.NUM);
@@ -313,7 +313,7 @@ class CartesShow {
     }
     
     setNbrCartes(cartes){
-        if (this.scene.roomState === RoomState.WAITING_PLAYERS){
+        if ((this.scene.roomState === RoomState.WAITING_PLAYERS) || (this.scene.roomState === RoomState.GAME_ENDED)){
             this.nbrCartes.setTexture('NbrCartes_11');
         } else {
             this.NbrCartes_Valeur = cartes.length;
