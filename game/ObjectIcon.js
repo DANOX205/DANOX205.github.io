@@ -11,6 +11,9 @@ class ObjectIcon {
         this.objectDrag = this.scene.add.sprite(this.x+206, this.y+87, 'ObjetIcon_0');
         this.objectDrag.setVisible(false);
 
+        this.Timer_interval = null;
+        this.Timer_index = 0;
+
         // Création de l'hitbox pour la carte.
         this.spritehitbox = scene.add.zone(x+206,y+87, 39, 39);
         this.spritehitbox.setInteractive();
@@ -43,6 +46,16 @@ class ObjectIcon {
         });
         scene.input.on('dragend', (pointer, gameObject) => {
             if (gameObject === this.spritehitbox) {
+                if ((this.isOverlapping(this.spritehitbox, this.scene.CarteEnJeu.spritehitbox))) {
+                    // Collision avec la carteEnjeu
+                    if ((this.scene.sac.selectedObject === 1)){
+                        //&& (this.scene.roomState === RoomState.GAME_STARTED)){ // Les ciseaux
+                        console.log("Je dois faire l'action du ciseaux !");
+                        this.sendCiseaux();
+                        //this.scene.sac.removeObject(); // Faire ça après la réponse du serveur
+                    }
+                }
+
                 scene.tweens.add({
                     targets: [
                         this.objectDrag,
@@ -79,27 +92,37 @@ class ObjectIcon {
         switch (id) {
             case 0 :
                 this.objectDrag.setTexture('ObjetIcon_0');
+                this.stopTimer();
+                this.scene.PLAYER.SweatDisappear(0);
+                this.sendSweatInfo(0);
                 break;
             case 1 :
                 this.objectDrag.setTexture('CiseauxIcon');
+                this.startTimer();
                 break;
             case 2 :
                 this.objectDrag.setTexture('BatteIcon');
+                this.startTimer();
                 break;
             case 3 :
                 this.objectDrag.setTexture('CanneIcon');
+                this.startTimer();
                 break;
             case 4 :
                 this.objectDrag.setTexture('TelephoneIcon');
+                this.startTimer();
                 break;
             case 5 :
                 this.objectDrag.setTexture('CrayonIcon');
+                this.startTimer();
                 break;
             case 6 :
                 this.objectDrag.setTexture('MenottesIcon');
+                this.startTimer();
                 break;
             case 7 :
                 this.objectDrag.setTexture('LunettesIcon');
+                this.startTimer();
                 break;
         }
     }
@@ -123,4 +146,63 @@ class ObjectIcon {
         this.spritehitboxDebug.setPosition(x,y);
     }
 
+    isOverlapping(obj1, obj2) {
+        return Phaser.Geom.Intersects.RectangleToRectangle(
+            obj1.getBounds(),
+            obj2.getBounds()
+        );
+    }
+
+    sendCiseaux(){
+        const payload = {
+            ObjectID : 1,
+            Source: this.scene.myNum,
+            Destination: -1,
+            Carte: -1
+        };
+        this.scene.socket.send(JSON.stringify({
+            type: "CHEATING",
+            payload: payload
+        }));
+
+    }
+
+    sendSweatInfo(num){
+        const payload = {
+            Value : num,
+            Source: this.scene.myNum,
+        };
+        this.scene.socket.send(JSON.stringify({
+            type: "SWEATING",
+            payload: payload
+        }));
+
+    }
+
+    resetTimer() {
+        this.Timer_index = 0;
+        if (this.Timer_interval) {
+            clearInterval(this.Timer_interval);
+        }
+    }
+
+    startTimer() {
+        this.Timer_interval = setInterval(() => {
+            this.Timer_index++;
+            if (this.Timer_index >= 100) {
+                // Faire Suer son joueur et envoyer au serveur
+                this.scene.PLAYER.SweatAppear(1);
+                console.log("Fin du Timer !");
+                this.stopTimer();
+                this.sendSweatInfo(1);
+            }
+        }, 100);
+    }
+
+    stopTimer() {
+        if (this.Timer_interval) {
+            clearInterval(this.Timer_interval);
+        }
+        this.Timer_index = 0;
+    }
 }

@@ -12,7 +12,7 @@ class DescriptifObjet {
     }
 
     setDepth(){
-        this.sprite.setDepth(100);
+        this.sprite.setDepth(150);
     }
 
     updateSprite(value){

@@ -52,11 +52,11 @@ export class GameRoom extends Phaser.Scene {
         this.load.image('Carte_Seen', './assets/oCartes_Seen_0.png');
         this.load.image('Carte_CanCombo', './assets/sCartes_Can_Combo_0.png');
         this.load.image('Depot', './assets/oCartes_Empty_0.png');
-        for (let i = 0; i <= 52; i++) {  // 53 images (0 à 52)
+        for (let i = 0; i <= 53; i++) {  // 53 images (0 à 52)
             this.load.image('CartesMinis_' + i, './assets/oCartes_Main_' + i + '.png');
         }
         for (let i = 53; i <= 70; i++) {  // 17 images (53 à 70)
-            this.load.image('CartesMinis_' + i, './assets/sCartes_Main2_' + i + '.png');
+            this.load.image('CartesMinis_' + (i+1), './assets/sCartes_Main2_' + i + '.png');
         }
         for (let i = 0; i <= 2; i++) {  // 3 images (0 à 2)
             this.load.image('CartesPioche_' + i, './assets/sDistribution_' + i + '.png');
@@ -78,13 +78,20 @@ export class GameRoom extends Phaser.Scene {
         this.load.image('CrayonIcon', './assets/sDrag_Crayon_0.png');
         this.load.image('Lunettes', './assets/sLunettes_0.png');
         this.load.image('LunettesIcon', './assets/sDrag_Lunettes_0.png');
-        this.load.image('Menottes', './assets/sDrag_Menottes_0.png');
+        this.load.image('Menottes', './assets/sMenottes_0.png');
         this.load.image('MenottesIcon', './assets/sDrag_Menottes_0.png');
-        this.load.image('Telephone', './assets/sDrag_Telephone_0.png');
+        this.load.image('Telephone', './assets/sTelephone_0.png');
         this.load.image('TelephoneIcon', './assets/sDrag_Telephone_0.png');
         for (let i = 0; i <= 9; i++) {  // 10 images (0 à 9)
             this.load.image('DescriptifObjet_' + i, './assets/sDescription_Objet_' + i + '.png');
         }
+        for (let i = 0; i <= 11; i++) {  // 12 images (0 à 11)
+            this.load.image('CuttingCard_' + i, './assets/sCut_Card_' + i + '.png');
+        }
+        for (let i = 0; i <= 9; i++) {  // 10 images (0 à 9)
+            this.load.image('CheatedTimer_' + i, './assets/sCheated_Timer_' + i + '.png');
+        }
+        this.load.image('CheatingFailed', './assets/sCheatingFailed_0.png');
 
         for (let i = 0; i <= 64; i++) {  // 65 images (0 à 64)
             this.load.image('CartesNormales_' + i, './assets/oCartes_Main2_' + i + '.png');
@@ -98,6 +105,7 @@ export class GameRoom extends Phaser.Scene {
     }
 
     create() {
+        this.SendAskRoomstate();
         // Pour envoyer des informations 20 par secondes
         this.lastNetworkUpdate = 0;
         this.lastNetworkUpdate2 = 0;
@@ -160,7 +168,27 @@ export class GameRoom extends Phaser.Scene {
                 { key: 'FlippingCarte_5' },
                 { key: 'FlippingCarte_6' }
             ],
-            frameRate: 8, // 2 images par seconde
+            frameRate: 10, // 10 images par seconde
+            repeat: 0      // 0 = joue une fois, -1 = boucle infinie
+        });
+
+        this.anims.create({
+            key: 'CuttingCardAnim',
+            frames: [
+                { key: 'CuttingCard_0' },
+                { key: 'CuttingCard_1' },
+                { key: 'CuttingCard_2' },
+                { key: 'CuttingCard_3' },
+                { key: 'CuttingCard_4' },
+                { key: 'CuttingCard_5' },
+                { key: 'CuttingCard_6' },
+                { key: 'CuttingCard_7' },
+                { key: 'CuttingCard_8' },
+                { key: 'CuttingCard_9' },
+                { key: 'CuttingCard_10' },
+                { key: 'CuttingCard_11' }
+            ],
+            frameRate: 8, // 8 images par seconde
             repeat: 0      // 0 = joue une fois, -1 = boucle infinie
         });
 
@@ -189,6 +217,8 @@ export class GameRoom extends Phaser.Scene {
         this.timer.setDepth(70);
         //timer.play('TimerAnim'); 
         this.objetIcon = new ObjectIcon(this,330,100); 
+        this.cheatingTimer = this.add.sprite(50,225,'CheatedTimer_0').setVisible(false);
+        this.cheatingTimer.setDepth(200);
 
 
         // Positionnement des éléments intéractifs
@@ -265,7 +295,7 @@ export class GameRoom extends Phaser.Scene {
         this.DescriptifPower = new DescriptifPower(this,DescriptifPower_X,DescriptifPower_Y,0);
         
         // BOUTON SAC --------------------------------------------------------------
-        const sac = new Sac(this,this.PLAYER,buttonSac_X,buttonSac_Y);
+        this.sac = new Sac(this,this.PLAYER,buttonSac_X,buttonSac_Y);
 
         // BOUTON EMOTE --------------------------------------------------------------
         this.emotes = [];
@@ -413,17 +443,7 @@ export class GameRoom extends Phaser.Scene {
                 this.roomState = data.payload;
                 if (this.roomState === RoomState.GAME_STARTED){ // A SUP
                     console.log("On peut commencer !");
-                    this.buttonReady.setVisible(false);
-                    this.hitboxDebug_buttonReady.setVisible(false);
-                    this.buttonReadyhitbox.disableInteractive();
-                    this.CarteEnJeu.sprite.setVisible(true);
-                    this.CarteEnJeu.StartAnimation();
-                    this.PiocheCard.setVisible(true);
-                    this.PiocheCard.StartAnimationDistribution();
-                    this.PiocheCard.StartAnimation();
-                    this.HoldCartes.HoldCartes.setVisible(true);
-                    this.HoldCartes.HoldCarteshitbox.setInteractive();
-                    this.HoldCartes.hitboxHoldCartesDebug.setVisible(this.HITBOXES);
+                    this.setupRoomForGameStart();
                 }
             }
             if (data.type === "GAME_START"){
@@ -502,6 +522,44 @@ export class GameRoom extends Phaser.Scene {
                 console.log(this.playerData);
                 console.log(serverData);
                 this.scene.start("EndRoom", {playerData : this.playerData, serverData}); // EndRoom
+            }
+            if (data.type === "SWEATING"){
+                if (data.payload.Source != this.myNum){
+                    let joueur = givePlayerBasedOnNum(data.payload.Source);
+                    if (data.payload.Value){
+                        joueur.SweatAppear(1);
+                    } else {
+                        joueur.SweatDisappear(0);
+                    }
+                }
+            }
+            if (data.type === "CheatingAnimation"){
+                if (data.payload.Source === this.myNum){
+                    this.sac.removeObject();
+                }
+                if (data.payload.Num === -1){
+
+                } else if (data.payload.Num === 1){
+                    const cuttingCard = this.add.sprite(284.5,160 ,'CuttingCard_0');
+                    cuttingCard.setDepth(1000);
+                    cuttingCard.play('CuttingCardAnim'); 
+                    cuttingCard.on('animationcomplete', () => {
+                        cuttingCard.destroy();
+                    });                  
+                    // Lancer l'autre animation qui coupe la carte.
+                }
+            }
+            if (data.type === "TIMER_VALUE") {
+                console.log("Je reçois un truc : " + data.payload);
+                if (data.payload.Source === this.myNum){
+                    if (data.payload.Valeur === -1){
+                        this.cheatingTimer.setVisible(false);
+                    } else {
+                        console.log("Je dois changer le CheatingTimer : " + data.payload.Valeur);
+                        this.cheatingTimer.setVisible(true);
+                        this.cheatingTimer.setTexture('CheatedTimer_' + data.payload.Valeur);
+                    }
+                }
             }
         });
         this.events.on('shutdown', () => {
@@ -586,6 +644,20 @@ export class GameRoom extends Phaser.Scene {
         }
     }
 
+    setupRoomForGameStart(){
+        this.buttonReady.setVisible(false);
+        this.hitboxDebug_buttonReady.setVisible(false);
+        this.buttonReadyhitbox.disableInteractive();
+        this.CarteEnJeu.sprite.setVisible(true);
+        this.CarteEnJeu.StartAnimation();
+        this.PiocheCard.setVisible(true);
+        this.PiocheCard.StartAnimationDistribution();
+        this.PiocheCard.StartAnimation();
+        this.HoldCartes.HoldCartes.setVisible(true);
+        this.HoldCartes.HoldCarteshitbox.setInteractive();
+        this.HoldCartes.hitboxHoldCartesDebug.setVisible(this.HITBOXES);
+    }
+
     // ====================================================== //
     // ================== UPDATE PLAYERS ==================== //
     // ====================================================== //
@@ -612,6 +684,7 @@ export class GameRoom extends Phaser.Scene {
                     circularList[0].playerName,
                     NbrCartesAutres[0],
                     false, false,false,TurnList[0]);
+                this.PLAYER1.setSweatValue(circularList[0].Sweating_Index);
                 break;
             case 2 : 
                 if (this.Turn === circularList[0].num){
@@ -628,6 +701,7 @@ export class GameRoom extends Phaser.Scene {
                     circularList[0].playerName,
                     NbrCartesAutres[0],
                     false, false,false,TurnList[0]);
+                this.PLAYER1.setSweatValue(circularList[0].Sweating_Index);
                 this.PLAYER2.updatePlayerGlobal(
                     circularList[1].skinTeteIndex,
                     circularList[1].skinCorpsIndex,
@@ -637,6 +711,7 @@ export class GameRoom extends Phaser.Scene {
                     circularList[1].playerName,
                     NbrCartesAutres[1],
                     false, false,false,TurnList[1]);
+                this.PLAYER2.setSweatValue(circularList[1].Sweating_Index);
                 break;
             case 3 : 
                 if (this.Turn === circularList[0].num){
@@ -655,6 +730,7 @@ export class GameRoom extends Phaser.Scene {
                     circularList[0].playerName,
                     NbrCartesAutres[0],
                     false, false,false,TurnList[0]);
+                this.PLAYER1.setSweatValue(circularList[0].Sweating_Index);
                 this.PLAYER2.updatePlayerGlobal(
                     circularList[1].skinTeteIndex,
                     circularList[1].skinCorpsIndex,
@@ -664,6 +740,7 @@ export class GameRoom extends Phaser.Scene {
                     circularList[1].playerName,
                     NbrCartesAutres[1],
                     false, false,false,TurnList[1]);
+                this.PLAYER2.setSweatValue(circularList[1].Sweating_Index);
                 this.PLAYER3.updatePlayerGlobal(
                     circularList[2].skinTeteIndex,
                     circularList[2].skinCorpsIndex,
@@ -673,6 +750,7 @@ export class GameRoom extends Phaser.Scene {
                     circularList[2].playerName,
                     NbrCartesAutres[2],
                     false, false,false,TurnList[2]);
+                this.PLAYER3.setSweatValue(circularList[2].Sweating_Index);
                 break;
             case 4 : 
                 if (this.Turn === circularList[0].num){
@@ -693,6 +771,7 @@ export class GameRoom extends Phaser.Scene {
                     circularList[0].playerName,
                     NbrCartesAutres[0],
                     false, false,false,TurnList[0]);
+                this.PLAYER1.setSweatValue(circularList[0].Sweating_Index);
                 this.PLAYER2.updatePlayerGlobal(
                     circularList[1].skinTeteIndex,
                     circularList[1].skinCorpsIndex,
@@ -702,6 +781,7 @@ export class GameRoom extends Phaser.Scene {
                     circularList[1].playerName,
                     NbrCartesAutres[1],
                     false, false,false,TurnList[1]);
+                this.PLAYER2.setSweatValue(circularList[1].Sweating_Index);
                 this.PLAYER3.updatePlayerGlobal(
                     circularList[2].skinTeteIndex,
                     circularList[2].skinCorpsIndex,
@@ -711,6 +791,7 @@ export class GameRoom extends Phaser.Scene {
                     circularList[2].playerName,
                     NbrCartesAutres[2],
                     false, false,false,TurnList[2]);
+                this.PLAYER3.setSweatValue(circularList[2].Sweating_Index);
                 this.PLAYER4.updatePlayerGlobal(
                     circularList[3].skinTeteIndex,
                     circularList[3].skinCorpsIndex,
@@ -720,6 +801,7 @@ export class GameRoom extends Phaser.Scene {
                     circularList[3].playerName,
                     NbrCartesAutres[3],
                     false, false,false,TurnList[3]);
+                this.PLAYER4.setSweatValue(circularList[3].Sweating_Index);
                 break;
         }
     }
@@ -1017,6 +1099,12 @@ export class GameRoom extends Phaser.Scene {
         this.socket.send(JSON.stringify({
             type: "ReadyOrNot",
             payload: bool
+        }));
+    }
+
+    SendAskRoomstate(){
+        this.socket.send(JSON.stringify({
+            type: "AskRoomstate"
         }));
     }
 

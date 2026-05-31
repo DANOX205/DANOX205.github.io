@@ -26,17 +26,16 @@ class ObjetSelected {
             0xff0000, // couleur rouge
             0.15       // opacité 0.5
         ).setVisible(false);
-        this.hitboxbackgroundObjetDebug.setDepth(105);
         this.hitboxbackgroundObjetDebug.setOrigin(0.5, 0.5); // centre sur la zone
         this.hitboxbackgroundObjetDebug.setVisible(false);
         // Action 
         this.backgroundObjethitbox.on('pointerdown', () => {
             console.log('Objet cliqué');
             if (this.backgroundObjet.texture.key === 'ObjetBackground_Selected') {
-                this.sac.updateDescription(0);
+                this.sac.updateDescription(0, 0);
                 this.sac.ClickOnObject(null);
             } else {
-                this.sac.updateDescription(this.object_id);
+                this.sac.updateDescription(this.object_id, this.id);
                 this.sac.ClickOnObject(this);
             }
         });
@@ -50,6 +49,8 @@ class ObjetSelected {
 
     setDepth(){
         this.backgroundObjet.setDepth(100);
+        this.backgroundObjethitbox.setDepth(100);
+        this.hitboxbackgroundObjetDebug.setDepth(101);
     }
 
     FadeTo(value) {

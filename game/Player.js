@@ -20,7 +20,8 @@ class Player {
         this.oeilGauche = scene.add.sprite(x, y, 'OeilGauche_0');
         this.teteSkin1 = scene.add.sprite(x, y, 'TeteSkin1_0').setVisible(skinTeteIndex);
         this.teteSkin2 = scene.add.sprite(x, y, 'TeteSkin1_1').setVisible(skinTeteIndex);
-        this.teteSweat = scene.add.sprite(x, y, 'TeteSweat').setVisible(sweat);
+        this.teteSweat = scene.add.sprite(x, y, 'TeteSweat');
+        this.teteSweat.setAlpha(0);
         this.teteLunettes = scene.add.sprite(x, y, 'TeteLunettes').setVisible(lunettes);
 
         // En + 
@@ -67,7 +68,8 @@ class Player {
             SkinCorpsIndex: this.skinCorpsIndex,
             Username: this.playerName,
             Emotion: this.getEmotion(),
-            Looking_Down : this.Looking_Down
+            Looking_Down : this.Looking_Down,
+            Sweating_Index : this.teteSweat.alpha
         };
         return playerData;
     }
@@ -297,7 +299,7 @@ class Player {
         this.oeilGauche.setVisible(bool);
         this.teteSkin1.setVisible(bool);
         this.teteSkin2.setVisible(bool);
-        this.teteSweat.setVisible(this.sweat);
+        //this.teteSweat.setVisible(this.sweat);
         this.teteLunettes.setVisible(this.lunettes);
         this.corpsMain.setVisible(bool);
         this.corpsBras.setVisible(bool);
@@ -342,5 +344,39 @@ class Player {
         this.setSkinTete(this.skinTeteIndex);
         this.setLookingDown(this.Looking_Down);
         this.setNametag(Name);
+    }
+
+    setSweatValue(value){
+        this.teteSweat.setVisible(true);
+        this.teteSweat.setAlpha(value);
+    }
+
+    SweatAppear(value) {
+        this.teteSweat.setVisible(true);
+        this.teteSweat.setAlpha(0);
+        this.scene.tweens.killTweensOf(this.teteSweat);
+        this.scene.tweens.add({
+            targets: this.teteSweat,
+            duration: 50000,
+            alpha: value,
+            ease: 'Power2',
+            onComplete: ()=>{
+                this.teteSweat.setVisible(value);
+            }
+        });
+    }
+
+    SweatDisappear(value) {
+        this.teteSweat.setVisible(true);
+        this.scene.tweens.killTweensOf(this.teteSweat);
+        this.scene.tweens.add({
+            targets: this.teteSweat,
+            duration: 5000,
+            alpha: value,
+            ease: 'Power2',
+            onComplete: ()=>{
+                this.teteSweat.setVisible(value);
+            }
+        });
     }
 }

@@ -12,6 +12,7 @@ class Sac {
         this.backgroundObjet3 = new ObjetSelected(this.scene,this,x+150,y-10,3);
         this.DescriptifObjet = new DescriptifObjet(this.scene,this,x,y);
 
+        this.selectedBackground = 0;
         this.selectedObject = 0;
                
         //Hitbox
@@ -44,7 +45,7 @@ class Sac {
                 this.player.setLookingDownChange();
             }
         });
-        this.Objets_test(0);
+        this.Objets_test(3); // A SUP
         this.setDepth();
     }
 
@@ -72,8 +73,9 @@ class Sac {
         this.DescriptifObjet.FadeTo(0);
     }
 
-    updateDescription(value){
+    updateDescription(value, id){
         this.selectedObject = value;
+        this.selectedBackground = id;
         this.DescriptifObjet.updateSprite(value);
     }
 
@@ -96,7 +98,37 @@ class Sac {
                 this.backgroundObjet2.setObjectID(2);
                 this.backgroundObjet3.setObjectID(3);
                 break;
-
+            case 1 :
+                this.backgroundObjet1.setObjectID(4);
+                this.backgroundObjet2.setObjectID(5);
+                this.backgroundObjet3.setObjectID(6);
+                break;
+            case 2 :
+                this.backgroundObjet1.setObjectID(1);
+                this.backgroundObjet2.setObjectID(7);
+                this.backgroundObjet3.setObjectID(5);
+                break;
+            case 3 : 
+                this.backgroundObjet1.setObjectID(1);
+                this.backgroundObjet2.setObjectID(1);
+                this.backgroundObjet3.setObjectID(1);
+                break;
         }
+    }
+
+    removeObject(){
+        switch (this.selectedBackground) {
+            case 1 :
+                this.backgroundObjet1.setObjectID(0);
+                break;
+            case 2 : 
+                this.backgroundObjet2.setObjectID(0);
+                break;
+            case 3 : 
+                this.backgroundObjet3.setObjectID(0);
+                break;
+        }
+        this.updateDescription(0);
+        this.scene.objetIcon.setSprite(0);
     }
 }

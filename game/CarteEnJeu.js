@@ -5,8 +5,35 @@ class CarteEnJeu {
         this.x = x;
         this.y = y;
         this.sprite = scene.add.sprite(x, y, 'CartesMinis_'+ valeur).setVisible(seen);
+
+        // Création de l'hitbox pour la carte.
+        this.spritehitbox = scene.add.zone(x,y-2, 19, 25);
+        this.spritehitbox.setInteractive();
+        this.spritehitbox.setVisible(false);
+        // Rectangle visuel pour debug
+        this.spritehitboxDebug = scene.add.rectangle(
+            x,
+            y-2,
+            19,
+            25,
+            0x0000ff, // couleur bleu
+            0.2       // opacité 0.2
+        );
+        this.spritehitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.spritehitboxDebug.setVisible(false);
+
         this.floatTween = null;
         this.sprite.setDepth(80);
+        this.spritehitbox.setDepth(80);
+        this.spritehitboxDebug.setDepth(81);
+    }
+
+    setVisible(bool){
+        this.sprite.setVisible(bool);
+        this.spritehitbox.setVisible(bool);
+        if (bool){
+            this.spritehitboxDebug.setVisible(this.scene.HITBOXES);
+        }
     }
 
     StartAnimation(){
