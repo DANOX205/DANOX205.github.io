@@ -45,7 +45,7 @@ class Sac {
                 this.player.setLookingDownChange();
             }
         });
-        this.Objets_test(0); // A SUP
+        this.Objets_test(4); // A SUP
         this.setDepth();
     }
 
@@ -118,6 +118,11 @@ class Sac {
                 this.backgroundObjet1.setObjectID(1);
                 this.backgroundObjet2.setObjectID(1);
                 this.backgroundObjet3.setObjectID(1);
+                break;
+            case 4 :
+                this.backgroundObjet1.setObjectID(1);
+                this.backgroundObjet2.setObjectID(2);
+                this.backgroundObjet3.setObjectID(7);
                 break;
         }
     }

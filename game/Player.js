@@ -399,4 +399,11 @@ class Player {
             }
         });
     }
+
+    putLunettesOn(){
+        this.teteLunettes.setVisible(true);
+    }
+    putLunettesOff(){
+        this.teteLunettes.setVisible(false);
+    }
 }

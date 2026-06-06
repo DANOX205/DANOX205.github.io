@@ -299,6 +299,7 @@ export class GameRoom extends Phaser.Scene {
         const fondJoueur = this.add.sprite(284.5,160 ,'FondJoueur');
         fondJoueur.setDepth(40);
         this.PLAYER = new Player(this,Player_X ,Player_Y, this.playerData.SkinTeteIndex,this.playerData.SkinCorpsIndex,this.playerData.Emotion,0, this.playerData.Username);
+        this.PLAYER.setVisiblePlayer(true);
 
         // Joueur1 --------------------------------------------------------------
         this.PLAYER1 = new Player(this,Player1_X ,Player1_Y, this.playerData.SkinTeteIndex,this.playerData.SkinCorpsIndex,this.playerData.Emotion,1, this.playerData.Username);
@@ -609,13 +610,21 @@ export class GameRoom extends Phaser.Scene {
                         if (data.payload.Destination != this.myNum){
                             player = this.givePlayerBasedOnNum(data.payload.Destination);
                         }
-                        console.log(player);
                         const playerCheated = this.add.sprite(player.x+6,player.y,'PlayerCheated_0');
                         playerCheated.setScale(2);
                         playerCheated.setDepth(70);
                         playerCheated.play('PlayerCheated');
                         this.StartAnimation_Hurt(playerCheated);
                     }
+                } else if (data.payload.Num === 7){
+                    if (data.payload.Source === this.myNum){
+                        this.sac.removeObject();
+                    }
+                    let player = this.PLAYER;
+                    if (data.payload.Destination != this.myNum){
+                        player = this.givePlayerBasedOnNum(data.payload.Destination);
+                    }
+                    player.putLunettesOn();
                 }
             }
             if (data.type === "TIMER_VALUE") {

@@ -55,35 +55,57 @@ class ObjectIcon {
                 }
 
                 if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER1.spritehitbox)) && (this.scene.PLAYER1.spritehitbox.visible)) {
-                    // Collision avec la carteEnjeu
                     if ((this.scene.sac.selectedObject === 2)){
                         console.log("Je dois faire l'action de la batte !");
                         const Destination = this.scene.PLAYER1.NUM;
                         this.sendBatte(Destination);
                     }
+                    if ((this.scene.sac.selectedObject === 7)){
+                        console.log("Je dois faire l'action des Lunettes !");
+                        const Destination = this.scene.PLAYER1.NUM;
+                        this.sendLunettes(Destination);
+                    }
                 }
                 if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER2.spritehitbox)) && (this.scene.PLAYER2.spritehitbox.visible)) {
-                    // Collision avec la carteEnjeu
                     if ((this.scene.sac.selectedObject === 2)){
                         console.log("Je dois faire l'action de la batte !");
                         const Destination = this.scene.PLAYER2.NUM;
                         this.sendBatte(Destination);
                     }
+                    if ((this.scene.sac.selectedObject === 7)){
+                        console.log("Je dois faire l'action des Lunettes !");
+                        const Destination = this.scene.PLAYER2.NUM;
+                        this.sendLunettes(Destination);
+                    }
                 }
                 if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER3.spritehitbox)) && (this.scene.PLAYER3.spritehitbox.visible)) {
-                    // Collision avec la carteEnjeu
                     if ((this.scene.sac.selectedObject === 2)){
                         console.log("Je dois faire l'action de la batte !");
                         const Destination = this.scene.PLAYER3.NUM;
                         this.sendBatte(Destination);
                     }
+                    if ((this.scene.sac.selectedObject === 7)){
+                        console.log("Je dois faire l'action des Lunettes !");
+                        const Destination = this.scene.PLAYER3.NUM;
+                        this.sendLunettes(Destination);
+                    }
                 }
                 if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER4.spritehitbox)) && (this.scene.PLAYER4.spritehitbox.visible)) {
-                    // Collision avec la carteEnjeu
                     if ((this.scene.sac.selectedObject === 2)){
                         console.log("Je dois faire l'action de la batte !");
                         const Destination = this.scene.PLAYER4.NUM;
                         this.sendBatte(Destination);
+                    }
+                    if ((this.scene.sac.selectedObject === 7)){
+                        console.log("Je dois faire l'action des Lunettes !");
+                        const Destination = this.scene.PLAYER4.NUM;
+                        this.sendLunettes(Destination);
+                    }
+                }
+                if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER.spritehitbox)) && (this.scene.PLAYER.spritehitbox.visible)) {
+                    if ((this.scene.sac.selectedObject === 7)){
+                        console.log("Je dois faire l'action des Lunettes !");
+                        this.sendLunettes(this.scene.myNum);
                     }
                 }
 
@@ -199,6 +221,19 @@ class ObjectIcon {
     sendBatte(Destination){
         const payload = {
             ObjectID : 2,
+            Source: this.scene.myNum,
+            Destination: Destination,
+            Carte: -1
+        };
+        this.scene.socket.send(JSON.stringify({
+            type: "CHEATING",
+            payload: payload
+        }));
+    }
+
+    sendLunettes(Destination){
+        const payload = {
+            ObjectID : 7,
             Source: this.scene.myNum,
             Destination: Destination,
             Carte: -1
