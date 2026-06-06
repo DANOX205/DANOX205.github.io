@@ -54,4 +54,26 @@ class CarteEnJeu {
     ChangeSprite(Valeur){
         this.sprite.setTexture('CartesMinis_'+ Valeur);
     }
+
+    CutCardAnimation(){
+        const cutCard = this.scene.add.sprite(this.x,this.y,'CuttingCard_0');
+        cutCard.setDepth(85);
+        cutCard.play('CuttingCardAnim'); 
+        cutCard.on('animationcomplete', () => {
+            this.FadeTo(cutCard);
+        });
+    }
+
+    FadeTo(object) {
+        this.scene.tweens.killTweensOf(object);
+        this.scene.tweens.add({
+            targets: object,
+            duration: 200,
+            alpha: 0,
+            ease: 'Power2',
+            onComplete: ()=>{
+                object.destroy();
+            }
+        });
+    }
 }

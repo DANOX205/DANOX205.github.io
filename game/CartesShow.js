@@ -169,6 +169,7 @@ class CartesShow {
         this.AcceptEchange.setDepth(81);
         this.cartesShowEchanges.setDepth(82);
         this.echangeTimer.setDepth(82);
+        this.carteshitbox.setDepth(85);
 
         // Hitbox 
         this.depothitbox.setDepth(82);

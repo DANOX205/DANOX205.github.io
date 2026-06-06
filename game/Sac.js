@@ -45,7 +45,7 @@ class Sac {
                 this.player.setLookingDownChange();
             }
         });
-        this.Objets_test(3); // A SUP
+        this.Objets_test(0); // A SUP
         this.setDepth();
     }
 
@@ -89,6 +89,12 @@ class Sac {
             ObjectSelected.backgroundObjet.setTexture('ObjetBackground_Selected');
             this.scene.objetIcon.setSprite(this.selectedObject);
         }
+    }
+
+    setRandom_Objects(){
+        this.backgroundObjet1.setObjectID(Math.floor(Math.random() * 7) + 1);
+        this.backgroundObjet2.setObjectID(Math.floor(Math.random() * 7) + 1);
+        this.backgroundObjet3.setObjectID(Math.floor(Math.random() * 7) + 1);
     }
 
     Objets_test(id){

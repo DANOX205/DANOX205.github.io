@@ -82,16 +82,22 @@ export class GameRoom extends Phaser.Scene {
         this.load.image('MenottesIcon', './assets/sDrag_Menottes_0.png');
         this.load.image('Telephone', './assets/sTelephone_0.png');
         this.load.image('TelephoneIcon', './assets/sDrag_Telephone_0.png');
+        for (let i = 0; i <= 11; i++) {  // 12 images (0 à 11)
+            this.load.image('WhiteScreen_' + i, './assets/sCut_Card_' + i + '.png');
+        }
+        this.load.image('PlayerCheated_0', './assets/sPlayer_Cheated_0.png');
+        this.load.image('PlayerCheated_1', './assets/sPlayer_Cheated_1.png');
+
         for (let i = 0; i <= 9; i++) {  // 10 images (0 à 9)
             this.load.image('DescriptifObjet_' + i, './assets/sDescription_Objet_' + i + '.png');
-        }
-        for (let i = 0; i <= 11; i++) {  // 12 images (0 à 11)
-            this.load.image('CuttingCard_' + i, './assets/sCut_Card_' + i + '.png');
         }
         for (let i = 0; i <= 9; i++) {  // 10 images (0 à 9)
             this.load.image('CheatedTimer_' + i, './assets/sCheated_Timer_' + i + '.png');
         }
         this.load.image('CheatingFailed', './assets/sCheatingFailed_0.png');
+        for (let i = 0; i <= 9; i++) {  // 10 images (0 à 9)
+            this.load.image('CuttingCard_' + i, './assets/sCard_Cut_' + i + '.png');
+        }
 
         for (let i = 0; i <= 64; i++) {  // 65 images (0 à 64)
             this.load.image('CartesNormales_' + i, './assets/oCartes_Main2_' + i + '.png');
@@ -173,6 +179,16 @@ export class GameRoom extends Phaser.Scene {
         });
 
         this.anims.create({
+            key: 'PlayerCheated',
+            frames: [
+                { key: 'PlayerCheated_0' },
+                { key: 'PlayerCheated_1' }
+            ],
+            frameRate: 8, // 8 images par seconde
+            repeat: -1      // 0 = joue une fois, -1 = boucle infinie
+        });
+
+        this.anims.create({
             key: 'CuttingCardAnim',
             frames: [
                 { key: 'CuttingCard_0' },
@@ -184,9 +200,38 @@ export class GameRoom extends Phaser.Scene {
                 { key: 'CuttingCard_6' },
                 { key: 'CuttingCard_7' },
                 { key: 'CuttingCard_8' },
-                { key: 'CuttingCard_9' },
-                { key: 'CuttingCard_10' },
-                { key: 'CuttingCard_11' }
+                { key: 'CuttingCard_9' }
+            ],
+            frameRate: 8, // 8 images par seconde
+            repeat: 0      // 0 = joue une fois, -1 = boucle infinie
+        });
+
+        this.anims.create({
+            key: 'WhiteScreenAnim_Cut',
+            frames: [
+                { key: 'WhiteScreen_0' },
+                { key: 'WhiteScreen_1' },
+                { key: 'WhiteScreen_2' },
+                { key: 'WhiteScreen_3' },
+                { key: 'WhiteScreen_4' },
+                { key: 'WhiteScreen_5' },
+                { key: 'WhiteScreen_6' },
+                { key: 'WhiteScreen_7' },
+                { key: 'WhiteScreen_8' },
+                { key: 'WhiteScreen_9' },
+                { key: 'WhiteScreen_10' },
+                { key: 'WhiteScreen_11' }
+            ],
+            frameRate: 8, // 8 images par seconde
+            repeat: 0      // 0 = joue une fois, -1 = boucle infinie
+        });
+
+        this.anims.create({
+            key: 'WhiteScreenAnim',
+            frames: [
+                { key: 'WhiteScreen_0' },
+                { key: 'WhiteScreen_1' },
+                { key: 'WhiteScreen_2' }
             ],
             frameRate: 8, // 8 images par seconde
             repeat: 0      // 0 = joue une fois, -1 = boucle infinie
@@ -523,34 +568,58 @@ export class GameRoom extends Phaser.Scene {
                 console.log(serverData);
                 this.scene.start("EndRoom", {playerData : this.playerData, serverData}); // EndRoom
             }
-            if (data.type === "SWEATING"){
-                if (data.payload.Source != this.myNum){
-                    let joueur = givePlayerBasedOnNum(data.payload.Source);
-                    if (data.payload.Value){
-                        joueur.SweatAppear(1);
-                    } else {
-                        joueur.SweatDisappear(0);
+            if (data.type === "CheatingAnimation"){
+                console.log("Cheating_Anim_payload : " + data.payload.Num);
+                if (data.payload.Num === -1){
+                    const cheatingFailed = this.add.sprite(50,-52 ,'CheatingFailed');
+                    cheatingFailed.setDepth(100);
+                    this.tweens.add({
+                        targets: cheatingFailed,
+                        duration: 10000,
+                        alpha: 0,
+                        ease: 'Power2',
+                        onComplete: ()=>{
+                            cheatingFailed.destroy();
+                        }
+                    });
+                } else if (data.payload.Num === 1){
+                    if (data.payload.Source === this.myNum){
+                        this.sac.removeObject();
+                    }
+                    const WhiteScreen = this.add.sprite(284.5,160 ,'WhiteScreen_0');
+                    WhiteScreen.setDepth(1000);
+                    WhiteScreen.play('WhiteScreenAnim_Cut'); 
+                    WhiteScreen.on('animationcomplete', () => {
+                        WhiteScreen.destroy();
+                    });
+                    this.CarteEnJeu.CutCardAnimation();                 
+                    // Lancer l'autre animation qui coupe la carte.
+                } else if (data.payload.Num === 2){
+                    if (data.payload.Source === this.myNum){
+                        this.sac.removeObject();
+                    }
+                    if (data.payload.Destination != -1){
+                        const WhiteScreen = this.add.sprite(284.5,160 ,'WhiteScreen_0');
+                        WhiteScreen.setDepth(1000);
+                        WhiteScreen.play('WhiteScreenAnim'); 
+                        WhiteScreen.on('animationcomplete', () => {
+                            WhiteScreen.destroy();
+                        });
+                        let player = this.PLAYER;
+                        if (data.payload.Destination != this.myNum){
+                            player = this.givePlayerBasedOnNum(data.payload.Destination);
+                        }
+                        console.log(player);
+                        const playerCheated = this.add.sprite(player.x+6,player.y,'PlayerCheated_0');
+                        playerCheated.setScale(2);
+                        playerCheated.setDepth(70);
+                        playerCheated.play('PlayerCheated');
+                        this.StartAnimation_Hurt(playerCheated);
                     }
                 }
             }
-            if (data.type === "CheatingAnimation"){
-                if (data.payload.Source === this.myNum){
-                    this.sac.removeObject();
-                }
-                if (data.payload.Num === -1){
-
-                } else if (data.payload.Num === 1){
-                    const cuttingCard = this.add.sprite(284.5,160 ,'CuttingCard_0');
-                    cuttingCard.setDepth(1000);
-                    cuttingCard.play('CuttingCardAnim'); 
-                    cuttingCard.on('animationcomplete', () => {
-                        cuttingCard.destroy();
-                    });                  
-                    // Lancer l'autre animation qui coupe la carte.
-                }
-            }
             if (data.type === "TIMER_VALUE") {
-                console.log("Je reçois un truc : " + data.payload);
+                //console.log("Je reçois un truc : " + data.payload);
                 if (data.payload.Source === this.myNum){
                     if (data.payload.Valeur === -1){
                         this.cheatingTimer.setVisible(false);
@@ -645,6 +714,9 @@ export class GameRoom extends Phaser.Scene {
     }
 
     setupRoomForGameStart(){
+        if (this.Triche_allowed){
+            this.sac.setRandom_Objects();
+        }
         this.buttonReady.setVisible(false);
         this.hitboxDebug_buttonReady.setVisible(false);
         this.buttonReadyhitbox.disableInteractive();
@@ -1116,5 +1188,24 @@ export class GameRoom extends Phaser.Scene {
     CardsOf(i){
         const player = this.cartes.find(p => p.num === i);
         return player ? player.cartes_joueur : [];
+    }
+
+    StartAnimation_Hurt(object){
+        this.time.delayedCall(800, () => {
+            this.FadeTo_destroy(object);
+        });
+    }
+
+    FadeTo_destroy(object){
+        this.tweens.killTweensOf(object);
+        this.tweens.add({
+            targets: object,
+            duration: 1000,
+            alpha: 0,
+            ease: 'Power2',
+            onComplete: ()=>{
+                object.destroy();
+            }
+        });
     }
 }

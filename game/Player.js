@@ -53,6 +53,21 @@ class Player {
             this.playerName = "toi";
         }
 
+        // spritehitbox
+        this.spritehitbox = scene.add.zone(x-3,y+10, 100, 150);
+        this.spritehitbox.setInteractive();  
+        // Rectangle visuel pour debug
+        this.spritehitboxDebug = scene.add.rectangle(
+            x-3,
+            y+10,
+            100,
+            150,
+            0x008000, // couleur verte
+            0.15       // opacité 0.5
+        );
+        this.spritehitboxDebug.setOrigin(0.5, 0.5); // centre sur la zone
+        this.spritehitboxDebug.setVisible(false);
+
         this.setSkinTete(skinTeteIndex);
         this.setSkinCorps(skinCorpsIndex);
         this.setEmotion(emotion);
@@ -101,6 +116,8 @@ class Player {
         this.teteSkin2.setDepth(44);
         this.teteSweat.setDepth(66);
         this.teteLunettes.setDepth(67);
+        this.spritehitbox.setDepth(60);
+        this.spritehitboxDebug.setDepth(68);
         
         this.cartesShow.setDepth();
     }
@@ -299,7 +316,7 @@ class Player {
         this.oeilGauche.setVisible(bool);
         this.teteSkin1.setVisible(bool);
         this.teteSkin2.setVisible(bool);
-        //this.teteSweat.setVisible(this.sweat);
+        this.teteSweat.setVisible(bool);
         this.teteLunettes.setVisible(this.lunettes);
         this.corpsMain.setVisible(bool);
         this.corpsBras.setVisible(bool);
@@ -309,7 +326,10 @@ class Player {
         this.cartesShow.setVisible(bool);
         this.Nametag.setVisible(bool);
         this.nameText.setVisible(bool);
+        this.spritehitbox.setVisible(bool);
+        this.spritehitboxDebug.setVisible(false);
         if (bool){
+            this.spritehitboxDebug.setVisible(this.scene.HITBOXES);
             this.setSkinTete(this.skinTeteIndex);
             this.setSkinCorps(this.skinCorpsIndex);
             this.setEmotion(this.emotion);

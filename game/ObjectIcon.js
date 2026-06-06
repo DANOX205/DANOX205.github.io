@@ -49,10 +49,41 @@ class ObjectIcon {
                 if ((this.isOverlapping(this.spritehitbox, this.scene.CarteEnJeu.spritehitbox))) {
                     // Collision avec la carteEnjeu
                     if ((this.scene.sac.selectedObject === 1)){
-                        //&& (this.scene.roomState === RoomState.GAME_STARTED)){ // Les ciseaux
                         console.log("Je dois faire l'action du ciseaux !");
                         this.sendCiseaux();
-                        //this.scene.sac.removeObject(); // Faire ça après la réponse du serveur
+                    }
+                }
+
+                if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER1.spritehitbox)) && (this.scene.PLAYER1.spritehitbox.visible)) {
+                    // Collision avec la carteEnjeu
+                    if ((this.scene.sac.selectedObject === 2)){
+                        console.log("Je dois faire l'action de la batte !");
+                        const Destination = this.scene.PLAYER1.NUM;
+                        this.sendBatte(Destination);
+                    }
+                }
+                if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER2.spritehitbox)) && (this.scene.PLAYER2.spritehitbox.visible)) {
+                    // Collision avec la carteEnjeu
+                    if ((this.scene.sac.selectedObject === 2)){
+                        console.log("Je dois faire l'action de la batte !");
+                        const Destination = this.scene.PLAYER2.NUM;
+                        this.sendBatte(Destination);
+                    }
+                }
+                if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER3.spritehitbox)) && (this.scene.PLAYER3.spritehitbox.visible)) {
+                    // Collision avec la carteEnjeu
+                    if ((this.scene.sac.selectedObject === 2)){
+                        console.log("Je dois faire l'action de la batte !");
+                        const Destination = this.scene.PLAYER3.NUM;
+                        this.sendBatte(Destination);
+                    }
+                }
+                if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER4.spritehitbox)) && (this.scene.PLAYER4.spritehitbox.visible)) {
+                    // Collision avec la carteEnjeu
+                    if ((this.scene.sac.selectedObject === 2)){
+                        console.log("Je dois faire l'action de la batte !");
+                        const Destination = this.scene.PLAYER4.NUM;
+                        this.sendBatte(Destination);
                     }
                 }
 
@@ -94,7 +125,6 @@ class ObjectIcon {
                 this.objectDrag.setTexture('ObjetIcon_0');
                 this.stopTimer();
                 this.scene.PLAYER.SweatDisappear(0);
-                this.sendSweatInfo(0);
                 break;
             case 1 :
                 this.objectDrag.setTexture('CiseauxIcon');
@@ -164,19 +194,19 @@ class ObjectIcon {
             type: "CHEATING",
             payload: payload
         }));
-
     }
 
-    sendSweatInfo(num){
+    sendBatte(Destination){
         const payload = {
-            Value : num,
+            ObjectID : 2,
             Source: this.scene.myNum,
+            Destination: Destination,
+            Carte: -1
         };
         this.scene.socket.send(JSON.stringify({
-            type: "SWEATING",
+            type: "CHEATING",
             payload: payload
         }));
-
     }
 
     resetTimer() {
@@ -194,7 +224,6 @@ class ObjectIcon {
                 this.scene.PLAYER.SweatAppear(1);
                 console.log("Fin du Timer !");
                 this.stopTimer();
-                this.sendSweatInfo(1);
             }
         }, 100);
     }
