@@ -229,21 +229,26 @@ class Cartes {
 
     updateStatus(){
         this.CanCombo = this.updateCanCombo();
-        if (this.CanCombo) {
-            // Afficher le sprite canCombo
-            this.spritecanCombo.setVisible(true);
-            this.spritecantPlay.setVisible(false);
-            this.setDraggableState(!this.Echange);
-            // On peut jouer la carte
-        } else {
-            this.spritecanCombo.setVisible(false);
-            if (this.canPlay()){
+        if (!this.scene.menottes){
+            if (this.CanCombo) {
+                // Afficher le sprite canCombo
+                this.spritecanCombo.setVisible(true);
                 this.spritecantPlay.setVisible(false);
                 this.setDraggableState(!this.Echange);
+                // On peut jouer la carte
             } else {
-                this.spritecantPlay.setVisible(true);
-                this.setDraggableState(false);
+                this.spritecanCombo.setVisible(false);
+                if (this.canPlay()){
+                    this.spritecantPlay.setVisible(false);
+                    this.setDraggableState(!this.Echange);
+                } else {
+                    this.spritecantPlay.setVisible(true);
+                    this.setDraggableState(false);
+                }
             }
+        } else {
+            this.spritecantPlay.setVisible(true);
+            this.setDraggableState(false);
         }
         if (this.Seen){
             this.seen.setVisible(true);

@@ -60,6 +60,11 @@ class ObjectIcon {
                         const Destination = this.scene.PLAYER1.NUM;
                         this.sendBatte(Destination);
                     }
+                    if ((this.scene.sac.selectedObject === 6)){
+                        console.log("Je dois faire l'action des Menottes !");
+                        const Destination = this.scene.PLAYER1.NUM;
+                        this.sendMenottes(Destination);
+                    }
                     if ((this.scene.sac.selectedObject === 7)){
                         console.log("Je dois faire l'action des Lunettes !");
                         const Destination = this.scene.PLAYER1.NUM;
@@ -71,6 +76,11 @@ class ObjectIcon {
                         console.log("Je dois faire l'action de la batte !");
                         const Destination = this.scene.PLAYER2.NUM;
                         this.sendBatte(Destination);
+                    }
+                    if ((this.scene.sac.selectedObject === 6)){
+                        console.log("Je dois faire l'action des Menottes !");
+                        const Destination = this.scene.PLAYER2.NUM;
+                        this.sendMenottes(Destination);
                     }
                     if ((this.scene.sac.selectedObject === 7)){
                         console.log("Je dois faire l'action des Lunettes !");
@@ -84,6 +94,11 @@ class ObjectIcon {
                         const Destination = this.scene.PLAYER3.NUM;
                         this.sendBatte(Destination);
                     }
+                    if ((this.scene.sac.selectedObject === 6)){
+                        console.log("Je dois faire l'action des Menottes !");
+                        const Destination = this.scene.PLAYER3.NUM;
+                        this.sendMenottes(Destination);
+                    }
                     if ((this.scene.sac.selectedObject === 7)){
                         console.log("Je dois faire l'action des Lunettes !");
                         const Destination = this.scene.PLAYER3.NUM;
@@ -96,6 +111,11 @@ class ObjectIcon {
                         const Destination = this.scene.PLAYER4.NUM;
                         this.sendBatte(Destination);
                     }
+                    if ((this.scene.sac.selectedObject === 6)){
+                        console.log("Je dois faire l'action des Menottes !");
+                        const Destination = this.scene.PLAYER4.NUM;
+                        this.sendMenottes(Destination);
+                    }
                     if ((this.scene.sac.selectedObject === 7)){
                         console.log("Je dois faire l'action des Lunettes !");
                         const Destination = this.scene.PLAYER4.NUM;
@@ -103,6 +123,10 @@ class ObjectIcon {
                     }
                 }
                 if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER.spritehitbox)) && (this.scene.PLAYER.spritehitbox.visible)) {
+                    if ((this.scene.sac.selectedObject === 6)){
+                        console.log("Je dois faire l'action des Menottes !");
+                        this.sendMenottes(this.scene.myNum);
+                    }
                     if ((this.scene.sac.selectedObject === 7)){
                         console.log("Je dois faire l'action des Lunettes !");
                         this.sendLunettes(this.scene.myNum);
@@ -234,6 +258,19 @@ class ObjectIcon {
     sendLunettes(Destination){
         const payload = {
             ObjectID : 7,
+            Source: this.scene.myNum,
+            Destination: Destination,
+            Carte: -1
+        };
+        this.scene.socket.send(JSON.stringify({
+            type: "CHEATING",
+            payload: payload
+        }));
+    }
+
+    sendMenottes(Destination){
+        const payload = {
+            ObjectID : 6,
             Source: this.scene.myNum,
             Destination: Destination,
             Carte: -1

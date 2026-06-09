@@ -301,6 +301,8 @@ class Player {
         ];
 
         allSprites.forEach(s => s.setPosition(x, y));
+        this.spritehitbox.setPosition(x-3, y+10);
+        this.spritehitboxDebug.setPosition(x-3, y+10);
         this.Nametag.setPosition(x-7,y-10);
         this.nameText.setPosition(x-2,y-101);
     }
@@ -405,5 +407,21 @@ class Player {
     }
     putLunettesOff(){
         this.teteLunettes.setVisible(false);
+    }
+    setLunettes(bool){
+        this.teteLunettes.setVisible(bool);
+    }
+
+    putMenottesOn(){
+        this.corpsMenottes.setVisible(true);
+        //this.scene.menottes = true;
+    }
+    putMenottesOff(){
+        this.corpsMenottes.setVisible(false);
+        //this.scene.menottes = false;
+    }
+    setMenottes(bool){
+        this.corpsMenottes.setVisible(bool);
+        //this.scene.menottes = bool;
     }
 }
