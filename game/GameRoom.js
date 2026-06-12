@@ -88,6 +88,9 @@ export class GameRoom extends Phaser.Scene {
         this.load.image('PlayerCheated_0', './assets/sPlayer_Cheated_0.png');
         this.load.image('PlayerCheated_1', './assets/sPlayer_Cheated_1.png');
 
+        this.load.image('ChatBox','./assets/sGet_String_1.png');
+        this.load.image('MessageBox','./assets/sMessage_Telephone_0.png');
+
         this.load.image('Cle', './assets/sCle_0.png');
 
         for (let i = 0; i <= 9; i++) {  // 10 images (0 à 9)
@@ -267,7 +270,6 @@ export class GameRoom extends Phaser.Scene {
         this.cheatingTimer = this.add.sprite(50,225,'CheatedTimer_0').setVisible(false);
         this.cheatingTimer.setDepth(200);
         this.menottes = false;
-
 
         // Positionnement des éléments intéractifs
         const Player_X = 45;
@@ -628,6 +630,10 @@ export class GameRoom extends Phaser.Scene {
                         playerCheated.setDepth(70);
                         playerCheated.play('PlayerCheated');
                         this.StartAnimation_Hurt(playerCheated);
+                    }
+                } else if (data.payload.Num === 4){
+                    if (data.payload.Destination === this.myNum) {
+                        const MBox = new MessageBox(this,284.5,160,data.payload.Message);
                     }
                 } else if (data.payload.Num === 6){
                     if (data.payload.Source === this.myNum){

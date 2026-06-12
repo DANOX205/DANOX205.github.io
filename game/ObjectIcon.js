@@ -13,6 +13,7 @@ class ObjectIcon {
 
         this.Timer_interval = null;
         this.Timer_index = 0;
+        this.ChatBox = null;
 
         // Création de l'hitbox pour la carte.
         this.spritehitbox = scene.add.zone(x+206,y+87, 39, 39);
@@ -55,72 +56,87 @@ class ObjectIcon {
                 }
 
                 if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER1.spritehitbox)) && (this.scene.PLAYER1.spritehitbox.visible)) {
+                    const Destination = this.scene.PLAYER1.NUM;
                     if ((this.scene.sac.selectedObject === 2)){
                         console.log("Je dois faire l'action de la batte !");
-                        const Destination = this.scene.PLAYER1.NUM;
                         this.sendBatte(Destination);
+                    }
+                    if ((this.scene.sac.selectedObject === 4)){
+                        console.log("Je dois faire l'action du Telephone !");
+                        console.log(this.ChatBox);
+                        if (this.ChatBox === null) {
+                            this.ChatBox = new ChatBox(this.scene, 284.5, 160, Destination, this);
+                        } else {
+                            this.ChatBox.destroy();
+                            this.ChatBox = null;
+                        }
                     }
                     if ((this.scene.sac.selectedObject === 6)){
                         console.log("Je dois faire l'action des Menottes !");
-                        const Destination = this.scene.PLAYER1.NUM;
                         this.sendMenottes(Destination);
                     }
                     if ((this.scene.sac.selectedObject === 7)){
                         console.log("Je dois faire l'action des Lunettes !");
-                        const Destination = this.scene.PLAYER1.NUM;
                         this.sendLunettes(Destination);
                     }
                 }
                 if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER2.spritehitbox)) && (this.scene.PLAYER2.spritehitbox.visible)) {
+                    const Destination = this.scene.PLAYER2.NUM;
                     if ((this.scene.sac.selectedObject === 2)){
                         console.log("Je dois faire l'action de la batte !");
-                        const Destination = this.scene.PLAYER2.NUM;
                         this.sendBatte(Destination);
+                    }
+                    if ((this.scene.sac.selectedObject === 4)){
+                        console.log("Je dois faire l'action du Telephone !");
+                        const CBox = new ChatBox(this.scene, 284.5, 160, Destination);
                     }
                     if ((this.scene.sac.selectedObject === 6)){
                         console.log("Je dois faire l'action des Menottes !");
-                        const Destination = this.scene.PLAYER2.NUM;
                         this.sendMenottes(Destination);
                     }
                     if ((this.scene.sac.selectedObject === 7)){
                         console.log("Je dois faire l'action des Lunettes !");
-                        const Destination = this.scene.PLAYER2.NUM;
                         this.sendLunettes(Destination);
                     }
                 }
                 if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER3.spritehitbox)) && (this.scene.PLAYER3.spritehitbox.visible)) {
+                    const Destination = this.scene.PLAYER3.NUM;
                     if ((this.scene.sac.selectedObject === 2)){
                         console.log("Je dois faire l'action de la batte !");
-                        const Destination = this.scene.PLAYER3.NUM;
                         this.sendBatte(Destination);
+                    }
+                    if ((this.scene.sac.selectedObject === 4)){
+                        console.log("Je dois faire l'action du Telephone !");
+                        const CBox = new ChatBox(this.scene, 284.5, 160, Destination);
                     }
                     if ((this.scene.sac.selectedObject === 6)){
                         console.log("Je dois faire l'action des Menottes !");
-                        const Destination = this.scene.PLAYER3.NUM;
                         this.sendMenottes(Destination);
                     }
                     if ((this.scene.sac.selectedObject === 7)){
                         console.log("Je dois faire l'action des Lunettes !");
-                        const Destination = this.scene.PLAYER3.NUM;
                         this.sendLunettes(Destination);
                     }
                 }
                 if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER4.spritehitbox)) && (this.scene.PLAYER4.spritehitbox.visible)) {
+                    const Destination = this.scene.PLAYER4.NUM;
                     if ((this.scene.sac.selectedObject === 2)){
                         console.log("Je dois faire l'action de la batte !");
-                        const Destination = this.scene.PLAYER4.NUM;
                         this.sendBatte(Destination);
+                    }
+                    if ((this.scene.sac.selectedObject === 4)){
+                        console.log("Je dois faire l'action du Telephone !");
+                        const CBox = new ChatBox(this.scene, 284.5, 160, Destination);
                     }
                     if ((this.scene.sac.selectedObject === 6)){
                         console.log("Je dois faire l'action des Menottes !");
-                        const Destination = this.scene.PLAYER4.NUM;
                         this.sendMenottes(Destination);
                     }
                     if ((this.scene.sac.selectedObject === 7)){
                         console.log("Je dois faire l'action des Lunettes !");
-                        const Destination = this.scene.PLAYER4.NUM;
                         this.sendLunettes(Destination);
                     }
+                    
                 }
                 if ((this.isOverlapping(this.spritehitbox, this.scene.PLAYER.spritehitbox)) && (this.scene.PLAYER.spritehitbox.visible)) {
                     if ((this.scene.sac.selectedObject === 6)){
