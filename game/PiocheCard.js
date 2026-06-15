@@ -9,7 +9,7 @@ class PiocheCard {
         this.sprite.setDepth(80);
         this.wait = true;
         // Création de l'hitbox pour la pioche.
-        this.spritehitbox = scene.add.zone(x,y-2, 19, 25).setVisible(seen);
+        this.spritehitbox = scene.add.zone(x,y-2, 19, 25).setVisible(seen).setDepth(85);
         this.spritehitbox.setInteractive();  
         // Rectangle visuel pour debug
         this.spritehitboxDebug = scene.add.rectangle(

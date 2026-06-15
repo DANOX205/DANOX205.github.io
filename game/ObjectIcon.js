@@ -14,6 +14,7 @@ class ObjectIcon {
         this.Timer_interval = null;
         this.Timer_index = 0;
         this.ChatBox = null;
+        this.CanneBox = null;
 
         // Création de l'hitbox pour la carte.
         this.spritehitbox = scene.add.zone(x+206,y+87, 39, 39);
@@ -61,6 +62,16 @@ class ObjectIcon {
                         console.log("Je dois faire l'action de la batte !");
                         this.sendBatte(Destination);
                     }
+                    if ((this.scene.sac.selectedObject === 3)){
+                        console.log("Je dois faire l'action de la Canne à pêche !");
+                        console.log(this.CanneBox);
+                        if (this.CanneBox === null) {
+                            this.CanneBox = new CanneBox(this.scene, this.spritehitbox.x, this.spritehitbox.y, Destination, this);
+                        } else {
+                            this.CanneBox.destroy();
+                            this.CanneBox = null;
+                        }
+                    }
                     if ((this.scene.sac.selectedObject === 4)){
                         console.log("Je dois faire l'action du Telephone !");
                         console.log(this.ChatBox);
@@ -86,9 +97,25 @@ class ObjectIcon {
                         console.log("Je dois faire l'action de la batte !");
                         this.sendBatte(Destination);
                     }
+                    if ((this.scene.sac.selectedObject === 3)){
+                        console.log("Je dois faire l'action de la Canne à pêche !");
+                        console.log(this.CanneBox);
+                        if (this.CanneBox === null) {
+                            this.CanneBox = new CanneBox(this.scene, this.spritehitbox.x, this.spritehitbox.y, Destination, this);
+                        } else {
+                            this.CanneBox.destroy();
+                            this.CanneBox = null;
+                        }
+                    }
                     if ((this.scene.sac.selectedObject === 4)){
                         console.log("Je dois faire l'action du Telephone !");
-                        const CBox = new ChatBox(this.scene, 284.5, 160, Destination);
+                        console.log(this.ChatBox);
+                        if (this.ChatBox === null) {
+                            this.ChatBox = new ChatBox(this.scene, 284.5, 160, Destination, this);
+                        } else {
+                            this.ChatBox.destroy();
+                            this.ChatBox = null;
+                        }
                     }
                     if ((this.scene.sac.selectedObject === 6)){
                         console.log("Je dois faire l'action des Menottes !");
@@ -105,9 +132,25 @@ class ObjectIcon {
                         console.log("Je dois faire l'action de la batte !");
                         this.sendBatte(Destination);
                     }
+                    if ((this.scene.sac.selectedObject === 3)){
+                        console.log("Je dois faire l'action de la Canne à pêche !");
+                        console.log(this.CanneBox);
+                        if (this.CanneBox === null) {
+                            this.CanneBox = new CanneBox(this.scene, 284.5, 160, Destination, this);
+                        } else {
+                            this.CanneBox.destroy();
+                            this.CanneBox = null;
+                        }
+                    }
                     if ((this.scene.sac.selectedObject === 4)){
                         console.log("Je dois faire l'action du Telephone !");
-                        const CBox = new ChatBox(this.scene, 284.5, 160, Destination);
+                        console.log(this.ChatBox);
+                        if (this.ChatBox === null) {
+                            this.ChatBox = new ChatBox(this.scene, 284.5, 160, Destination, this);
+                        } else {
+                            this.ChatBox.destroy();
+                            this.ChatBox = null;
+                        }
                     }
                     if ((this.scene.sac.selectedObject === 6)){
                         console.log("Je dois faire l'action des Menottes !");
@@ -124,9 +167,25 @@ class ObjectIcon {
                         console.log("Je dois faire l'action de la batte !");
                         this.sendBatte(Destination);
                     }
+                    if ((this.scene.sac.selectedObject === 3)){
+                        console.log("Je dois faire l'action de la Canne à pêche !");
+                        console.log(this.CanneBox);
+                        if (this.CanneBox === null) {
+                            this.CanneBox = new CanneBox(this.scene, 284.5, 160, Destination, this);
+                        } else {
+                            this.CanneBox.destroy();
+                            this.CanneBox = null;
+                        }
+                    }
                     if ((this.scene.sac.selectedObject === 4)){
                         console.log("Je dois faire l'action du Telephone !");
-                        const CBox = new ChatBox(this.scene, 284.5, 160, Destination);
+                        console.log(this.ChatBox);
+                        if (this.ChatBox === null) {
+                            this.ChatBox = new ChatBox(this.scene, 284.5, 160, Destination, this);
+                        } else {
+                            this.ChatBox.destroy();
+                            this.ChatBox = null;
+                        }
                     }
                     if ((this.scene.sac.selectedObject === 6)){
                         console.log("Je dois faire l'action des Menottes !");

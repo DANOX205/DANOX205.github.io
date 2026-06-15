@@ -103,7 +103,7 @@ class CartesShow {
             this.ClickOncartesShowEchangesBouton();
         });
 
-        this.cartesShowEchangeshitbox = scene.add.zone(x-3,y+50, 20, 20);
+        this.cartesShowEchangeshitbox = scene.add.zone(x-3,y+50, 20, 20).setDepth(85);
         this.cartesShowEchangeshitbox.setInteractive();
         // Rectangle visuel pour debug
         this.cartesShowEchangeshitboxDebug = scene.add.rectangle(
@@ -122,7 +122,7 @@ class CartesShow {
         });
 
         this.AcceptEchange = scene.add.sprite(x-3, y-58, 'CartesShowEchangeAccept').setVisible(false);
-        this.AcceptEchangehitbox = scene.add.zone(x-3,y-55, 20, 20);
+        this.AcceptEchangehitbox = scene.add.zone(x-3,y-55, 20, 20).setDepth(85);
         this.AcceptEchangehitbox.setInteractive();  
         // Rectangle visuel pour debug
         this.AcceptEchangehitboxDebug = scene.add.rectangle(

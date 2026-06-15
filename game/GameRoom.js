@@ -90,6 +90,9 @@ export class GameRoom extends Phaser.Scene {
 
         this.load.image('ChatBox','./assets/sGet_String_1.png');
         this.load.image('MessageBox','./assets/sMessage_Telephone_0.png');
+        this.load.image('CanneBox','./assets/sCannePeche_0.png');
+        this.load.image('GrosHamecon','./assets/sHamecon_0.png');
+        this.load.image('PetitHamecon','./assets/sHamecon_1.png');
 
         this.load.image('Cle', './assets/sCle_0.png');
 
@@ -355,7 +358,7 @@ export class GameRoom extends Phaser.Scene {
         buttonEmote.setDepth(100);
         buttonEmote.setAlpha(0.8);
         //Hitbox
-        const buttonEmotehitbox = this.add.zone(buttonEmote_X - 262, buttonEmote_Y - 73, 40, 40);
+        const buttonEmotehitbox = this.add.zone(buttonEmote_X - 262, buttonEmote_Y - 73, 40, 40).setDepth(85);
         buttonEmotehitbox.setInteractive();  
         // Rectangle visuel pour debug
         const hitboxDebug_buttonEmote = this.add.rectangle(
@@ -587,17 +590,19 @@ export class GameRoom extends Phaser.Scene {
             if (data.type === "CheatingAnimation"){
                 console.log("Cheating_Anim_payload : " + data.payload.Num);
                 if (data.payload.Num === -1){
-                    const cheatingFailed = this.add.sprite(50,-52 ,'CheatingFailed');
-                    cheatingFailed.setDepth(100);
-                    this.tweens.add({
-                        targets: cheatingFailed,
-                        duration: 10000,
-                        alpha: 0,
-                        ease: 'Power2',
-                        onComplete: ()=>{
-                            cheatingFailed.destroy();
-                        }
-                    });
+                    if (data.payload.Source === this.myNum){
+                        const cheatingFailed = this.add.sprite(50,-52 ,'CheatingFailed');
+                        cheatingFailed.setDepth(100);
+                        this.tweens.add({
+                            targets: cheatingFailed,
+                            duration: 10000,
+                            alpha: 0,
+                            ease: 'Power2',
+                            onComplete: ()=>{
+                                cheatingFailed.destroy();
+                            }
+                        });
+                    }
                 } else if (data.payload.Num === 1){
                     if (data.payload.Source === this.myNum){
                         this.sac.removeObject();
@@ -630,6 +635,18 @@ export class GameRoom extends Phaser.Scene {
                         playerCheated.setDepth(70);
                         playerCheated.play('PlayerCheated');
                         this.StartAnimation_Hurt(playerCheated);
+                    }
+                } else if (data.payload.Num === 3){
+                    if (data.payload.Source === this.myNum){
+                        this.sac.removeObject();
+                        const Anim1 = new HameconAnimation(this,0,0,0);
+                    }
+                    let player = this.PLAYER;
+                    if (data.payload.Destination === this.myNum){
+                        const Anim2 = new HameconAnimation(this,0,0,1);
+                    } else {
+                        player = this.givePlayerBasedOnNum(data.payload.Destination);
+                        const Anim3 = new HameconAnimation(this,player.x,0,2);
                     }
                 } else if (data.payload.Num === 4){
                     if (data.payload.Destination === this.myNum) {

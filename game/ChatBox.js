@@ -34,7 +34,6 @@ class ChatBox{
         this.spritehitboxDebug.setVisible(this.scene.HITBOXES);
 
         this.spritehitbox.on('pointerdown', () => {
-            //this.sendUnlock(this.scene.myNum);
             this.destroy();
         });
 
