@@ -622,7 +622,7 @@ export class MenuRoom extends Phaser.Scene {
         // Action 
         switchCosmeticCorps_2hitbox.on('pointerdown', () => {
             if (!this.buttonRules.Selected){
-                console.log('Bouton CosmeticTete_2 cliqué.');
+                console.log('Bouton CosmeticCorps_2 cliqué.');
                 if (this.SkinCorpsIndex < this.NbrSkinCorps) {
                     this.SkinCorpsIndex = this.SkinCorpsIndex + 1;
                     this.PLAYER.setSkinCorps(this.SkinCorpsIndex);
@@ -631,7 +631,7 @@ export class MenuRoom extends Phaser.Scene {
         });
         switchCosmeticCorps_1hitbox.on('pointerdown', () => {
             if (!this.buttonRules.Selected){
-                console.log('Bouton CosmeticTete_1 cliqué.');
+                console.log('Bouton CosmeticCorps_1 cliqué.');
                 if (this.SkinCorpsIndex > 0) {
                     this.SkinCorpsIndex = this.SkinCorpsIndex - 1;
                     this.PLAYER.setSkinCorps(this.SkinCorpsIndex);
