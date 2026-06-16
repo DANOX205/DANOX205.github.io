@@ -275,6 +275,7 @@ export class MenuRoom extends Phaser.Scene {
 
         // Joueur --------------------------------------------------------------
         this.PLAYER = new Player(this,Player_X ,Player_Y);
+        this.PLAYER.setVisible_spritehitbox(false);
 
         // Nametag --------------------------------------------------------------
         this.playerName = "toi";
@@ -572,6 +573,9 @@ export class MenuRoom extends Phaser.Scene {
                 if (this.SkinTeteIndex < this.NbrSkinTete) {
                     this.SkinTeteIndex = this.SkinTeteIndex + 1;
                     this.PLAYER.setSkinTete(this.SkinTeteIndex);
+                } else {
+                    this.SkinTeteIndex = 0;
+                    this.PLAYER.setSkinTete(this.SkinTeteIndex);
                 }
             }
         });
@@ -580,6 +584,9 @@ export class MenuRoom extends Phaser.Scene {
             console.log('Bouton CosmeticTete_1 cliqué.');
                 if (this.SkinTeteIndex > 0) {
                     this.SkinTeteIndex = this.SkinTeteIndex - 1;
+                    this.PLAYER.setSkinTete(this.SkinTeteIndex);
+                } else {
+                    this.SkinTeteIndex = this.NbrSkinTete;
                     this.PLAYER.setSkinTete(this.SkinTeteIndex);
                 }
             }
@@ -626,6 +633,9 @@ export class MenuRoom extends Phaser.Scene {
                 if (this.SkinCorpsIndex < this.NbrSkinCorps) {
                     this.SkinCorpsIndex = this.SkinCorpsIndex + 1;
                     this.PLAYER.setSkinCorps(this.SkinCorpsIndex);
+                } else {
+                    this.SkinCorpsIndex = 0;
+                    this.PLAYER.setSkinCorps(this.SkinCorpsIndex);
                 }
             }
         });
@@ -634,6 +644,9 @@ export class MenuRoom extends Phaser.Scene {
                 console.log('Bouton CosmeticCorps_1 cliqué.');
                 if (this.SkinCorpsIndex > 0) {
                     this.SkinCorpsIndex = this.SkinCorpsIndex - 1;
+                    this.PLAYER.setSkinCorps(this.SkinCorpsIndex);
+                } else {
+                    this.SkinCorpsIndex = this.NbrSkinCorps;
                     this.PLAYER.setSkinCorps(this.SkinCorpsIndex);
                 }
             }
@@ -678,6 +691,7 @@ export class MenuRoom extends Phaser.Scene {
 }
 
 function connectToServer(scene) {
+    console.log("Tentative de connexion à :", "ws://" + scene.ip_address + ":6510");
     scene.socket = new WebSocket("ws://" + scene.ip_address + ":6510");
     const playerData = {
         SkinTeteIndex: scene.SkinTeteIndex,
@@ -708,10 +722,23 @@ function connectToServer(scene) {
     });
 
     scene.socket.onopen = () => {
+        console.log("✅ WebSocket connecté");
         scene.socket.send(JSON.stringify({
             type: "joinRoom",
             payload: playerData
         }));
+    };
+
+    scene.socket.onerror = (error) => {
+        console.log("❌ Erreur WebSocket :", error);
+    };
+
+    scene.socket.onclose = (event) => {
+        console.log(
+            "❌ WebSocket fermé",
+            "code =", event.code,
+            "reason =", event.reason
+        );
     };
 }
 

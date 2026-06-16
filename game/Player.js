@@ -122,6 +122,10 @@ class Player {
         this.cartesShow.setDepth();
     }
 
+    setVisible_spritehitbox(bool) {
+        this.spritehitbox.setVisible(bool);
+    }
+
     ChangeNameTagSprite(i){ // 0 == C'est par mon tour || 1 == C'est mon tour
         this.Nametag.setTexture('Nametag_Game_'+i);
     }
