@@ -48,6 +48,10 @@ class ObjectIcon {
         });
         scene.input.on('dragend', (pointer, gameObject) => {
             if (gameObject === this.spritehitbox) {
+                if ((this.scene.sac.selectedObject === 8)){
+                    console.log("Je dois faire l'action du 4x4 !");
+                    this.send4x4();
+                }
                 if ((this.isOverlapping(this.spritehitbox, this.scene.CarteEnJeu.spritehitbox))) {
                     // Collision avec la carteEnjeu
                     if ((this.scene.sac.selectedObject === 1)){
@@ -275,6 +279,10 @@ class ObjectIcon {
                 this.objectDrag.setTexture('LunettesIcon');
                 this.startTimer();
                 break;
+            case 8 :
+                this.objectDrag.setTexture('4x4Icon');
+                this.startTimer();
+                break;
         }
     }
 
@@ -307,6 +315,19 @@ class ObjectIcon {
     sendCiseaux(){
         const payload = {
             ObjectID : 1,
+            Source: this.scene.myNum,
+            Destination: -1,
+            Carte: -1
+        };
+        this.scene.socket.send(JSON.stringify({
+            type: "CHEATING",
+            payload: payload
+        }));
+    }
+
+    send4x4(){
+        const payload = {
+            ObjectID : 8,
             Source: this.scene.myNum,
             Destination: -1,
             Carte: -1

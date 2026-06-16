@@ -45,7 +45,7 @@ class Sac {
                 this.player.setLookingDownChange();
             }
         });
-        this.Objets_test(8); // A SUP
+        //this.Objets_test(9); // A SUP
         this.setDepth();
     }
 
@@ -92,9 +92,9 @@ class Sac {
     }
 
     setRandom_Objects(){
-        this.backgroundObjet1.setObjectID(Math.floor(Math.random() * 7) + 1);
-        this.backgroundObjet2.setObjectID(Math.floor(Math.random() * 7) + 1);
-        this.backgroundObjet3.setObjectID(Math.floor(Math.random() * 7) + 1);
+        this.backgroundObjet1.setObjectID(Math.floor(Math.random() * 8) + 1);
+        this.backgroundObjet2.setObjectID(Math.floor(Math.random() * 8) + 1);
+        this.backgroundObjet3.setObjectID(Math.floor(Math.random() * 8) + 1);
     }
 
     Objets_test(id){
@@ -141,6 +141,11 @@ class Sac {
                 break;
             case 8 : 
                 this.backgroundObjet1.setObjectID(1);
+                this.backgroundObjet2.setObjectID(4);
+                this.backgroundObjet3.setObjectID(3);
+                break;
+            case 9 : 
+                this.backgroundObjet1.setObjectID(8);
                 this.backgroundObjet2.setObjectID(4);
                 this.backgroundObjet3.setObjectID(3);
                 break;

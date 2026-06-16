@@ -41,7 +41,7 @@ export class GameRoom extends Phaser.Scene {
         for (let i = 0; i <= 24; i++) {  // 25 images (0 à 24)
             this.load.image('Timer_' + i, './assets/sTimer_' + i + '.png');
         }
-        for (let i = 0; i <= 8; i++) {  // 9 images (0 à 8)
+        for (let i = 0; i <= 8; i++) {  // 10 images (0 à 8)
             this.load.image('ObjetIcon_' + i, './assets/sObjets_Icon_' + i + '.png');
         }
         this.load.image('Pioche', './assets/sPioche_0.png');
@@ -82,6 +82,9 @@ export class GameRoom extends Phaser.Scene {
         this.load.image('MenottesIcon', './assets/sDrag_Menottes_0.png');
         this.load.image('Telephone', './assets/sTelephone_0.png');
         this.load.image('TelephoneIcon', './assets/sDrag_Telephone_0.png');
+        this.load.image('4x4', './assets/s4x4_0.png');
+        this.load.image('4x4Icon', './assets/sDrag_4x4_0.png');
+
         for (let i = 0; i <= 11; i++) {  // 12 images (0 à 11)
             this.load.image('WhiteScreen_' + i, './assets/sCut_Card_' + i + '.png');
         }
@@ -93,10 +96,15 @@ export class GameRoom extends Phaser.Scene {
         this.load.image('CanneBox','./assets/sCannePeche_0.png');
         this.load.image('GrosHamecon','./assets/sHamecon_0.png');
         this.load.image('PetitHamecon','./assets/sHamecon_1.png');
+        this.load.image('4x4_truck','./assets/s4x4_animation_1.png');
+        this.load.image('4x4_wheels','./assets/s4x4_animation_2.png');
+        for (let i = 0; i <= 4; i++) {  // 5 images (0 à 5)
+            this.load.image('4x4_smoke_' + i, './assets/s4x4_Smoke_' + i + '.png');
+        }
 
         this.load.image('Cle', './assets/sCle_0.png');
 
-        for (let i = 0; i <= 9; i++) {  // 10 images (0 à 9)
+        for (let i = 0; i <= 10; i++) {  // 11 images (0 à 10)
             this.load.image('DescriptifObjet_' + i, './assets/sDescription_Objet_' + i + '.png');
         }
         for (let i = 0; i <= 9; i++) {  // 10 images (0 à 9)
@@ -675,6 +683,13 @@ export class GameRoom extends Phaser.Scene {
                         player = this.givePlayerBasedOnNum(data.payload.Destination);
                     }
                     player.putLunettesOn();
+                } else if (data.payload.Num === 8){
+                    if (data.payload.Source === this.myNum) {
+                        this.sac.removeObject();
+                        const anim1 = new TruckAnimation(this,0,0,0);
+                    } else {
+                        const anim2 = new TruckAnimation(this,0,0,1);
+                    }
                 }
             }
             if (data.type === "TIMER_VALUE") {

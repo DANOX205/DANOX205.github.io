@@ -61,6 +61,9 @@ class ObjectImage {
             case 7 :
                 return 'Lunettes';
                 break;
+            case 8 :
+                return '4x4';
+                break;
         }
         return 'DescriptifObjet_0';
     }
