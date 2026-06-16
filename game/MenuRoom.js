@@ -169,6 +169,7 @@ export class MenuRoom extends Phaser.Scene {
         this.SkinCorpsIndex = 0;
         this.NbrSkinTete = 9;
         this.NbrSkinCorps = 9;
+        this.ip_address = "172.20.10.4"; // "localhost" 
 
         // Transition du Début
         this.anims.create({
@@ -677,7 +678,7 @@ export class MenuRoom extends Phaser.Scene {
 }
 
 function connectToServer(scene) {
-    scene.socket = new WebSocket("ws://localhost:6510");
+    scene.socket = new WebSocket("ws://" + scene.ip_address + ":6510");
     const playerData = {
         SkinTeteIndex: scene.SkinTeteIndex,
         SkinCorpsIndex: scene.SkinCorpsIndex,
