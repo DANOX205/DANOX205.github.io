@@ -169,7 +169,7 @@ export class MenuRoom extends Phaser.Scene {
         this.SkinCorpsIndex = 0;
         this.NbrSkinTete = 9;
         this.NbrSkinCorps = 9;
-        this.ip_address = "172.20.10.4"; // "localhost" 
+        this.ip_address = "192.168.1.100"; // "localhost" 
 
         // Transition du Début
         this.anims.create({
