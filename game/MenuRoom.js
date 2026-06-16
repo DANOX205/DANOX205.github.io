@@ -691,8 +691,8 @@ export class MenuRoom extends Phaser.Scene {
 }
 
 function connectToServer(scene) {
-    console.log("Tentative de connexion à :", "ws://" + scene.ip_address + ":6510");
-    scene.socket = new WebSocket("ws://" + scene.ip_address + ":6510");
+    console.log("Tentative de connexion à :", "wss://" + scene.ip_address + ":6510");
+    scene.socket = new WebSocket("wss://" + scene.ip_address + ":6510");
     const playerData = {
         SkinTeteIndex: scene.SkinTeteIndex,
         SkinCorpsIndex: scene.SkinCorpsIndex,
