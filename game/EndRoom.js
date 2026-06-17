@@ -35,7 +35,7 @@ export class EndRoom extends Phaser.Scene {
 
         // Confettis 
         for (let i = 0; i <= 4; i++) {  // 5 images (0 à 4)
-            this.load.image('Confetti_Bleu_' + i, 'assets/sConfetti_Blue_' + i + '.png');
+            this.load.image('Confetti_Bleu_' + i, 'assets/sConfetti_blue_' + i + '.png');
         }
         for (let i = 0; i <= 4; i++) {  // 5 images (0 à 4)
             this.load.image('Confetti_Rouge_' + i, 'assets/sConfetti_Red_' + i + '.png');
