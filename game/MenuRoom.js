@@ -169,7 +169,7 @@ export class MenuRoom extends Phaser.Scene {
         this.SkinCorpsIndex = 0;
         this.NbrSkinTete = 9;
         this.NbrSkinCorps = 9;
-        this.ip_address = "192.168.1.100"; // "localhost" 
+        this.ip_address = "localhost"; // "localhost" 
 
         // Transition du Début
         this.anims.create({
@@ -694,6 +694,7 @@ function connectToServer(scene) {
     console.log("Tentative de connexion à :", "ws://" + "https://moi-tricher-server-9af3.onrender.com");
     //https://moi-tricher-server-9af3.onrender.com
     //"wss://" + scene.ip_address + ":6510"
+    //scene.socket = new WebSocket("ws://" + scene.ip_address + ":6510");
     scene.socket = new WebSocket("wss://moi-tricher-server-9af3.onrender.com");
     
     const playerData = {

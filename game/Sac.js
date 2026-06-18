@@ -97,6 +97,12 @@ class Sac {
         this.backgroundObjet3.setObjectID(Math.floor(Math.random() * 8) + 1);
     }
 
+    setObjects(object1,object2,object3){
+        this.backgroundObjet1.setObjectID(object1);
+        this.backgroundObjet2.setObjectID(object2);
+        this.backgroundObjet3.setObjectID(object3);
+    }
+
     Objets_test(id){
         switch (id) {
             case 0 :

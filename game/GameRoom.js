@@ -519,6 +519,7 @@ export class GameRoom extends Phaser.Scene {
                 this.CurrentCard = data.payload.CurrentCard;
                 this.cartes = data.payload.Cartes;
                 this.special_card_power = data.payload.Special_Power;
+                this.Triche_allowed = data.payload.Triche_allowed;
                 this.DescriptifPower.update(this.special_card_power[0].power);
                 this.DescriptifPower.updatesprite();
             }
@@ -789,9 +790,6 @@ export class GameRoom extends Phaser.Scene {
     }
 
     setupRoomForGameStart(){
-        if (this.Triche_allowed){
-            this.sac.setRandom_Objects();
-        }
         this.buttonReady.setVisible(false);
         this.hitboxDebug_buttonReady.setVisible(false);
         this.buttonReadyhitbox.disableInteractive();
@@ -819,6 +817,12 @@ export class GameRoom extends Phaser.Scene {
                 const cle = new Cle(this, x, y);
                 this.menottes = true;
                 this.PLAYER.putMenottesOn();
+            }
+            if (this.Triche_allowed) {
+                console.log("Mes Objets :" + myPlayer.Object1 + myPlayer.Object2 + myPlayer.Object3);
+                if ((myPlayer.Object1 != this.sac.backgroundObjet1.object_id) || (myPlayer.Object2 != this.sac.backgroundObjet2.object_id) || (myPlayer.Object3 != this.sac.backgroundObjet3.object_id)){
+                    this.sac.setObjects(myPlayer.Object1,myPlayer.Object2,myPlayer.Object3);
+                }
             }
         }
     }
