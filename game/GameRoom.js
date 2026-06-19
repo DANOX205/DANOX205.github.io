@@ -819,7 +819,7 @@ export class GameRoom extends Phaser.Scene {
                 this.PLAYER.putMenottesOn();
             }
             if (this.Triche_allowed) {
-                console.log("Mes Objets :" + myPlayer.Object1 + myPlayer.Object2 + myPlayer.Object3);
+                //console.log("Mes Objets :" + myPlayer.Object1 + myPlayer.Object2 + myPlayer.Object3);
                 if ((myPlayer.Object1 != this.sac.backgroundObjet1.object_id) || (myPlayer.Object2 != this.sac.backgroundObjet2.object_id) || (myPlayer.Object3 != this.sac.backgroundObjet3.object_id)){
                     this.sac.setObjects(myPlayer.Object1,myPlayer.Object2,myPlayer.Object3);
                 }
