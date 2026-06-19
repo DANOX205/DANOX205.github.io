@@ -506,6 +506,7 @@ export class MenuRoom extends Phaser.Scene {
 
         // BOUTON PLAY --------------------------------------------------------------
         const buttonPlay = this.add.sprite(buttonPlay_X,buttonPlay_Y ,'btnPlay');
+        this.buttonPlay_pressed = false;
         //Depth
         buttonPlay.setDepth(79);
         //Hitbox
@@ -527,7 +528,10 @@ export class MenuRoom extends Phaser.Scene {
         buttonPlayhitbox.on('pointerdown', () => {
             if (!this.buttonRules.Selected) {
                 console.log('Bouton PLAY cliqué.');
-                connectToServer(this);
+                if (!this.buttonPlay_pressed) {
+                    this.buttonPlay_pressed = true;
+                    connectToServer(this);
+                }
             }
         });
 
@@ -727,6 +731,7 @@ function connectToServer(scene) {
 
     scene.socket.onopen = () => {
         console.log("✅ WebSocket connecté");
+        scene.buttonPlay_pressed = false;
         scene.socket.send(JSON.stringify({
             type: "joinRoom",
             payload: playerData
@@ -735,6 +740,7 @@ function connectToServer(scene) {
 
     scene.socket.onerror = (error) => {
         console.log("❌ Erreur WebSocket :", error);
+        scene.buttonPlay_pressed = false;
     };
 
     scene.socket.onclose = (event) => {
@@ -743,6 +749,7 @@ function connectToServer(scene) {
             "code =", event.code,
             "reason =", event.reason
         );
+        scene.buttonPlay_pressed = false;
     };
 }
 
